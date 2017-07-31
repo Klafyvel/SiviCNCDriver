@@ -1,0 +1,20 @@
+{
+	"x" : {
+		"drive" : "normal", /* Can be "normal", "torque", "half" */
+		"ratio" : 1,
+		"play" : 0,
+		"reverse" : false
+	},
+	"y" : {
+		"drive" : "normal", /* Can be "normal", "torque", "half" */
+		"ratio" : 1,
+		"play" : 0,
+		"reverse" : false
+	},
+	"z" : {
+		"drive" : "normal", /* Can be "normal", "torque", "half" */
+		"ratio" : 1,
+		"play" : 0,
+		"reverse" : false
+	}
+}
