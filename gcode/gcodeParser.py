@@ -1,21 +1,6 @@
-# Trace
-# Copyright (C) 2015  Hugo LEVY-FALK
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+__all__ = ['parse']
 
-
-class Pile:
+class Stack:
 
     def __init__(self, in_str):
         self.in_str = in_str
@@ -39,35 +24,40 @@ class Pile:
 SEPARATOR = ('\n', ' ', '(', '=')
 
 
-def parse(gcode):
-    pile = Pile(gcode + '\n')
-    for c in pile.token():
+def parse_iterator(gcode):
+    stack = Stack(gcode + '\n')
+    for c in stack.token():
         if c is ' ':
             continue
         elif c is '(':
             com = ''
-            while pile.peek() is not ')':
-                com += pile.pop()
-            pile.pop()  # removes the ')'
+            while stack.peek() is not ')':
+                com += stack.pop()
+            stack.pop()  # removes the ')'
             yield ('__comment__', c)
         elif c is '\n':
             yield ('__next__', '__next__')
         elif c is '#':
-            var_name = '#' + str(int(parse_value(pile).calc()))
+            var_name = '#' + str(int(parse_value(stack).calc()))
             # wait for the '='
-            while pile.peek() in SEPARATOR:
-                pile.pop()
-            var_value = parse_value(pile).calc()
+            while stack.peek() in SEPARATOR:
+                stack.pop()
+            var_value = parse_value(stack).calc()
             yield ('__new_var__', {var_name: var_value})
         else:
-            yield (c, parse_value(pile))
+            yield (c, parse_value(stack))
 
 
-def parse_instr(gcode):
+def parse(gcode):
+    """ parse gcode and yield a dict for each line with
+    name : name of the code (G, M)
+    value : an integer
+    args : a dict with the code arguments, ex : {'Y':3.0}
+    """
     name = ""
     value = 0
     args = {}
-    for i in parse(gcode):
+    for i in parse_iterator(gcode):
         if not i[0] == '__next__':
             if i[0] == '__new_var__':
                 name = ''
@@ -75,7 +65,6 @@ def parse_instr(gcode):
                 for a in i[1].keys():
                     OpNode.var[a] = i[1][a]
                     yield {'name': '__new_var__', 'var': a, 'value': i[1][a]}
-                # TODO : manage variable declaration
             if i[0] in ('G', 'M'):
                 name = i[0]
                 value = i[1].calc()
@@ -93,13 +82,13 @@ def parse_instr(gcode):
     yield {'name': name, 'value': value, 'args': args}
 
 
-def parse_value(pile):
+def parse_value(stack):
     r = ''
-    while pile.peek() not in SEPARATOR:
-        if pile.peek() not in '[]':
-            r += pile.pop()
+    while stack.peek() not in SEPARATOR:
+        if stack.peek() not in '[]':
+            r += stack.pop()
         else:
-            pile.pop()
+            stack.pop()
     v = OpNode(r)
     return v
 
