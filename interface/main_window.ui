@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>903</width>
+    <width>913</width>
     <height>540</height>
    </rect>
   </property>
@@ -20,6 +20,9 @@
    <layout class="QVBoxLayout" name="verticalLayout_4">
     <item>
      <widget class="QTabWidget" name="tabWidget_2">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -244,6 +247,9 @@ p, li { white-space: pre-wrap; }
         </item>
         <item>
          <widget class="QTabWidget" name="tabWidget">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -253,25 +259,28 @@ p, li { white-space: pre-wrap; }
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QCheckBox" name="chk_enableFakeSerial">
-              <property name="text">
-               <string>Simuler un port série</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QWidget" name="trueSerialContainer" native="true">
               <layout class="QVBoxLayout" name="verticalLayout_10">
                <item>
                 <layout class="QFormLayout" name="serial_settings">
                  <item row="0" column="0">
+                  <widget class="QLabel" name="mulerUnPortSRieLabel">
+                   <property name="text">
+                    <string>Émuler un port série</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QCheckBox" name="chk_fake_serial"/>
+                 </item>
+                 <item row="1" column="0">
                   <widget class="QLabel" name="label">
                    <property name="text">
                     <string>Baudrate</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
+                 <item row="1" column="1">
                   <widget class="QComboBox" name="baudrate">
                    <property name="currentIndex">
                     <number>4</number>
@@ -333,37 +342,20 @@ p, li { white-space: pre-wrap; }
                    </item>
                   </widget>
                  </item>
-                 <item row="1" column="0">
+                 <item row="2" column="0">
                   <widget class="QLabel" name="portSRieLabel">
                    <property name="text">
                     <string>Port série</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1">
+                 <item row="2" column="1">
                   <widget class="QComboBox" name="serial_ports_list"/>
                  </item>
-                 <item row="2" column="1">
+                 <item row="3" column="1">
                   <widget class="QPushButton" name="btn_serial_ports_list">
                    <property name="text">
                     <string>Lister les ports série</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="0">
-                  <widget class="QLabel" name="label_5">
-                   <property name="text">
-                    <string>Timeout (ms)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="3" column="1">
-                  <widget class="QSpinBox" name="timeout_read">
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                   <property name="value">
-                    <number>10</number>
                    </property>
                   </widget>
                  </item>
@@ -391,7 +383,7 @@ p, li { white-space: pre-wrap; }
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_8">
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="btn_set_origin">
               <property name="text">
                <string>Définir l'origine</string>
               </property>
@@ -402,7 +394,7 @@ p, li { white-space: pre-wrap; }
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="grp_plan">
+             <widget class="QGroupBox" name="grp_cmd">
               <property name="title">
                <string>Commande manuelle</string>
               </property>
@@ -504,7 +496,7 @@ Zéro</string>
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="groupBox_5">
+             <widget class="QGroupBox" name="grp_auto">
               <property name="title">
                <string>Commandes automatiques</string>
               </property>
@@ -561,7 +553,7 @@ Zéro</string>
                   <widget class="QComboBox" name="auto_cmd_type">
                    <item>
                     <property name="text">
-                     <string>aller(s)</string>
+                     <string>aller</string>
                     </property>
                    </item>
                    <item>
@@ -591,7 +583,7 @@ Zéro</string>
                 </layout>
                </item>
                <item>
-                <widget class="QPushButton" name="auto_cmd_run">
+                <widget class="QPushButton" name="btn_run_auto_cmd">
                  <property name="text">
                   <string>Envoyer</string>
                  </property>
@@ -965,11 +957,11 @@ Zéro</string>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>243</x>
+     <x>233</x>
      <y>432</y>
     </hint>
     <hint type="destinationlabel">
-     <x>335</x>
+     <x>325</x>
      <y>433</y>
     </hint>
    </hints>

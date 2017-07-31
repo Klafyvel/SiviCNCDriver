@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 import settings
 from settings import logger
 import gcode
-from serial_list import serial_ports
+from serial_management import serial_ports, SerialManager
 
 from .main_window import Ui_MainWindow
 
@@ -21,14 +21,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.list_serials()
         self.list_configs()
+        self.set_serial_mode("manual")
+
+        self.serial_manager = SerialManager(serial.Serial(), self.print)
+
         self.connectUi()
 
     def connectUi(self):
-        logger.info("Connectiong Ui.")
+        logger.debug("Connecting Ui.")
         self.btn_serial_ports_list.clicked.connect(self.list_serials)
 
+        self.btn_y_plus.pressed.connect(self.serial_manager.start_continuous_y_forward)
+        self.btn_y_minus.pressed.connect(self.serial_manager.start_continuous_y_backward)
+        self.btn_x_plus.pressed.connect(self.serial_manager.start_continuous_x_forward)
+        self.btn_x_minus.pressed.connect(self.serial_manager.start_continuous_x_backward)
+        self.btn_z_plus.pressed.connect(self.serial_manager.start_continuous_z_forward)
+        self.btn_z_minus.pressed.connect(self.serial_manager.start_continuous_z_backward)
+
+        self.btn_y_plus.released.connect(self.serial_manager.stop_continuous_y)
+        self.btn_y_minus.released.connect(self.serial_manager.stop_continuous_y)
+        self.btn_x_plus.released.connect(self.serial_manager.stop_continuous_x)
+        self.btn_x_minus.released.connect(self.serial_manager.stop_continuous_x)
+        self.btn_z_plus.released.connect(self.serial_manager.stop_continuous_z)
+        self.btn_z_minus.released.connect(self.serial_manager.stop_continuous_z)
+
+        self.btn_set_origin.clicked.connect(self.serial_manager.set_origin)
+        self.btn_go_to_zero.clicked.connect(self.serial_manager.goto_origin)
+
+        self.auto_cmd_type.currentIndexChanged.connect(self.manage_auto_cmd_number)
+
+        self.manage_auto_cmd_number(self.auto_cmd_type.currentIndex())
+
+
     def list_serials(self):
-        logger.info("Listing available serial ports.")
+        logger.debug("Listing available serial ports.")
         l = serial_ports()
         for i in range(self.serial_ports_list.count()):
             self.serial_ports_list.removeItem(0)
@@ -39,10 +65,45 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def list_configs(self):
         for _ in range(self.config_list.count()):
             self.config_list.removeItem(0)
-        logger.info("Listing available configurations.")
+        logger.debug("Listing available configurations.")
         config_dir = os.path.join(settings.APP_DIR, "configs", "")
         for f in os.listdir(config_dir):
             if f.endswith(".json"):
-                logger.info("Found {}".format(f))
+                logger.debug("Found {}".format(f))
                 self.config_list.addItem(f[:-5])
         self.config_list.addItem("Nouvelle configuration")
+
+    def set_serial_mode(self, mode):
+        """
+        Change serial mode.
+        mode can be "manual" or "file"
+        """
+        if mode == "manual":
+            logger.debug("Setting manual mode.")
+            self.btn_set_origin.setEnabled(True)
+            self.grp_cmd.setEnabled(True)
+            self.grp_auto.setEnabled(True)
+            # self.btn_y_plus.pressed.connect()
+        elif mode == "file":
+            logger.debug("Setting file mode.")
+            self.btn_set_origin.setEnabled(False)
+            self.grp_cmd.setEnabled(False)
+            self.grp_auto.setEnabled(False)
+
+    def print(self, txt, msg_type="operator"):
+        msg = "{}"
+        if msg_type == "operator":
+            msg = "\n<br /><span style='color:orange;'> <strong>&gt;&gt;&gt;</strong> {}</span>"
+        elif msg_type == "machine":
+            msg = "\n<br /><span style='color:yellow;'>{}</span>"
+        elif msg_type == "error":
+            msg = "\n<br /><span style='color:red;'><strong>{}</strong></span>"
+        self.serial_monitor.moveCursor(QTextCursor.End)
+        self.serial_monitor.insertHtml(msg.format(txt))
+        self.serial_monitor.moveCursor(QTextCursor.End)
+
+    # Slots
+    @pyqtSlot(int)
+    def manage_auto_cmd_number(self, n):
+        self.auto_cmd_number.setValue(1)
+        self.auto_cmd_number.setEnabled(n != 0)
