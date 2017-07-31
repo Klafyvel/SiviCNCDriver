@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = False
+DEBUG = True
 
 
 ## Logger stuff
@@ -31,4 +31,8 @@ else:
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-
+if DEBUG:
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
