@@ -49,6 +49,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_go_to_zero.clicked.connect(self.serial_manager.goto_origin)
 
         self.auto_cmd_type.currentIndexChanged.connect(self.manage_auto_cmd_number)
+        self.btn_run_auto_cmd.clicked.connect(self.auto_cmd)
 
         self.manage_auto_cmd_number(self.auto_cmd_type.currentIndex())
 
@@ -107,3 +108,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def manage_auto_cmd_number(self, n):
         self.auto_cmd_number.setValue(1)
         self.auto_cmd_number.setEnabled(n != 0)
+
+    @pyqtSlot()
+    def auto_cmd(self):
+        axis = self.auto_cmd_axis.currentText()
+        n = self.auto_cmd_number.value()
+        step = self.auto_cmd_step.value()
+        if self.auto_cmd_type.currentIndex() == 0:
+            self.serial_manager.auto_cmd(axis, step)
+        else:
+            self.serial_manager.auto_cmd(axis, step, "complex", n)

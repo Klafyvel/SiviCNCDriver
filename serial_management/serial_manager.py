@@ -117,11 +117,6 @@ class SerialManager(QObject):
         if move == "simple":
             self.step(axis, step)
         else:
-            self.serial.timeout = None
             for _ in range(n):
                 self.step(axis, step)
-                if not self.waitForConfirm():
-                    break
                 self.step(axis,-step)
-                if not self.waitForConfirm():
-                    break
