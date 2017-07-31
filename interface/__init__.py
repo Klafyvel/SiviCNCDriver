@@ -1,1 +1,4 @@
-from interface import MainWindow
+import sys
+import os
+
+from .interface import MainWindow

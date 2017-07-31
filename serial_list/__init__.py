@@ -1,1 +1,1 @@
-from serial_list import serial_port
+from .serial_list import serial_ports

@@ -2,4 +2,4 @@
 module for GCode parsing.
 """
 
-from gcodeParser import parse
+from .gcodeParser import parse
