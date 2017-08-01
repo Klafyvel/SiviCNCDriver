@@ -15,8 +15,8 @@ class SerialManager(QObject):
         self.is_open = self.serial.isOpen()
 
     def open(self, baudrate, serial_port):
-        logger.info("Opening {} with baudrate {}".format(serial_port, baudrate))
-        self.printer("Opening {} with baudrate {}".format(serial_port, baudrate), "info")
+        logger.info("Opening {} with baudrate {}".format(repr(serial_port), baudrate))
+        self.printer("Opening {} with baudrate {}".format(repr(serial_port), baudrate), "info")
         self.serial.port = serial_port
         self.serial.baudrate = baudrate
         try :
@@ -28,6 +28,11 @@ class SerialManager(QObject):
             self.printer("Could not open serial port.", "error")
             return False
         return True
+
+    def close(self):
+        logger.info("Closing serial port.")
+        self.printer("Closing serial port.", "info")
+        self.serial.close()
 
     def sendMsg(self, msg):
         if not self.fake_mode and not (self.serial and self.serial.isOpen()):

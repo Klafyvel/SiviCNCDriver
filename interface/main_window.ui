@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>SiviCNCDriver</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>rc/siviIcon.png</normaloff>rc/siviIcon.png</iconset>
+  </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
   </property>
@@ -571,7 +575,14 @@ Zéro</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QSpinBox" name="auto_cmd_step"/>
+                  <widget class="QSpinBox" name="auto_cmd_step">
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>1000</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
                   <widget class="QLabel" name="label_10">
