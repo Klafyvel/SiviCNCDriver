@@ -12,6 +12,22 @@ class SerialManager(QObject):
         self.serial = serial
         self.printer = printer
         self.fake_mode = fake_mode
+        self.is_open = self.serial.isOpen()
+
+    def open(self, baudrate, serial_port):
+        logger.info("Opening {} with baudrate {}".format(serial_port, baudrate))
+        self.printer("Opening {} with baudrate {}".format(serial_port, baudrate), "info")
+        self.serial.port = serial_port
+        self.serial.baudrate = baudrate
+        try :
+            self.serial.open()
+            self.is_open = True
+        except serial.serialutil.SerialException:
+            self.is_open = False
+            logger.error("Could not open serial port.")
+            self.printer("Could not open serial port.", "error")
+            return False
+        return True
 
     def sendMsg(self, msg):
         if not self.fake_mode and not (self.serial and self.serial.isOpen()):
@@ -125,3 +141,27 @@ class SerialManager(QObject):
             for _ in range(n):
                 self.step(axis, step)
                 self.step(axis,-step)
+
+    @pyqtSlot(dict)
+    def send_config(self, d):
+        self.sendMsg("S4 X{x_ratio} Y{y_ratio} Z{z_ratio}".format(**d))
+        self.waitForConfirm()
+
+        drive = [5, 6, 7]
+        self.sendMsg("S{} X".format(drive[d["x_drive"]]))
+        self.waitForConfirm()
+        self.sendMsg("S{} Y".format(drive[d["y_drive"]]))
+        self.waitForConfirm()
+        self.sendMsg("S{} Z".format(drive[d["z_drive"]]))
+        self.waitForConfirm()
+
+        self.sendMsg("S8 X{x_play} Y{y_play} Z{z_play}".format(**d))
+        self.waitForConfirm()
+
+        reverse = {True:9, False:10}
+        self.sendMsg("S{} X".format(reverse[d["x_reverse"]]))
+        self.waitForConfirm()
+        self.sendMsg("S{} Y".format(reverse[d["y_reverse"]]))
+        self.waitForConfirm()
+        self.sendMsg("S{} Z".format(reverse[d["z_reverse"]]))
+        self.waitForConfirm()
