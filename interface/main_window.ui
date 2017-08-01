@@ -69,95 +69,214 @@
          </layout>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_preprocessor">
-          <property name="text">
-           <string>Utiliser le préprocesseur sur le fichier</string>
-          </property>
-          <property name="icon">
-           <iconset>
-            <normaloff>rc/work.png</normaloff>rc/work.png</iconset>
-          </property>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QPushButton" name="redraw">
+             <property name="text">
+              <string>Redessiner</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>rc/writing.png</normaloff>rc/writing.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_preprocessor">
+             <property name="text">
+              <string>Utiliser le préprocesseur sur le fichier</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>rc/work.png</normaloff>rc/work.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_save_as">
+             <property name="text">
+              <string>Enregister sous...</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_save_file">
+             <property name="text">
+              <string>Enregistrer</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
         <item>
          <widget class="QWidget" name="widget_2" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QWidget" name="widget" native="true">
-             <layout class="QVBoxLayout" name="verticalLayout_5">
+            <widget class="QGroupBox" name="groupBox_5">
+             <property name="title">
+              <string>Dessin</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout">
               <item>
-               <widget class="QGraphicsView" name="fileview">
-                <property name="sizeAdjustPolicy">
-                 <enum>QAbstractScrollArea::AdjustToContents</enum>
-                </property>
-                <property name="dragMode">
-                 <enum>QGraphicsView::ScrollHandDrag</enum>
+               <layout class="QFormLayout" name="formLayout_4">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="afficherLesAxesLabel">
+                  <property name="text">
+                   <string>Afficher les axes</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QCheckBox" name="display_axis"/>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="afficherLesTapesLabel">
+                  <property name="text">
+                   <string>Afficher les étapes</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QCheckBox" name="display_draw_steps"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="afficherLaBoTeDeDLimitationLabel">
+                  <property name="text">
+                   <string>Afficher la boîte de délimitation</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QCheckBox" name="display_bounding_box"/>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="inverserLAxeXLabel">
+                  <property name="text">
+                   <string>Inverser l'axe X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QCheckBox" name="reverse_display_x"/>
+                </item>
+                <item row="4" column="0">
+                 <widget class="QLabel" name="inverserLAxeYLabel">
+                  <property name="text">
+                   <string>Inverser l'axe Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="1">
+                 <widget class="QCheckBox" name="reverse_display_y"/>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="inverserLAxeZLabel">
+                  <property name="text">
+                   <string>Inverser l'axe Z</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QCheckBox" name="reverse_display_z"/>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="Line" name="line">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="widget_5" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_8">
-                 <item>
-                  <widget class="QCheckBox" name="display_draw_steps">
-                   <property name="text">
-                    <string>Afficher les étapes</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="redraw">
-                   <property name="text">
-                    <string>Redessiner</string>
-                   </property>
-                   <property name="icon">
-                    <iconset>
-                     <normaloff>rc/writing.png</normaloff>rc/writing.png</iconset>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
+               <layout class="QFormLayout" name="formLayout_5">
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_5">
+                  <property name="text">
+                   <string>Développement selon X</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLCDNumber" name="space_x">
+                  <property name="styleSheet">
+                   <string notr="true">color:DarkOrange;</string>
+                  </property>
+                  <property name="segmentStyle">
+                   <enum>QLCDNumber::Flat</enum>
+                  </property>
+                  <property name="value" stdset="0">
+                   <double>0.000000000000000</double>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>Développement selon Y</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QLCDNumber" name="space_y">
+                  <property name="styleSheet">
+                   <string notr="true">color:DarkOrange;</string>
+                  </property>
+                  <property name="lineWidth">
+                   <number>1</number>
+                  </property>
+                  <property name="segmentStyle">
+                   <enum>QLCDNumber::Flat</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_12">
+                  <property name="text">
+                   <string>Développement selon Z</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLCDNumber" name="space_z">
+                  <property name="styleSheet">
+                   <string notr="true">color:DarkOrange;</string>
+                  </property>
+                  <property name="smallDecimalPoint">
+                   <bool>false</bool>
+                  </property>
+                  <property name="segmentStyle">
+                   <enum>QLCDNumber::Flat</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_3" native="true">
-             <layout class="QVBoxLayout" name="verticalLayout">
-              <item>
-               <widget class="QTextEdit" name="code_edit"/>
-              </item>
-              <item>
-               <widget class="QWidget" name="widget_4" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_7">
-                 <item>
-                  <widget class="QPushButton" name="btn_save_file">
-                   <property name="text">
-                    <string>Enregistrer</string>
-                   </property>
-                   <property name="icon">
-                    <iconset>
-                     <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btn_save_as">
-                   <property name="text">
-                    <string>Enregister sous...</string>
-                   </property>
-                   <property name="icon">
-                    <iconset>
-                     <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
+            <widget class="QGraphicsView" name="fileview">
+             <property name="sizeAdjustPolicy">
+              <enum>QAbstractScrollArea::AdjustToContents</enum>
+             </property>
+             <property name="dragMode">
+              <enum>QGraphicsView::ScrollHandDrag</enum>
+             </property>
             </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="code_edit"/>
            </item>
           </layout>
          </widget>

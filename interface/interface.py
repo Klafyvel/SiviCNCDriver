@@ -1,6 +1,7 @@
 import serial
 from math import asin, acos, sqrt, pi
 import os
+from pathlib import Path
 import json
 
 from PyQt5.QtCore import *
@@ -9,7 +10,7 @@ from PyQt5.QtWidgets import *
 
 import settings
 from settings import logger
-import gcode
+from gcode import parse
 from serial_list import serial_ports
 from serial_manager import SerialManager
 
@@ -33,6 +34,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         s = """Welcome to SiviCNCDriver, by Klafyvel from sivigik.com"""
         self.print(s, msg_type="info")
+
+        self.sc = QGraphicsScene(self.fileview)
 
         self.connectUi()
         self.update_config(self.config_list.currentIndex())
@@ -83,6 +86,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_send_config.clicked.connect(self.send_config)
 
         self.btn_connect.clicked.connect(self.manage_connection)
+
+        self.btn_file.clicked.connect(self.choose_file)
+        self.btn_reload.clicked.connect(self.load_file)
+        self.btn_save_file.clicked.connect(self.save_file)
+        self.btn_save_as.clicked.connect(self.save_file_as)
+        self.redraw.clicked.connect(self.draw_file)
 
     def list_serials(self):
         logger.debug("Listing available serial ports.")
@@ -296,3 +305,125 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.serial_ports_list.setEnabled(False)
                 self.btn_serial_ports_list.setEnabled(False)
                 self.btn_connect.setText("Déconnecter")
+
+    @pyqtSlot()
+    def choose_file(self):
+        file = QFileDialog.getOpenFileName(
+            self, "Sélectionner un fichier",
+            directory=str(Path.home()),
+            filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
+
+        if file is not '':
+            self.filename.setText(file)
+            self.load_file()
+
+    @pyqtSlot()
+    def load_file(self):
+        file = self.filename.text()
+        try:
+            logger.info("Loading {}".format(repr(file)))
+            with open(file) as f:
+                self.code_edit.setText(f.read())
+            self.draw_file()
+        except FileNotFoundError:
+            self.choose_file()
+
+    @pyqtSlot()
+    def save_file_as(self):
+        file = QFileDialog.getSaveFileName(
+            self, "Sélectionner un fichier",
+            directory=str(Path.home()),
+            filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
+        if file is not '':
+            logger.info("Saving {}".format(repr(file)))
+            self.filename.setText(file)
+            with open(file, 'w') as f:
+                f.write(self.code_edit.toPlainText())
+
+    @pyqtSlot()
+    def save_file(self):
+        file = self.filename.text()
+        if file == 'Pas de fichier':
+            self.save_file_as()
+        else:
+            logger.info("Saving {}".format(repr(file)))
+            with open(file, 'w') as f:
+                f.write(self.code_edit.toPlainText())
+
+    @pyqtSlot()
+    def draw_file(self):
+        gcode = self.code_edit.toPlainText()
+        self.sc.clear()
+        current_pos = [0, 0, 0]
+        for n, t in enumerate(parse(gcode)):
+            if t['name'] is not 'G':
+                continue
+
+            x, y, z = current_pos
+
+            if self.display_draw_steps.isChecked():
+                txt = self.sc.addText(str(n))
+                txt.setPos(x, y)
+                txt.setFlags(QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemIsMovable |
+                             QGraphicsItem.ItemIsSelectable | txt.flags())
+
+            x = t['args'].get('X', x)
+            y = t['args'].get('Y', y)
+            z = t['args'].get('Z', z)
+
+            p = QPen(QColor((z <= 0) * 255, 0, (z > 0) * 255))
+
+            if t['value'] in (0, 1):
+                self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
+            elif t['value'] in (2, 3):
+                i, j, k, = current_pos
+                i = t['args'].get('I', i)
+                j = t['args'].get('J', j)
+                k = t['args'].get('K', k)
+
+                pp = QPainterPath()
+
+                h = sqrt(i**2 + j**2)
+                if h == 0:
+                    current_pos = x, y, z
+                    continue
+
+                center_x = current_pos[0] + i
+                center_y = current_pos[1] + j
+
+                clockwise = (t['value'] == 2)
+
+                direction_end = -1
+                direction_begin = -1
+                if y - center_y != 0:
+                    direction_end = -(y - center_y) / abs(y - center_y)
+                if current_pos[1] - center_y != 0:
+                    direction_begin = - \
+                        (current_pos[1] - center_y) / \
+                        abs(current_pos[1] - center_y)
+
+                c = (current_pos[0] - center_x) / h
+                if c < -1:
+                    c = -1
+                elif c > 1:
+                    c = 1
+                start_angle = direction_begin * acos(c) / 2 / pi * 360
+
+                c = (x - center_x) / h
+                if c < -1:
+                    c = -1
+                elif c > 1:
+                    c = 1
+                end_angle = direction_end * acos(c) / 2 / pi * 360
+
+                pp.moveTo(current_pos[0], current_pos[1])
+                if clockwise:
+                    pp.arcTo(center_x - h, center_y - h, h * 2, h *
+                             2, start_angle, start_angle - end_angle)
+                else:
+                    pp.arcTo(center_x - h, center_y - h, h * 2, h *
+                             2, start_angle, end_angle - start_angle)
+                self.sc.addPath(pp, p)
+            current_pos = x, y, z
+
+        self.fileview.setScene(self.sc)
