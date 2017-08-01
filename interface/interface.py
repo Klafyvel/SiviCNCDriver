@@ -50,8 +50,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.auto_cmd_type.currentIndexChanged.connect(self.manage_auto_cmd_number)
         self.btn_run_auto_cmd.clicked.connect(self.auto_cmd)
-
         self.manage_auto_cmd_number(self.auto_cmd_type.currentIndex())
+
+        self.chk_fake_serial.stateChanged.connect(self.manage_emulate_serial_port)
 
 
     def list_serials(self):
@@ -118,3 +119,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.serial_manager.auto_cmd(axis, step)
         else:
             self.serial_manager.auto_cmd(axis, step, "complex", n)
+
+    @pyqtSlot(int)
+    def manage_emulate_serial_port(self, s):
+        st = bool(s)
+        self.serial_manager.fake_mode = st
+        self.baudrate.setEnabled(not st)
+        self.serial_ports_list.setEnabled(not st)
+        self.btn_serial_ports_list.setEnabled(not st)
