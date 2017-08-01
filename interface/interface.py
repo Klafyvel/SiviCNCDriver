@@ -1,7 +1,6 @@
 import serial
 from math import asin, acos, sqrt, pi
 import os
-from pathlib import Path
 import json
 
 from PyQt5.QtCore import *
@@ -19,6 +18,30 @@ from .main_window import Ui_MainWindow
 __all__ = ['MainWindow']
 
 
+class SendFileThread(QThread):
+    update_progress = pyqtSignal(int)
+
+    def __init__(self, serial_manager, gcode):
+        QThread.__init__(self)
+        self.gcode = gcode
+        self.serial_manager = serial_manager
+        self.user_stop = False
+
+    def __del__(self):
+        self.wait()
+
+    @pyqtSlot()
+    def stop(self):
+        self.user_stop = True
+
+    def run(self):
+        for n, l in enumerate(self.gcode):
+            self.serial_manager.sendMsg(l)
+            self.update_progress.emit(n)
+            if not self.serial_manager.waitForConfirm() or self.user_stop:
+                break
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self):
@@ -29,8 +52,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.set_serial_mode("manual")
 
-        self.serial_manager = SerialManager(
-            serial.Serial(timeout=0), self.print)
+        self.serial_manager = SerialManager(serial.Serial(timeout=0))
 
         s = """Welcome to SiviCNCDriver, by Klafyvel from sivigik.com"""
         self.print(s, msg_type="info")
@@ -93,6 +115,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_save_as.clicked.connect(self.save_file_as)
         self.redraw.clicked.connect(self.draw_file)
 
+        self.serial_manager.send_print.connect(self.print)
+
     def list_serials(self):
         logger.debug("Listing available serial ports.")
         l = serial_ports()
@@ -130,20 +154,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.grp_cmd.setEnabled(False)
             self.grp_auto.setEnabled(False)
 
-    def print(self, txt, msg_type="operator"):
-        msg = "{}"
-        if msg_type == "operator":
-            msg = "\n<br /><span style='color:orange;'> <strong>&gt;&gt;&gt;</strong> {}</span>"
-        elif msg_type == "machine":
-            msg = "\n<br /><span style='color:yellow;'>{}</span>"
-        elif msg_type == "error":
-            msg = "\n<br /><span style='color:red;'><strong>{}</strong></span>"
-        elif msg_type == "info":
-            msg = "\n<br /><span style='color:DarkOrange;'><strong>{}</strong></span>"
-        self.serial_monitor.moveCursor(QTextCursor.End)
-        self.serial_monitor.insertHtml(msg.format(txt))
-        self.serial_monitor.moveCursor(QTextCursor.End)
-
     def reset_config(self):
         self.drive_x.setCurrentIndex(0)
         self.drive_y.setCurrentIndex(0)
@@ -165,21 +175,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def config_as_dict(self):
         return {
-            "x_drive" : self.drive_x.currentIndex(),
-            "x_ratio" : self.ratio_x.value(),
-            "x_play" : self.play_x.value(),
-            "x_reverse" : bool(self.reverse_x.checkState()),
-            "y_drive" : self.drive_y.currentIndex(),
-            "y_ratio" : self.ratio_y.value(),
-            "y_play" : self.play_y.value(),
-            "y_reverse" : bool(self.reverse_y.checkState()),
-            "z_drive" : self.drive_z.currentIndex(),
-            "z_ratio" : self.ratio_z.value(),
-            "z_play" : self.play_z.value(),
-            "z_reverse" : bool(self.reverse_z.checkState()),
+            "x_drive": self.drive_x.currentIndex(),
+            "x_ratio": self.ratio_x.value(),
+            "x_play": self.play_x.value(),
+            "x_reverse": bool(self.reverse_x.checkState()),
+            "y_drive": self.drive_y.currentIndex(),
+            "y_ratio": self.ratio_y.value(),
+            "y_play": self.play_y.value(),
+            "y_reverse": bool(self.reverse_y.checkState()),
+            "z_drive": self.drive_z.currentIndex(),
+            "z_ratio": self.ratio_z.value(),
+            "z_play": self.play_z.value(),
+            "z_reverse": bool(self.reverse_z.checkState()),
         }
 
     # Slots
+    @pyqtSlot(str, str)
+    def print(self, txt, msg_type="operator"):
+        msg = "{}"
+        if msg_type == "operator":
+            msg = "\n<br /><span style='color:orange;'> <strong>&gt;&gt;&gt;</strong> {}</span>"
+        elif msg_type == "machine":
+            msg = "\n<br /><span style='color:yellow;'>{}</span>"
+        elif msg_type == "error":
+            msg = "\n<br /><span style='color:red;'><strong>{}</strong></span>"
+        elif msg_type == "info":
+            msg = "\n<br /><span style='color:DarkOrange;'><strong>{}</strong></span>"
+        self.serial_monitor.moveCursor(QTextCursor.End)
+        self.serial_monitor.insertHtml(msg.format(txt))
+        self.serial_monitor.moveCursor(QTextCursor.End)
+
     @pyqtSlot(int)
     def manage_auto_cmd_number(self, n):
         self.auto_cmd_number.setValue(1)
@@ -211,11 +236,39 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def send_file(self):
+        logger.info("Sending file.")
+        self.print("Sending file.", "info")
         gcode = self.code_edit.toPlainText().split('\n')
-        for l in gcode:
-            self.serial_manager.sendMsg(l)
-            if not self.serial_manager.waitForConfirm():
-                break
+        self.send_thread = SendFileThread(self.serial_manager, gcode)
+
+        self.sending_progress.setMaximum(len(gcode))
+        self.sending_progress.setValue(0)
+        self.btn_send_current_file.setText("Annuler l'envoi")
+        self.btn_send_current_file.clicked.disconnect()
+        self.btn_send_current_file.clicked.connect(self.send_thread.stop)
+        self.tabWidget.setEnabled(False)
+
+        self.send_thread.finished.connect(self.file_sent)
+        self.send_thread.update_progress.connect(self.update_progress)
+        self.send_thread.start()
+
+    @pyqtSlot(int)
+    def update_progress(self, s):
+        self.sending_progress.setValue(s)
+
+    @pyqtSlot()
+    def file_sent(self):
+        if self.send_thread.user_stop:
+            self.print("Stopped by user.", "error")
+            logger.error("File sending stopped by user.")
+        else:
+            self.print("Done.", "info")
+            logger.info("File sent.")
+        self.sending_progress.setValue(0)
+        self.btn_send_current_file.setText("Envoyer le fichier courrant")
+        self.btn_send_current_file.clicked.disconnect()
+        self.btn_send_current_file.clicked.connect(self.send_file)
+        self.tabWidget.setEnabled(True)
 
     @pyqtSlot()
     def send_cmd(self):
@@ -226,7 +279,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot(int)
     def update_config(self, i):
         nb_config = self.config_list.count()
-        if i==nb_config-1:
+        if i == nb_config-1:
             self.reset_config()
         else:
             file = self.config_list.currentText() + ".json"
@@ -271,10 +324,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def save_config_as(self):
-        directory = os.path.join(settings.APP_DIR, "configs", "")
         f = QFileDialog.getSaveFileName(
             self, "Sélectionner un fichier",
-            directory=directory,
+            directory=settings.CONFIG_DIR,
             filter='JSON files (*.json)\nAll files (*)')[0]
         if f is not '':
             if not f.endswith(".json"):
@@ -291,13 +343,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def manage_connection(self):
-        if self.serial_manager.is_open :
+        if self.serial_manager.is_open:
             self.baudrate.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
             self.btn_serial_ports_list.setEnabled(True)
             self.btn_connect.setText("Connecter")
             self.serial_manager.close()
-        else :
+        else:
             port = self.serial_ports_list.currentText()
             baudrate = int(self.baudrate.currentText())
             if self.serial_manager.open(baudrate, port):
@@ -310,7 +362,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def choose_file(self):
         file = QFileDialog.getOpenFileName(
             self, "Sélectionner un fichier",
-            directory=str(Path.home()),
+            directory=settings.FILE_DIR,
             filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
 
         if file is not '':
@@ -332,7 +384,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_file_as(self):
         file = QFileDialog.getSaveFileName(
             self, "Sélectionner un fichier",
-            directory=str(Path.home()),
+            directory=settings.FILE_DIR,
             filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
         if file is not '':
             logger.info("Saving {}".format(repr(file)))

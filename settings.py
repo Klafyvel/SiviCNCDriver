@@ -1,13 +1,21 @@
 import os
 import sys
 import logging
+from pathlib import Path
  
 from logging.handlers import RotatingFileHandler
 
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = True
+DEBUG = False
+
+CONFIG_DIR = os.path.join(APP_DIR, "configs", "")
+
+if DEBUG:
+    FILE_DIR = APP_DIR
+else:
+    FILE_DIR = str(Path.home())
 
 
 ## Logger stuff

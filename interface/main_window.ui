@@ -365,6 +365,13 @@ p, li { white-space: pre-wrap; }
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="QProgressBar" name="sending_progress">
+             <property name="value">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
