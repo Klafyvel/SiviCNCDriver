@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 import sivi_cnc_driver
-
+print(find_packages())
 setup(name='SiviCNCDriver',
       version=sivi_cnc_driver.__version__,
       description='A software to control my CNC',
@@ -22,10 +22,6 @@ setup(name='SiviCNCDriver',
         'Programming Language :: Python :: 3',
         'Topic :: Utilities',
       ],
-      entry_points = {
-        'console_scripts': [
-                'siviCNC = sivi_cnc_driver.sivi_cnc_driver:main',
-        ],
-      },
+      scripts=['bin/cnc'],
       # zip_safe=False
       )

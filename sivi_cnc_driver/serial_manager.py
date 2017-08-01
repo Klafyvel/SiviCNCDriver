@@ -3,7 +3,7 @@ import time
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 
-from settings import logger
+from sivi_cnc_driver.settings import logger
 
 __all__ = ["SerialManager"]
 

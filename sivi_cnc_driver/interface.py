@@ -8,11 +8,11 @@ from PyQt5.QtGui import *
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 
-import settings
-from settings import logger
-from gcode import parse
-from serial_list import serial_ports
-from serial_manager import SerialManager
+from . import settings
+from .settings import logger
+from .gcode import parse
+from .serial_list import serial_ports
+from .serial_manager import SerialManager
 
 from .main_window import Ui_MainWindow
 

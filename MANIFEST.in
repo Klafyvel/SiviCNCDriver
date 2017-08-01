@@ -1,2 +1,3 @@
 include *.md
 recursive-include rc *.png
+recursive-include configs example.json
