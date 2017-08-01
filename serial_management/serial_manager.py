@@ -7,7 +7,7 @@ from settings import logger
 __all__ = ["SerialManager"]
 
 class SerialManager(QObject):
-    def __init__(self, serial, printer, fake_mode=True):
+    def __init__(self, serial, printer, fake_mode=False):
         super(SerialManager, self).__init__()
         self.serial = serial
         self.printer = printer
@@ -15,7 +15,7 @@ class SerialManager(QObject):
 
     def sendMsg(self, msg):
         if not self.fake_mode and not (self.serial and self.serial.isOpen()):
-            self.printer("Error, no serial port.")
+            self.printer("Error, no serial port to write.", "error")
             logger.error("Serial manager has no serial opened to send data.")
         elif self.fake_mode:
             self.printer(msg)
@@ -30,6 +30,11 @@ class SerialManager(QObject):
             logger.info("Received {}".format(repr("ok")))
             self.printer("ok", "machine")
             return True
+        elif not (self.serial and self.serial.isOpen()):
+            self.printer("Error, no serial port to read.", "error")
+            logger.error("Serial manager has no serial opened to read data.")
+            return False
+
         txt = self.serial.readline().decode('ascii').lower()
         if not "ok" in txt:
             logger.error("Machine could not perform task.")
