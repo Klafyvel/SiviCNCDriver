@@ -25,6 +25,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.serial_manager = SerialManager(serial.Serial(), self.print)
 
+        s = """Welcome to SiviCNCDriver, by Klafyvel from sivigik.com"""
+        self.print(s, msg_type="info")
+
         self.connectUi()
 
     def connectUi(self):
@@ -100,6 +103,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             msg = "\n<br /><span style='color:yellow;'>{}</span>"
         elif msg_type == "error":
             msg = "\n<br /><span style='color:red;'><strong>{}</strong></span>"
+        elif msg_type == "info":
+            msg = "\n<br /><span style='color:DarkOrange;'><strong>{}</strong></span>"
         self.serial_monitor.moveCursor(QTextCursor.End)
         self.serial_monitor.insertHtml(msg.format(txt))
         self.serial_monitor.moveCursor(QTextCursor.End)
@@ -127,3 +132,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.baudrate.setEnabled(not st)
         self.serial_ports_list.setEnabled(not st)
         self.btn_serial_ports_list.setEnabled(not st)
+        self.btn_connect.setEnabled(not st)
+        if st:
+            self.tabWidget.setCurrentIndex(1)
+            self.print("Emulating serial port.", "info")
+        else:
+            self.print("Exiting serial port emulation.", "info")
