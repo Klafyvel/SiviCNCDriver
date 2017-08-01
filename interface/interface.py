@@ -9,7 +9,8 @@ from PyQt5.QtWidgets import *
 import settings
 from settings import logger
 import gcode
-from serial_management import serial_ports, SerialManager
+from serial_list import serial_ports
+from serial_manager import SerialManager
 
 from .main_window import Ui_MainWindow
 
@@ -23,7 +24,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.list_configs()
         self.set_serial_mode("manual")
 
-        self.serial_manager = SerialManager(serial.Serial(), self.print)
+        self.serial_manager = SerialManager(serial.Serial(timeout=0), self.print)
 
         s = """Welcome to SiviCNCDriver, by Klafyvel from sivigik.com"""
         self.print(s, msg_type="info")
@@ -138,3 +139,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.print("Emulating serial port.", "info")
         else:
             self.print("Exiting serial port emulation.", "info")
+
+    @pyqtSlot()
+    def send_file(self):
+        gcode = self.code_edit.toPlainText().split('\n')
+        for l in gcode:
+            self.serial_manager.sendMsg(l)
+            if not self.serial_manager.waitForConfirm():
+                break
