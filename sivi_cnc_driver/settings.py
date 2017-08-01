@@ -17,6 +17,7 @@ if DEBUG:
 else:
     FILE_DIR = str(Path.home())
 
+RC_DIR = os.path.join(APP_DIR, "rc")
 
 ## Logger stuff
 logger = logging.getLogger()
