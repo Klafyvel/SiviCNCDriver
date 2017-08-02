@@ -503,6 +503,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         gcode = self.code_edit.toPlainText()
         self.sc.clear()
         current_pos = [0, 0, 0]
+        min_x, max_x, min_y, max_y, min_z, max_z = 0,0,0,0,0,0
         for n, t in enumerate(parse(gcode)):
             if t['name'] is not 'G':
                 continue
@@ -573,6 +574,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                              2, start_angle, end_angle - start_angle)
                 self.sc.addPath(pp, p)
             current_pos = x, y, z
+
+            min_x = min(min_x, current_pos[0])
+            max_x = max(max_x, current_pos[0])
+            min_y = min(min_y, current_pos[1])
+            max_y = max(max_y, current_pos[1])
+            min_z = min(min_z, current_pos[2])
+            max_z = max(max_z, current_pos[2])
+            
+
+        self.space_x.display(max_x-min_x)
+        self.space_y.display(max_y-min_y)
+        self.space_z.display(max_z-min_z)
+
+        if self.display_bounding_box.isChecked():
+            p = QPen(QColor(0,255,0))
+            self.sc.addRect(min_x, min_y, max_x-min_x, max_y-min_y, p)
+            txt1 = self.sc.addText(str(max_x-min_x))
+            txt1.setPos((min_x+max_x)/2, max_y)
+            txt2 = self.sc.addText(str(max_y-min_y))
+            txt2.setPos(max_x, (min_y+max_y)/2)
 
         self.fileview.setScene(self.sc)
 
