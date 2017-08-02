@@ -13,6 +13,7 @@ from .settings import logger
 from .gcode import parse
 from .serial_list import serial_ports
 from .serial_manager import SerialManager
+from .preprocessor import PreprocessorDialog
 
 from .main_window import Ui_MainWindow
 
@@ -190,6 +191,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.redraw.clicked.connect(self.draw_file)
 
         self.serial_manager.send_print.connect(self.print)
+
+        self.btn_preprocessor.clicked.connect(self.run_preprocessor)
+
+        self.display_axis.clicked.connect(self.draw_file)
+        self.display_draw_steps.clicked.connect(self.draw_file)
+        self.display_bounding_box.clicked.connect(self.draw_file)
+        self.reverse_display_x.clicked.connect(self.draw_file)
+        self.reverse_display_y.clicked.connect(self.draw_file)
+        self.reverse_display_z.clicked.connect(self.draw_file)
 
     def list_serials(self):
         logger.debug("Listing available serial ports.")
@@ -553,3 +563,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             current_pos = x, y, z
 
         self.fileview.setScene(self.sc)
+
+    @pyqtSlot()
+    def run_preprocessor(self):
+        self.preprocessor = PreprocessorDialog(self.code_edit.toPlainText())
+        self.preprocessor.accepted.connect(self.end_preprocessor)
+        self.preprocessor.show()
+
+    @pyqtSlot()
+    def end_preprocessor(self):
+        self.code_edit.setText(self.preprocessor.gcode)
+        self.preprocessor.accepted.disconnect()
+        self.draw_file()

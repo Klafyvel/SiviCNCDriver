@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>690</width>
-    <height>296</height>
+    <width>613</width>
+    <height>298</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,6 +73,13 @@
               </property>
              </widget>
             </item>
+            <item>
+             <widget class="QCheckBox" name="chk_optimize_bounding_box">
+              <property name="text">
+               <string>Minimiser l'aire d'encadrement</string>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
          </item>
@@ -80,6 +87,10 @@
           <widget class="QPushButton" name="btn_run_preproc">
            <property name="text">
             <string>Lancer le préprocesseur</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>rc/work.png</normaloff>rc/work.png</iconset>
            </property>
           </widget>
          </item>

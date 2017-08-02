@@ -124,7 +124,7 @@
            <item>
             <widget class="QGroupBox" name="groupBox_5">
              <property name="title">
-              <string>Dessin</string>
+              <string>Affichage</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
               <item>
@@ -162,7 +162,7 @@
                 <item row="3" column="0">
                  <widget class="QLabel" name="inverserLAxeXLabel">
                   <property name="text">
-                   <string>Inverser l'axe X</string>
+                   <string>Retourner l'axe X</string>
                   </property>
                  </widget>
                 </item>
@@ -172,7 +172,7 @@
                 <item row="4" column="0">
                  <widget class="QLabel" name="inverserLAxeYLabel">
                   <property name="text">
-                   <string>Inverser l'axe Y</string>
+                   <string>Retourner l'axe Y</string>
                   </property>
                  </widget>
                 </item>
@@ -182,7 +182,7 @@
                 <item row="5" column="0">
                  <widget class="QLabel" name="inverserLAxeZLabel">
                   <property name="text">
-                   <string>Inverser l'axe Z</string>
+                   <string>Retourner l'axe Z</string>
                   </property>
                  </widget>
                 </item>

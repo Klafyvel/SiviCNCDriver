@@ -18,9 +18,9 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from preprocessor_interface import Ui_dialog
+from .preprocessor_window import Ui_dialog
 
-from gcodeParser import parse_instr
+from .gcode import parse
 
 
 class PreprocessorDialog(QDialog, Ui_dialog):
@@ -45,7 +45,7 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         rm_nums = self.chk_del_num.isChecked()
         rm_comm = self.chk_del_comments.isChecked()
         r = ''
-        for i in parse_instr(self.gcode):
+        for i in parse(self.gcode):
             if 'M' in i['name'] or 'G' in i['name']:
                 if not rm_nums and 'N' in i['args']:
                     r += 'N' + str(int(i['args']['N'])) + ' '
