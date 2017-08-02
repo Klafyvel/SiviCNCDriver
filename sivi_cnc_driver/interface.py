@@ -64,6 +64,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connectUi()
         self.update_config(self.config_list.currentIndex())
 
+        self.file_loaded = False
+
     def attach_icons(self):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "siviIcon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -444,9 +446,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def choose_file(self):
+        if not self.file_loaded:
+            directory = settings.FILE_DIR
+        else:
+            directory = os.path.dirname(self.filename.text())
         file = QFileDialog.getOpenFileName(
             self, "Sélectionner un fichier",
-            directory=settings.FILE_DIR,
+            directory=directory,
             filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
 
         if file is not '':
@@ -461,27 +467,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             with open(file) as f:
                 self.code_edit.setText(f.read())
             self.draw_file()
+            self.file_loaded = True
         except FileNotFoundError:
             self.choose_file()
 
     @pyqtSlot()
     def save_file_as(self):
+        if not self.file_loaded:
+            directory = settings.FILE_DIR
+        else:
+            directory = os.path.dirname(self.filename.text())
         file = QFileDialog.getSaveFileName(
             self, "Sélectionner un fichier",
-            directory=settings.FILE_DIR,
+            directory=directory,
             filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
         if file is not '':
             logger.info("Saving {}".format(repr(file)))
             self.filename.setText(file)
             with open(file, 'w') as f:
                 f.write(self.code_edit.toPlainText())
+            self.file_loaded = True
 
     @pyqtSlot()
     def save_file(self):
-        file = self.filename.text()
-        if file == 'Pas de fichier':
+        if not self.file_loaded:
             self.save_file_as()
         else:
+            file = self.filename.text()
             logger.info("Saving {}".format(repr(file)))
             with open(file, 'w') as f:
                 f.write(self.code_edit.toPlainText())
