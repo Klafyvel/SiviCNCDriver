@@ -1,5 +1,5 @@
 import serial
-from math import asin, acos, sqrt, pi
+from math import atan2, sqrt, pi
 import os
 import json
 
@@ -14,6 +14,7 @@ from .gcode import parse
 from .serial_list import serial_ports
 from .serial_manager import SerialManager
 from .preprocessor import PreprocessorDialog
+from .arc_calculator import arc_to_segments
 
 from .main_window import Ui_MainWindow
 
@@ -504,6 +505,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sc.clear()
         current_pos = [0, 0, 0]
         min_x, max_x, min_y, max_y, min_z, max_z = 0,0,0,0,0,0
+
+        reverse_x = self.reverse_display_x.isChecked()
+        reverse_y = self.reverse_display_y.isChecked()
+        reverse_z = self.reverse_display_z.isChecked()
+
         for n, t in enumerate(parse(gcode)):
             if t['name'] is not 'G':
                 continue
@@ -516,9 +522,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 txt.setFlags(QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemIsMovable |
                              QGraphicsItem.ItemIsSelectable | txt.flags())
 
-            x = t['args'].get('X', x)
-            y = t['args'].get('Y', y)
-            z = t['args'].get('Z', z)
+            x = -t['args'].get('X', -x) if reverse_x else t['args'].get('X', x)
+            y = -t['args'].get('Y', -y) if reverse_y else t['args'].get('Y', y)
+            z = -t['args'].get('Z', -z) if reverse_z else t['args'].get('Z', z)
 
             p = QPen(QColor((z <= 0) * 255, 0, (z > 0) * 255))
 
@@ -526,53 +532,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
             elif t['value'] in (2, 3):
                 i, j, k, = current_pos
-                i = t['args'].get('I', i)
-                j = t['args'].get('J', j)
-                k = t['args'].get('K', k)
+                i = -t['args'].get('I', 0) if reverse_x else t['args'].get('I', 0)
+                j = -t['args'].get('J', 0) if reverse_y else t['args'].get('J', 0)
+                k = -t['args'].get('K', 0) if reverse_z else t['args'].get('K', 0)
 
-                pp = QPainterPath()
-
-                h = sqrt(i**2 + j**2)
-                if h == 0:
-                    current_pos = x, y, z
-                    continue
-
-                center_x = current_pos[0] + i
-                center_y = current_pos[1] + j
+                x_o = current_pos[0]
+                y_o = current_pos[1]
 
                 clockwise = (t['value'] == 2)
 
-                direction_end = -1
-                direction_begin = -1
-                if y - center_y != 0:
-                    direction_end = -(y - center_y) / abs(y - center_y)
-                if current_pos[1] - center_y != 0:
-                    direction_begin = - \
-                        (current_pos[1] - center_y) / \
-                        abs(current_pos[1] - center_y)
-
-                c = (current_pos[0] - center_x) / h
-                if c < -1:
-                    c = -1
-                elif c > 1:
-                    c = 1
-                start_angle = direction_begin * acos(c) / 2 / pi * 360
-
-                c = (x - center_x) / h
-                if c < -1:
-                    c = -1
-                elif c > 1:
-                    c = 1
-                end_angle = direction_end * acos(c) / 2 / pi * 360
-
-                pp.moveTo(current_pos[0], current_pos[1])
-                if clockwise:
-                    pp.arcTo(center_x - h, center_y - h, h * 2, h *
-                             2, start_angle, start_angle - end_angle)
-                else:
-                    pp.arcTo(center_x - h, center_y - h, h * 2, h *
-                             2, start_angle, end_angle - start_angle)
-                self.sc.addPath(pp, p)
+                logger.debug("Drawing circle clockwise={clockwise} from {t}".format(**locals()))
+                x_p, y_p = x_o, y_o
+                for xc, yc in arc_to_segments((x_o, y_o), (i,j), (x,y), clockwise):
+                    min_x = min(min_x, xc)
+                    max_x = max(max_x, xc)
+                    min_y = min(min_y, yc)
+                    max_y = max(max_y, yc)
+                    self.sc.addLine(x_p, y_p, xc, yc, pen=p)
+                    x_p, y_p = xc,yc
+                    
             current_pos = x, y, z
 
             min_x = min(min_x, current_pos[0])
