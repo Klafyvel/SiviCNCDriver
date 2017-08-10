@@ -256,6 +256,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reverse_display_y.clicked.connect(self.draw_file)
         self.reverse_display_z.clicked.connect(self.draw_file)
 
+        self.btn_license.clicked.connect(self.about_license)
+        self.btn_about_qt.clicked.connect(self.about_qt)
+
     def list_serials(self):
         logger.debug("Listing available serial ports.")
         l = serial_ports()
@@ -673,3 +676,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.code_edit.setText(self.preprocessor.gcode)
         self.preprocessor.accepted.disconnect()
         self.draw_file()
+
+    @pyqtSlot()
+    def about_license(self):
+        with open(os.path.join(settings.APP_DIR, 'license_dialog_text')) as f:
+            QMessageBox.about(self, "Licence", f.read())
+
+    @pyqtSlot()
+    def about_qt(self):
+        QMessageBox.aboutQt(self)
