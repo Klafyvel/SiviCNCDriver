@@ -15,6 +15,6 @@ function of the package which doesn't take any parameter.
 
 """
 
-from sivicncdriver.__main__ import main
+from sivicncdriver.app import main
 
 __version__ = "0.1.1"
