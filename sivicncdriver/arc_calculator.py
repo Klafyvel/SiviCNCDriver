@@ -39,7 +39,7 @@ from sivicncdriver.settings import logger
 getcontext().prec = 6
 
 
-def arc_to_segments(start, vect_to_center, end, clockwise=False):
+def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1):
     """
     Creates small segments from an arc.
 
@@ -50,10 +50,12 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False):
         starting position
     :param end: The ending position
     :param clockwise: Should it go clockwise ?
+    :param length: length of the segments 
     :type start: A float tuple
     :type vect_to_center: A float tuple
     :type end: A float tuple
     :type clockwise: bool
+    :type length: float
     :return: None, it yields vertices.
     """
 
@@ -65,7 +67,7 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False):
     end_angle = Decimal(atan2(e[1]-s[1]-v[1], e[0]-s[0]-v[0]))
 
     center = (s[0]+v[0], s[1]+v[1])
-    nb_step = int(abs((end_angle-start_angle)*radius))
+    nb_step = int(abs((end_angle-start_angle)*radius/Decimal(length)))
 
     arc_length = end_angle - start_angle
     logger.debug("Arc to segments : start_angle={start_angle}, end_angle={end_angle}, radius={radius}, arc_length={arc_length}".format(**locals()))
@@ -73,11 +75,15 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False):
     if abs(arc_length * radius) < 2:
         yield start
         yield end
+
+    elif arc_length*radius < 2:
+        logger.debug("Negatives : {}".format(arc_length*radius))
+
     else:
         if clockwise:
-            d_angle = -1 / radius
+            d_angle = -Decimal(length) / radius
         else:
-            d_angle = 1 / radius
+            d_angle = Decimal(length) / radius
         angle = start_angle
         for _ in range(nb_step):
             yield (

@@ -62,6 +62,7 @@ def parse_iterator(gcode):
     :type gcode: str
     """
     stack = Stack(gcode + '\n')
+    line = 0
     for c in stack.token():
         if c is ' ':
             continue
@@ -70,18 +71,19 @@ def parse_iterator(gcode):
             while stack.peek() is not ')':
                 com += stack.pop()
             stack.pop()  # removes the ')'
-            yield ('__comment__', com)
+            yield ('__comment__', com, line)
         elif c is '\n':
-            yield ('__next__', '__next__')
+            yield ('__next__', '__next__', line)
+            line += 1
         elif c is '#':
             var_name = '#' + str(int(parse_value(stack).calc()))
             # wait for the '='
             while stack.peek() in SEPARATOR:
                 stack.pop()
             var_value = parse_value(stack).calc()
-            yield ('__new_var__', {var_name: var_value})
+            yield ('__new_var__', {var_name: var_value}, line)
         else:
-            yield (c, parse_value(stack))
+            yield (c, parse_value(stack), line)
 
 
 def parse(gcode):
@@ -110,7 +112,7 @@ def parse(gcode):
                 value = None
                 for a in i[1].keys():
                     OpNode.var[a] = i[1][a]
-                    yield {'name': '__new_var__', 'var': a, 'value': i[1][a]}
+                    yield {'name': '__new_var__', 'var': a, 'value': i[1][a], 'line':i[2]}
             if i[0] in ('G', 'M'):
                 name = i[0]
                 value = i[1].calc()
@@ -121,11 +123,11 @@ def parse(gcode):
                     name = 'comment'
                 args['comment'] = i[1]
         elif name is not "":
-            yield {'name': name, 'value': value, 'args': args}
+            yield {'name': name, 'value': value, 'args': args, 'line':i[2]}
             name = ""
             value = 0
             args = {}
-    yield {'name': name, 'value': value, 'args': args}
+    yield {'name': name, 'value': value, 'args': args, 'line':i[2]}
 
 
 def parse_value(stack):

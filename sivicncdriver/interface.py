@@ -137,6 +137,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         super(MainWindow, self).__init__()
         self.setupUi(self)
+        self.zoom = 1
         self.list_serials()
         self.list_configs()
 
@@ -319,6 +320,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.btn_license.clicked.connect(self.about_license)
         self.btn_about_qt.clicked.connect(self.about_qt)
+
+        self.actionZoomIn.triggered.connect(self.zoomIn)
+        self.actionZoomOut.triggered.connect(self.zoomOut)
+
+        self.sc.selectionChanged.connect(self.highlight_selected_path)
 
     def list_serials(self):
         """
@@ -759,9 +765,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             z = -t['args'].get('Z', -z) if reverse_z else t['args'].get('Z', z)
 
             p = QPen(QColor((z <= 0) * 255, 0, (z > 0) * 255))
+            p.setWidthF(1/self.zoom)
 
             if t['value'] in (0, 1):
-                self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
+                s = self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
+                s.setFlags(QGraphicsItem.ItemIsFocusable | 
+                    QGraphicsItem.ItemIsSelectable | s.flags())
+                s.setData(0, t['line'])
             elif t['value'] in (2, 3):
                 i = -t['args'].get('I',
                                    0) if reverse_x else t['args'].get('I', 0)
@@ -777,14 +787,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 logger.debug(
                     "Drawing circle clockwise={clockwise} from {t}".format(**locals()))
-                x_p, y_p = x_o, y_o
-                for xc, yc in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise):
+                pp = QPainterPath(QPoint(x_o,y_o))
+                for xc, yc in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise, 1/self.zoom):
                     min_x = min(min_x, xc)
                     max_x = max(max_x, xc)
                     min_y = min(min_y, yc)
                     max_y = max(max_y, yc)
-                    self.sc.addLine(x_p, y_p, xc, yc, pen=p)
-                    x_p, y_p = xc, yc
+                    pp.lineTo(xc,yc)
+
+                path_item = self.sc.addPath(pp,pen=p)
+                path_item.setFlags(QGraphicsItem.ItemIsFocusable | 
+                    QGraphicsItem.ItemIsSelectable | path_item.flags())
+                path_item.setData(0, t['line'])
 
             current_pos = x, y, z
 
@@ -841,3 +855,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Displays informations about Qt.
         """
         QMessageBox.aboutQt(self)
+
+    @pyqtSlot()
+    def zoomIn(self):
+        """
+        Zoom the file view in.
+        """
+        self.fileview.scale(2,2)
+        self.zoom *= 2
+        self.draw_file()
+
+    @pyqtSlot()
+    def zoomOut(self):
+        """
+        Zoom the file view out.
+        """
+        self.fileview.scale(1/2,1/2)
+        self.zoom *= 1/2
+        self.draw_file()
+
+    @pyqtSlot()
+    def highlight_selected_path(self):
+        """
+        Highlight corresponding gcode lines for the selected path.
+        """
+        sel = self.sc.selectedItems()
+        l = []
+        for s in sel:
+            highlight = QTextEdit.ExtraSelection()
+            highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(s.data(0)))
+            highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
+            highlight.format.setBackground(Qt.green)
+            l.append(highlight)
+        
+        if len(l) > 0:
+            self.code_edit.setTextCursor(l[0].cursor)
+        self.code_edit.setExtraSelections(l)
+
