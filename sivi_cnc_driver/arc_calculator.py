@@ -6,6 +6,7 @@ from .settings import logger
 
 getcontext().prec = 6
 
+
 def arc_to_segments(start, vect_to_center, end, clockwise=False):
     v = Decimal(vect_to_center[0]), Decimal(vect_to_center[1])
     e = Decimal(end[0]), Decimal(end[1])
@@ -31,6 +32,6 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False):
             d_angle = 1 / radius
         angle = start_angle
         for _ in range(nb_step):
-            yield center[0] + radius*Decimal(cos(angle)), center[1] + radius*Decimal(sin(angle))
+            yield float(center[0] + radius*Decimal(cos(angle))), float(center[1] + radius*Decimal(sin(angle)))
             angle += d_angle
         yield end
