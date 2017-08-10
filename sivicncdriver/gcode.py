@@ -1,4 +1,4 @@
-from .settings import logger
+from sivicncdriver.settings import logger
 
 __all__ = ['parse']
 

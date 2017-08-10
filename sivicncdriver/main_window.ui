@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>rc/siviIcon.png</normaloff>rc/siviIcon.png</iconset>
+    <normaloff>../sivi_cnc_driver/rc/siviIcon.png</normaloff>../sivi_cnc_driver/rc/siviIcon.png</iconset>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
@@ -28,7 +28,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -51,7 +51,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>rc/load.png</normaloff>rc/load.png</iconset>
+              <normaloff>../sivi_cnc_driver/rc/load.png</normaloff>../sivi_cnc_driver/rc/load.png</iconset>
             </property>
            </widget>
           </item>
@@ -62,7 +62,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>rc/reload.png</normaloff>rc/reload.png</iconset>
+              <normaloff>../sivi_cnc_driver/rc/reload.png</normaloff>../sivi_cnc_driver/rc/reload.png</iconset>
             </property>
            </widget>
           </item>
@@ -78,7 +78,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/writing.png</normaloff>rc/writing.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/writing.png</normaloff>../sivi_cnc_driver/rc/writing.png</iconset>
              </property>
             </widget>
            </item>
@@ -89,7 +89,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/work.png</normaloff>rc/work.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/work.png</normaloff>../sivi_cnc_driver/rc/work.png</iconset>
              </property>
             </widget>
            </item>
@@ -100,7 +100,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
              </property>
             </widget>
            </item>
@@ -111,7 +111,7 @@
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
              </property>
             </widget>
            </item>
@@ -152,7 +152,7 @@
                 <item row="2" column="0">
                  <widget class="QLabel" name="afficherLaBoTeDeDLimitationLabel">
                   <property name="text">
-                   <string>Afficher la boîte de délimitation</string>
+                   <string>Afficher la &amp;boîte de délimitation</string>
                   </property>
                  </widget>
                 </item>
@@ -172,7 +172,7 @@
                 <item row="4" column="0">
                  <widget class="QLabel" name="inverserLAxeYLabel">
                   <property name="text">
-                   <string>Retourner l'axe Y</string>
+                   <string>Retourner l'axe &amp;Y</string>
                   </property>
                  </widget>
                 </item>
@@ -186,7 +186,7 @@
                 <item row="5" column="0">
                  <widget class="QLabel" name="inverserLAxeZLabel">
                   <property name="text">
-                   <string>Retourner l'axe Z</string>
+                   <string>Retourner l'axe &amp;Z</string>
                   </property>
                  </widget>
                 </item>
@@ -207,7 +207,7 @@
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_5">
                   <property name="text">
-                   <string>Développement selon X</string>
+                   <string>Dé&amp;veloppement selon X</string>
                   </property>
                  </widget>
                 </item>
@@ -355,7 +355,7 @@ p, li { white-space: pre-wrap; }
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>rc/run.png</normaloff>rc/run.png</iconset>
+                 <normaloff>../sivi_cnc_driver/rc/run.png</normaloff>../sivi_cnc_driver/rc/run.png</iconset>
                </property>
               </widget>
              </item>
@@ -368,7 +368,7 @@ p, li { white-space: pre-wrap; }
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/upload.png</normaloff>rc/upload.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/upload.png</normaloff>../sivi_cnc_driver/rc/upload.png</iconset>
              </property>
             </widget>
            </item>
@@ -410,7 +410,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>rc/right.png</normaloff>rc/right.png</iconset>
+                     <normaloff>../sivi_cnc_driver/rc/right.png</normaloff>../sivi_cnc_driver/rc/right.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -421,7 +421,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>rc/up.png</normaloff>rc/up.png</iconset>
+                     <normaloff>../sivi_cnc_driver/rc/up.png</normaloff>../sivi_cnc_driver/rc/up.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -432,7 +432,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normalon>rc/up.png</normalon>
+                     <normalon>../sivi_cnc_driver/rc/up.png</normalon>
                     </iconset>
                    </property>
                   </widget>
@@ -444,7 +444,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normalon>rc/down.png</normalon>
+                     <normalon>../sivi_cnc_driver/rc/down.png</normalon>
                     </iconset>
                    </property>
                   </widget>
@@ -456,7 +456,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>rc/down.png</normaloff>rc/down.png</iconset>
+                     <normaloff>../sivi_cnc_driver/rc/down.png</normaloff>../sivi_cnc_driver/rc/down.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -467,7 +467,7 @@ p, li { white-space: pre-wrap; }
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>rc/left.png</normaloff>rc/left.png</iconset>
+                     <normaloff>../sivi_cnc_driver/rc/left.png</normaloff>../sivi_cnc_driver/rc/left.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -479,7 +479,7 @@ Zéro</string>
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>rc/origin.png</normaloff>rc/origin.png</iconset>
+                     <normaloff>../sivi_cnc_driver/rc/origin.png</normaloff>../sivi_cnc_driver/rc/origin.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -506,7 +506,7 @@ Zéro</string>
                <item>
                 <widget class="QLabel" name="label_6">
                  <property name="text">
-                  <string>Les commandes automatiques permettent d'envoyer des commandes directement en pas afin de régler la machine.</string>
+                  <string>Les commandes automatiques permettent d'en&amp;voyer des commandes directement en pas afin de régler la machine.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -514,7 +514,7 @@ Zéro</string>
                 </widget>
                </item>
                <item>
-                <widget class="QWidget" name="" native="true">
+                <widget class="QWidget" name="auto_cmd_1" native="true">
                  <layout class="QHBoxLayout" name="horizontalLayout_10">
                   <item>
                    <widget class="QLabel" name="label_7">
@@ -598,12 +598,15 @@ Zéro</string>
                 </widget>
                </item>
                <item>
-                <widget class="QWidget" name="widget_3" native="true">
+                <widget class="QWidget" name="auto_cmd_2" native="true">
                  <layout class="QHBoxLayout" name="horizontalLayout_6">
                   <item>
                    <widget class="QLabel" name="label_13">
                     <property name="text">
-                     <string>Entre chaque étape, l'axe</string>
+                     <string>Entre cha&amp;que étape, l'axe</string>
+                    </property>
+                    <property name="textFormat">
+                     <enum>Qt::PlainText</enum>
                     </property>
                    </widget>
                   </item>
@@ -660,7 +663,7 @@ Zéro</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>rc/run.png</normaloff>rc/run.png</iconset>
+                   <normaloff>../sivi_cnc_driver/rc/run.png</normaloff>../sivi_cnc_driver/rc/run.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -676,7 +679,7 @@ Zéro</string>
                <item>
                 <widget class="QLabel" name="label_16">
                  <property name="text">
-                  <string>Les commandes personnalisées permettent d'envoyer des commandes définies par l'utilisateur un certain nombre de fois afin de régler la machine.</string>
+                  <string>Les commandes personnalisées permettent d'envo&amp;yer des commandes définies par l'utilisateur un certain nombre de fois afin de régler la machine.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -723,7 +726,7 @@ Zéro</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>rc/run.png</normaloff>rc/run.png</iconset>
+                   <normaloff>../sivi_cnc_driver/rc/run.png</normaloff>../sivi_cnc_driver/rc/run.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -737,7 +740,7 @@ Zéro</string>
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>rc/origin.png</normaloff>rc/origin.png</iconset>
+                <normaloff>../sivi_cnc_driver/rc/origin.png</normaloff>../sivi_cnc_driver/rc/origin.png</iconset>
               </property>
              </widget>
             </item>
@@ -937,7 +940,7 @@ Zéro</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>rc/connect.png</normaloff>rc/connect.png</iconset>
+                    <normaloff>../sivi_cnc_driver/rc/connect.png</normaloff>../sivi_cnc_driver/rc/connect.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -948,7 +951,7 @@ Zéro</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
+                    <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -959,7 +962,7 @@ Zéro</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>rc/save.png</normaloff>rc/save.png</iconset>
+                    <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -1074,7 +1077,7 @@ Zéro</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/reload.png</normaloff>rc/reload.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/reload.png</normaloff>../sivi_cnc_driver/rc/reload.png</iconset>
              </property>
             </widget>
            </item>
@@ -1088,7 +1091,7 @@ Zéro</string>
            <item>
             <widget class="QLabel" name="label_20">
              <property name="text">
-              <string>Baudrate</string>
+              <string>&amp;Baudrate</string>
              </property>
             </widget>
            </item>
@@ -1171,7 +1174,7 @@ Zéro</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>rc/connect.png</normaloff>rc/connect.png</iconset>
+               <normaloff>../sivi_cnc_driver/rc/connect.png</normaloff>../sivi_cnc_driver/rc/connect.png</iconset>
              </property>
             </widget>
            </item>
@@ -1246,38 +1249,6 @@ Zéro</string>
     </item>
    </layout>
   </widget>
-  <action name="actionSave">
-   <property name="text">
-    <string>Save</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
-  </action>
-  <action name="actionSaveAs">
-   <property name="text">
-    <string>SaveAs</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
-   </property>
-  </action>
-  <action name="actionRedraw">
-   <property name="text">
-    <string>Redraw</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+D</string>
-   </property>
-  </action>
-  <action name="actionReload">
-   <property name="text">
-    <string>Reload</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+R</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections>
@@ -1288,12 +1259,12 @@ Zéro</string>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>233</x>
-     <y>432</y>
+     <x>243</x>
+     <y>497</y>
     </hint>
     <hint type="destinationlabel">
-     <x>325</x>
-     <y>433</y>
+     <x>335</x>
+     <y>498</y>
     </hint>
    </hints>
   </connection>

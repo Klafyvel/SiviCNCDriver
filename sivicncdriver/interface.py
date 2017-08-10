@@ -8,13 +8,13 @@ from PyQt5.QtGui import *
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 
-from . import settings
-from .settings import logger
-from .gcode import parse
-from .serial_list import serial_ports
-from .serial_manager import SerialManager
-from .preprocessor import PreprocessorDialog
-from .arc_calculator import arc_to_segments
+from sivicncdriver import settings
+from sivicncdriver.settings import logger
+from sivicncdriver.gcode import parse
+from sivicncdriver.serial_list import serial_ports
+from sivicncdriver.serial_manager import SerialManager
+from sivicncdriver.preprocessor import PreprocessorDialog
+from sivicncdriver.arc_calculator import arc_to_segments
 
 from .main_window import Ui_MainWindow
 

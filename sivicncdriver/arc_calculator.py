@@ -1,7 +1,7 @@
 from math import atan2, cos, sin, sqrt
 from decimal import *
 
-from .settings import logger
+from sivicncdriver.settings import logger
 
 
 getcontext().prec = 6

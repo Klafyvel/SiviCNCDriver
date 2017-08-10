@@ -1,4 +1,4 @@
 include *.md
 include requirements.txt
-recursive-include sivi_cnc_driver/rc *.png
-recursive-include sivi_cnc_driver/configs example.json
+recursive-include sivicncdriver/rc *.png
+recursive-include sivicncdriver/configs example.json

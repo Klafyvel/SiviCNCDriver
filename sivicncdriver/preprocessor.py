@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from .preprocessor_window import Ui_dialog
+from sivicncdriver.preprocessor_window import Ui_dialog
 
-from .settings import logger
-from .gcode import parse
-from .arc_calculator import arc_to_segments
+from sivicncdriver.settings import logger
+from sivicncdriver.gcode import parse
+from sivicncdriver.arc_calculator import arc_to_segments
 
 
 class PreprocessorDialog(QDialog, Ui_dialog):
