@@ -1,3 +1,10 @@
+"""
+The preprocessor module
+=======================
+
+Provides the PreprocessorDialog class.
+"""
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -10,8 +17,16 @@ from sivicncdriver.arc_calculator import arc_to_segments
 
 
 class PreprocessorDialog(QDialog, Ui_dialog):
-
+    """
+    The preprocessor dialog.
+    """
     def __init__(self, gcode, parent=None):
+        """
+        The __init__ method.
+        :param gcode: The gcode which is to be preprocessed.
+        :param parent: Qt stuff.
+        :type gcode: str
+        """
         super(PreprocessorDialog, self).__init__(parent=parent)
         self.setupUi(self)
         self.gcode = gcode
@@ -25,9 +40,15 @@ class PreprocessorDialog(QDialog, Ui_dialog):
 
     @pyqtSlot()
     def run_preprocessor(self):
+        """
+        Runs the preprocessor on the G-Code.
+        """
         self.remove_useless()
 
     def remove_useless(self):
+        """
+        Remove useless things in the code according to the UI options.
+        """
         rm_nums = self.chk_del_num.isChecked()
         rm_comm = self.chk_del_comments.isChecked()
         minimize = self.chk_optimize_bounding_box.isChecked()
@@ -64,6 +85,9 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         self.gcode = r
 
     def get_minimize_bounding_box(self):
+        """
+        Computes a new origin for the drawing.
+        """
         min_x, min_y = 0,0
         set_x, set_y = False, False
         x_o, y_o = 0,0

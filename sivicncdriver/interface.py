@@ -1,3 +1,10 @@
+"""
+The interface module
+====================
+
+Provides the MainWindow class. 
+"""
+
 import serial
 from math import atan2, sqrt, pi
 import os
@@ -22,9 +29,20 @@ __all__ = ['MainWindow']
 
 
 class SendFileThread(QThread):
+    """
+    A thread to send file without blocking the main thread.
+    """
     update_progress = pyqtSignal(int)
 
     def __init__(self, serial_manager, gcode):
+        """
+        The __init__ method.
+
+        :param serial_manager: The main window's serial manager
+        :param gcode: The gcode which is to be sent
+        :type serial_manager: SerialManager
+        :type gcode: str
+        """
         QThread.__init__(self)
         self.gcode = gcode
         self.serial_manager = serial_manager
@@ -35,9 +53,18 @@ class SendFileThread(QThread):
 
     @pyqtSlot()
     def stop(self):
+        """
+        A simple slot to tell the thread to stop.
+        """
         self.user_stop = True
 
     def run(self):
+        """
+        Runs the thread.
+
+        The commands are sent using the serial manager. If an error occurs or if
+        the thread is stopped by the user, then it quits.
+        """
         for n, l in enumerate(self.gcode):
             self.serial_manager.sendMsg(l)
             self.update_progress.emit(n)
@@ -46,9 +73,24 @@ class SendFileThread(QThread):
 
 
 class SendAutoCmdThread(QThread):
+    """
+    A thread to send auto commands without blocking the main thread.
+    """
     update_progress = pyqtSignal(int)
 
     def __init__(self, serial_manager, axis, step, n):
+        """
+        The __init__ method.
+
+        :param serial_manager: The main window's serial manager
+        :param axis: The axis on which the thread will operate
+        :param step: The number of step of one movement
+        :param n: The number of movements
+        :type serial_manager: SerialManager
+        :type axis: str
+        :type step: int
+        :type n: int
+        """
         QThread.__init__(self)
         self.axis = axis
         self.step = step
@@ -61,17 +103,18 @@ class SendAutoCmdThread(QThread):
 
     @pyqtSlot()
     def stop(self):
+        """
+        A simple slot to tell the thread to stop.
+        """
         self.user_stop = True
 
-    def auto_cmd(self, axis, step, move="simple", n=0):
-        if move == "simple":
-            self.step(axis, step)
-        else:
-            for _ in range(n):
-                self.step(axis, step)
-                self.step(axis, -step)
-
     def run(self):
+        """
+        Runs the thread.
+
+        The commands are sent using the serial manager. If an error occurs or if
+        the thread is stopped by the user, then it quits.
+        """
         for i in range(self.n):
             self.update_progress.emit(i)
             if not self.serial_manager.step(self.axis, self.step) or self.user_stop:
@@ -81,8 +124,17 @@ class SendAutoCmdThread(QThread):
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
+    """
+    The main window of the application.
+    """
 
     def __init__(self):
+        """
+        The __init__ method.
+
+        It will set the UI up, list available serial ports, list available
+        configurations, connect the UI and so on.
+        """
         super(MainWindow, self).__init__()
         self.setupUi(self)
         self.list_serials()
@@ -103,6 +155,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.file_loaded = False
 
     def attach_icons(self):
+        """
+        Attach the icons to the buttons.
+
+        Actually there must be a better way to do it (using the .ui file) but
+        I could not figure out how.
+        """        
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(os.path.join(
             settings.RC_DIR, "siviIcon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -193,6 +251,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_serial_ports_list.setIcon(icon2)
 
     def connectUi(self):
+        """
+        Connects The UI signals and slots.
+        """
         logger.debug("Connecting Ui.")
         self.btn_serial_ports_list.clicked.connect(self.list_serials)
 
@@ -260,6 +321,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_about_qt.clicked.connect(self.about_qt)
 
     def list_serials(self):
+        """
+        Lists available serials ports.
+        """
         logger.debug("Listing available serial ports.")
         l = serial_ports()
         for i in range(self.serial_ports_list.count()):
@@ -269,6 +333,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.serial_ports_list.addItem(i)
 
     def list_configs(self):
+        """
+        Lists available configurations.
+        """
         for _ in range(self.config_list.count()):
             self.config_list.removeItem(0)
         logger.debug("Listing available configurations.")
@@ -282,7 +349,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_serial_mode(self, mode):
         """
         Change serial mode.
-        mode can be "manual" or "file"
+
+        :param mode: can be "manual" or "file"
+        :type mode: str
         """
         if mode == "manual":
             logger.debug("Setting manual mode.")
@@ -297,6 +366,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.grp_auto.setEnabled(False)
 
     def reset_config(self):
+        """
+        Resets the configuration.
+        """
         self.drive_x.setCurrentIndex(0)
         self.drive_y.setCurrentIndex(0)
         self.drive_z.setCurrentIndex(0)
@@ -316,6 +388,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         logger.info("Reset config.")
 
     def config_as_dict(self):
+        """
+        Get the configuration as a dict.
+
+        :return: The configuration as a dict.
+        :rtype: dict
+        """
         return {
             "x_drive": self.drive_x.currentIndex(),
             "x_ratio": self.ratio_x.value(),
@@ -334,6 +412,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # Slots
     @pyqtSlot(str, str)
     def print(self, txt, msg_type="operator"):
+        """
+        Prints a message on the application console.
+
+        :param txt: The message
+        :param msg_type: The type of the message. Can be "operator", "machine",
+            "error" or "info"
+        :type txt: str
+        :type msg_type: str
+        """
+
         msg = "{}"
         if msg_type == "operator":
             msg = "\n<br /><span style='color:orange;'> <strong>&gt;&gt;&gt;</strong> {}</span>"
@@ -349,13 +437,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(int)
     def manage_auto_cmd_number(self, n):
+        """
+        Enable the widgets for auto commands
+        """
         self.auto_cmd_number.setValue(1)
         self.auto_cmd_number.setEnabled(n != 0)
         self.auto_cmd_2.setEnabled(n != 0)
 
     @pyqtSlot()
     def auto_cmd(self):
-
+        """
+        Send auto commands using a thread if they are too long.
+        """
         logger.info("Sending auto command.")
         self.print("Sending auto command.", "info")
 
@@ -385,6 +478,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(int)
     def manage_emulate_serial_port(self, s):
+        """
+        Enable widgets for serial port emulation.
+        """
         st = bool(s)
         self.serial_manager.fake_mode = st
         self.baudrate.setEnabled(not st)
@@ -398,6 +494,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def send_file(self):
+        """
+        Send a file using a different thread.
+        """
         logger.info("Sending file.")
         self.print("Sending file.", "info")
         gcode = self.code_edit.toPlainText().split('\n')
@@ -416,10 +515,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot(int)
     def update_progress(self, s):
+        """
+        Updates the progress bar.
+        """
         self.sending_progress.setValue(s)
 
     @pyqtSlot()
     def file_sent(self):
+        """
+        Manages the end of a file sending.
+        """
         if self.send_thread.user_stop:
             self.print("Stopped by user.", "error")
             logger.error("File sending stopped by user.")
@@ -434,6 +539,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def auto_cmd_sent(self):
+        """
+        Manages the end of an auto command sending.
+        """
         if self.send_thread.user_stop:
             self.print("Stopped by user.", "error")
             logger.error("Auto command sending stopped by user.")
@@ -448,12 +556,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def send_cmd(self):
+        """
+        Sends an user command.
+        """
         gcode = self.command_edit.text()
         self.serial_manager.sendMsg(gcode)
         self.serial_manager.waitForConfirm()
 
     @pyqtSlot(int)
     def update_config(self, i):
+        """
+        Updates the configuration widgets.
+        """
         nb_config = self.config_list.count()
         if i == nb_config-1:
             self.reset_config()
@@ -482,6 +596,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def save_config(self, filename=None):
+        """
+        Saves a configuration.
+        :param filename: The name of the file.
+        :type filename: str
+        """
         logger.info("Saving configuration.")
         logger.debug("Filename given : {}".format(filename))
         current_config = self.config_list.currentIndex()
@@ -500,6 +619,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def save_config_as(self):
+        """
+        Saves a configuration in a new file.
+        """
         f = QFileDialog.getSaveFileName(
             self, "Sélectionner un fichier",
             directory=settings.CONFIG_DIR,
@@ -514,11 +636,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def send_config(self):
+        """
+        Send a configuration to the machine.
+        """
         self.save_config()
         self.serial_manager.send_config(self.config_as_dict())
 
     @pyqtSlot()
     def manage_connection(self):
+        """
+        Manages the connection widgets.
+        """
         if self.serial_manager.is_open:
             self.baudrate.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
@@ -536,6 +664,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def choose_file(self):
+        """
+        Sets the gcode file.
+        """
         if not self.file_loaded:
             directory = settings.FILE_DIR
         else:
@@ -551,6 +682,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def load_file(self):
+        """
+        Loads a gcode file.
+        """
         file = self.filename.text()
         try:
             logger.info("Loading {}".format(repr(file)))
@@ -563,6 +697,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def save_file_as(self):
+        """
+        Saves a gcode file in a nex file.
+        """
         if not self.file_loaded:
             directory = settings.FILE_DIR
         else:
@@ -580,6 +717,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def save_file(self):
+        """
+        Saves a gcode file.
+        """
         if not self.file_loaded:
             self.save_file_as()
         else:
@@ -590,6 +730,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def draw_file(self):
+        """
+        Draws a gcode file.
+        """
         gcode = self.code_edit.toPlainText()
         self.sc.clear()
         current_pos = [0, 0, 0]
@@ -668,21 +811,33 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def run_preprocessor(self):
+        """
+        Runs the preprocessor dialog.
+        """
         self.preprocessor = PreprocessorDialog(self.code_edit.toPlainText())
         self.preprocessor.accepted.connect(self.end_preprocessor)
         self.preprocessor.show()
 
     @pyqtSlot()
     def end_preprocessor(self):
+        """
+        Manages the end of the preprocessing interface.
+        """
         self.code_edit.setText(self.preprocessor.gcode)
         self.preprocessor.accepted.disconnect()
         self.draw_file()
 
     @pyqtSlot()
     def about_license(self):
+        """
+        Displays informations about the license.
+        """
         with open(os.path.join(settings.APP_DIR, 'license_dialog_text')) as f:
             QMessageBox.about(self, "Licence", f.read())
 
     @pyqtSlot()
     def about_qt(self):
+        """
+        Displays informations about Qt.
+        """
         QMessageBox.aboutQt(self)

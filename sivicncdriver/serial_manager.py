@@ -1,3 +1,10 @@
+"""
+The serial_manager module
+=========================
+
+Provides a class to handle the CNC machine through a serial object.
+"""
+
 import serial
 import time
 

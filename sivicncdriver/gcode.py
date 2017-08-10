@@ -1,23 +1,51 @@
+"""
+A module to parse G-codes.
+"""
+
 from sivicncdriver.settings import logger
 
 __all__ = ['parse']
 
 class Stack:
+    """
+    A Simple LIFO.
+    """
 
     def __init__(self, in_str):
+        """
+        __init__ method.
+
+        :param in_str: The string which is to be stacked.
+        :type in_str: str
+        """
         self.in_str = in_str
         self.next = None
 
     def token(self):
+        """
+        Yields the elements of the stack.
+        """
         while len(self.in_str) > 0:
             yield self.pop()
 
     def pop(self):
+        """
+        Pop an element.
+
+        :return: The first element of the string.
+        :rtype: str
+        """
         r = self.peek()
         self.next = None
         return r
 
     def peek(self):
+        """
+        Peek the next element to be popped without popping it.
+
+        :return: The next element
+        :rtype: str
+        """
         if not self.next:
             self.next = self.in_str[0]
             self.in_str = self.in_str[1:]
@@ -27,6 +55,12 @@ SEPARATOR = ('\n', ' ', '(', '=')
 
 
 def parse_iterator(gcode):
+    """
+    Function used by the ``parse`` function.
+
+    :param gcode: The gcode which is to be parsed.
+    :type gcode: str
+    """
     stack = Stack(gcode + '\n')
     for c in stack.token():
         if c is ' ':
@@ -51,10 +85,20 @@ def parse_iterator(gcode):
 
 
 def parse(gcode):
-    """ parse gcode and yield a dict for each line with
-    name : name of the code (G, M)
-    value : an integer
-    args : a dict with the code arguments, ex : {'Y':3.0}
+    """ 
+    Parse gcode.
+
+    It yields a dict for each line with :
+
+    name
+        name of the code (G, M)
+    value
+        an integer
+    args
+        a dict with the code arguments, ex : {'Y':3.0}
+
+    :param gcode: The gcode which is to be parsed.
+    :type gcode: str
     """
     name = ""
     value = 0
@@ -85,6 +129,11 @@ def parse(gcode):
 
 
 def parse_value(stack):
+    """
+    Parse a value in the stack.
+    :param stack: The parser's stack.
+    :return: The value.
+    """
     r = ''
     while stack.peek() not in SEPARATOR:
         if stack.peek() not in '[]':
@@ -162,8 +211,8 @@ class OpNode:
             self.right.print(space_before + 1)
             print()
 
-# s = """G01 X-3.0 Y4
-# N1 G02 Z3"""
+
+
 if __name__ == '__main__':
     i = input()
     o = OpNode(i)
