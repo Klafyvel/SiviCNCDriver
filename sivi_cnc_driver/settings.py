@@ -13,7 +13,7 @@ DEBUG = True
 CONFIG_DIR = os.path.join(APP_DIR, "configs", "")
 
 if DEBUG:
-    FILE_DIR = APP_DIR
+    FILE_DIR = os.path.join(APP_DIR, 'gcodes', '')
 else:
     FILE_DIR = str(Path.home())
 
