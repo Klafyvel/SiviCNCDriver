@@ -44,6 +44,40 @@ class SendFileThread(QThread):
             if not self.serial_manager.waitForConfirm() or self.user_stop:
                 break
 
+class SendAutoCmdThread(QThread):
+    update_progress = pyqtSignal(int)
+
+    def __init__(self, serial_manager, axis, step, n):
+        QThread.__init__(self)
+        self.axis = axis
+        self.step = step
+        self.n = n
+        self.serial_manager = serial_manager
+        self.user_stop = False
+
+    def __del__(self):
+        self.wait()
+
+    @pyqtSlot()
+    def stop(self):
+        self.user_stop = True
+
+    def auto_cmd(self, axis, step, move="simple", n=0):
+        if move == "simple":
+            self.step(axis, step)
+        else:
+            for _ in range(n):
+                self.step(axis, step)
+                self.step(axis,-step)
+
+    def run(self):
+        for i in range(self.n):
+            self.update_progress.emit(i)
+            if not self.serial_manager.step(self.axis,self.step) or self.user_stop:
+                break
+            if not self.serial_manager.step(self.axis,-self.step) or self.user_stop:
+                break
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
 
@@ -299,13 +333,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def auto_cmd(self):
+
+        logger.info("Sending auto command.")
+        self.print("Sending auto command.", "info")
+
         axis = self.auto_cmd_axis.currentText()
         n = self.auto_cmd_number.value()
         step = self.auto_cmd_step.value()
+
         if self.auto_cmd_type.currentIndex() == 0:
-            self.serial_manager.auto_cmd(axis, step)
-        else:
-            self.serial_manager.auto_cmd(axis, step, "complex", n)
+            self.serial_manager.step(axis, step)
+            self.print("Done.", "info")
+            logger.info("Auto command sent.")
+        else :
+
+            self.send_thread = SendAutoCmdThread(self.serial_manager, axis, step, n)
+
+            self.sending_progress.setMaximum(n)
+            self.sending_progress.setValue(0)
+            self.btn_send_current_file.setText("Annuler l'envoi")
+            self.btn_send_current_file.clicked.disconnect()
+            self.btn_send_current_file.clicked.connect(self.send_thread.stop)
+            self.tabWidget.setEnabled(False)
+
+            self.send_thread.finished.connect(self.file_sent)
+            self.send_thread.update_progress.connect(self.update_progress)
+            self.send_thread.start()
 
     @pyqtSlot(int)
     def manage_emulate_serial_port(self, s):
@@ -335,7 +388,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_send_current_file.clicked.connect(self.send_thread.stop)
         self.tabWidget.setEnabled(False)
 
-        self.send_thread.finished.connect(self.file_sent)
+        self.send_thread.finished.connect(self.auto_cmd_sent)
         self.send_thread.update_progress.connect(self.update_progress)
         self.send_thread.start()
 
@@ -351,6 +404,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.print("Done.", "info")
             logger.info("File sent.")
+        self.sending_progress.setValue(0)
+        self.btn_send_current_file.setText("Envoyer le fichier courrant")
+        self.btn_send_current_file.clicked.disconnect()
+        self.btn_send_current_file.clicked.connect(self.send_file)
+        self.tabWidget.setEnabled(True)
+
+    @pyqtSlot()
+    def auto_cmd_sent(self):
+        if self.send_thread.user_stop:
+            self.print("Stopped by user.", "error")
+            logger.error("Auto command sending stopped by user.")
+        else:
+            self.print("Done.", "info")
+            logger.info("Auto command sent.")
         self.sending_progress.setValue(0)
         self.btn_send_current_file.setText("Envoyer le fichier courrant")
         self.btn_send_current_file.clicked.disconnect()
