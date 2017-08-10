@@ -44,6 +44,7 @@ class SendFileThread(QThread):
             if not self.serial_manager.waitForConfirm() or self.user_stop:
                 break
 
+
 class SendAutoCmdThread(QThread):
     update_progress = pyqtSignal(int)
 
@@ -68,14 +69,14 @@ class SendAutoCmdThread(QThread):
         else:
             for _ in range(n):
                 self.step(axis, step)
-                self.step(axis,-step)
+                self.step(axis, -step)
 
     def run(self):
         for i in range(self.n):
             self.update_progress.emit(i)
-            if not self.serial_manager.step(self.axis,self.step) or self.user_stop:
+            if not self.serial_manager.step(self.axis, self.step) or self.user_stop:
                 break
-            if not self.serial_manager.step(self.axis,-self.step) or self.user_stop:
+            if not self.serial_manager.step(self.axis, -self.step) or self.user_stop:
                 break
 
 
@@ -103,68 +104,84 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def attach_icons(self):
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "siviIcon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "siviIcon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
 
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "load.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "load.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_file.setIcon(icon1)
 
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "reload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "reload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_reload.setIcon(icon2)
 
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "writing.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "writing.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.redraw.setIcon(icon3)
 
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "work.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "work.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_preprocessor.setIcon(icon4)
 
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_save_as.setIcon(icon5)
         self.btn_save_file.setIcon(icon5)
 
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "run.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "run.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_command.setIcon(icon6)
 
         icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon7.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_send_current_file.setIcon(icon7)
 
         icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon8.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_connect.setIcon(icon8)
 
         icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "origin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon9.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "origin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_set_origin.setIcon(icon9)
 
         icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon10.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_x_plus.setIcon(icon10)
 
         icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon11.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_y_plus.setIcon(icon11)
 
         icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon12.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_y_minus.setIcon(icon12)
 
         icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "left.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon13.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "left.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_x_minus.setIcon(icon13)
 
         icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "up.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        icon14.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "up.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.btn_z_plus.setIcon(icon14)
 
         icon15 = QtGui.QIcon()
-        icon15.addPixmap(QtGui.QPixmap(os.path.join(settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        icon15.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.btn_z_minus.setIcon(icon15)
 
         self.btn_go_to_zero.setIcon(icon9)
@@ -172,7 +189,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_send_config.setIcon(icon8)
         self.btn_save_config.setIcon(icon5)
         self.btn_save_config_as.setIcon(icon5)
-
 
     def connectUi(self):
         logger.debug("Connecting Ui.")
@@ -345,9 +361,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.serial_manager.step(axis, step)
             self.print("Done.", "info")
             logger.info("Auto command sent.")
-        else :
+        else:
 
-            self.send_thread = SendAutoCmdThread(self.serial_manager, axis, step, n)
+            self.send_thread = SendAutoCmdThread(
+                self.serial_manager, axis, step, n)
 
             self.sending_progress.setMaximum(n)
             self.sending_progress.setValue(0)
@@ -571,7 +588,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         gcode = self.code_edit.toPlainText()
         self.sc.clear()
         current_pos = [0, 0, 0]
-        min_x, max_x, min_y, max_y, min_z, max_z = 0,0,0,0,0,0
+        min_x, max_x, min_y, max_y, min_z, max_z = 0, 0, 0, 0, 0, 0
 
         reverse_x = self.reverse_display_x.isChecked()
         reverse_y = self.reverse_display_y.isChecked()
@@ -598,24 +615,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if t['value'] in (0, 1):
                 self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
             elif t['value'] in (2, 3):
-                i = -t['args'].get('I', 0) if reverse_x else t['args'].get('I', 0)
-                j = -t['args'].get('J', 0) if reverse_y else t['args'].get('J', 0)
-                k = -t['args'].get('K', 0) if reverse_z else t['args'].get('K', 0)
+                i = -t['args'].get('I',
+                                   0) if reverse_x else t['args'].get('I', 0)
+                j = -t['args'].get('J',
+                                   0) if reverse_y else t['args'].get('J', 0)
+                k = -t['args'].get('K',
+                                   0) if reverse_z else t['args'].get('K', 0)
 
                 x_o = current_pos[0]
                 y_o = current_pos[1]
 
                 clockwise = (t['value'] == 2)
 
-                logger.debug("Drawing circle clockwise={clockwise} from {t}".format(**locals()))
+                logger.debug(
+                    "Drawing circle clockwise={clockwise} from {t}".format(**locals()))
                 x_p, y_p = x_o, y_o
-                for xc, yc in arc_to_segments((x_o, y_o), (i,j), (x,y), clockwise):
+                for xc, yc in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise):
                     min_x = min(min_x, xc)
                     max_x = max(max_x, xc)
                     min_y = min(min_y, yc)
                     max_y = max(max_y, yc)
                     self.sc.addLine(x_p, y_p, xc, yc, pen=p)
-                    x_p, y_p = xc,yc
+                    x_p, y_p = xc, yc
 
             current_pos = x, y, z
 
@@ -625,14 +646,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             max_y = max(max_y, current_pos[1])
             min_z = min(min_z, current_pos[2])
             max_z = max(max_z, current_pos[2])
-            
 
         self.space_x.display(max_x-min_x)
         self.space_y.display(max_y-min_y)
         self.space_z.display(max_z-min_z)
 
         if self.display_bounding_box.isChecked():
-            p = QPen(QColor(0,255,0))
+            p = QPen(QColor(0, 255, 0))
             self.sc.addRect(min_x, min_y, max_x-min_x, max_y-min_y, p)
             txt1 = self.sc.addText(str(max_x-min_x))
             txt1.setPos((min_x+max_x)/2, max_y)
