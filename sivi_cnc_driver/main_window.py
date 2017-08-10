@@ -112,6 +112,7 @@ class Ui_MainWindow(object):
         self.inverserLAxeYLabel.setObjectName("inverserLAxeYLabel")
         self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.inverserLAxeYLabel)
         self.reverse_display_y = QtWidgets.QCheckBox(self.groupBox_5)
+        self.reverse_display_y.setChecked(True)
         self.reverse_display_y.setObjectName("reverse_display_y")
         self.formLayout_4.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.reverse_display_y)
         self.inverserLAxeZLabel = QtWidgets.QLabel(self.groupBox_5)

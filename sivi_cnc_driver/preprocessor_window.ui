@@ -44,16 +44,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="chk_optimize_trace">
-              <property name="toolTip">
-               <string>Non disponible</string>
-              </property>
-              <property name="text">
-               <string>Optimiser le déplacement entre les traçés</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QCheckBox" name="chk_del_comments">
               <property name="text">
                <string>Supprimer les commentaires</string>
@@ -64,19 +54,32 @@
              </widget>
             </item>
             <item>
+             <widget class="QCheckBox" name="chk_optimize_bounding_box">
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="text">
+               <string>Minimiser l'aire d'encadrement</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="chk_optimize_trace">
+              <property name="toolTip">
+               <string>Non disponible</string>
+              </property>
+              <property name="text">
+               <string>Optimiser le déplacement entre les traçés</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QCheckBox" name="chk_do_calcs">
               <property name="toolTip">
                <string>Non disponible</string>
               </property>
               <property name="text">
                <string>Effectuer les calculs</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="chk_optimize_bounding_box">
-              <property name="text">
-               <string>Minimiser l'aire d'encadrement</string>
               </property>
              </widget>
             </item>
@@ -125,5 +128,22 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>btn_run_preproc</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>455</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>212</x>
+     <y>231</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
