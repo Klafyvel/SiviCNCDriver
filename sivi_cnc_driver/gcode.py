@@ -1,3 +1,5 @@
+from .settings import logger
+
 __all__ = ['parse']
 
 class Stack:
@@ -34,7 +36,7 @@ def parse_iterator(gcode):
             while stack.peek() is not ')':
                 com += stack.pop()
             stack.pop()  # removes the ')'
-            yield ('__comment__', c)
+            yield ('__comment__', com)
         elif c is '\n':
             yield ('__next__', '__next__')
         elif c is '#':
@@ -73,7 +75,7 @@ def parse(gcode):
             elif i[0] == '__comment__':
                 if name is "":
                     name = 'comment'
-                args['comments'] = i[1]
+                args['comment'] = i[1]
         elif name is not "":
             yield {'name': name, 'value': value, 'args': args}
             name = ""

@@ -531,7 +531,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if t['value'] in (0, 1):
                 self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
             elif t['value'] in (2, 3):
-                i, j, k, = current_pos
                 i = -t['args'].get('I', 0) if reverse_x else t['args'].get('I', 0)
                 j = -t['args'].get('J', 0) if reverse_y else t['args'].get('J', 0)
                 k = -t['args'].get('K', 0) if reverse_z else t['args'].get('K', 0)
@@ -550,7 +549,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     max_y = max(max_y, yc)
                     self.sc.addLine(x_p, y_p, xc, yc, pen=p)
                     x_p, y_p = xc,yc
-                    
+
             current_pos = x, y, z
 
             min_x = min(min_x, current_pos[0])

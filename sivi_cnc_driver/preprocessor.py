@@ -20,7 +20,9 @@ from PyQt5.QtGui import *
 
 from .preprocessor_window import Ui_dialog
 
+from .settings import logger
 from .gcode import parse
+from .arc_calculator import arc_to_segments
 
 
 class PreprocessorDialog(QDialog, Ui_dialog):
@@ -44,6 +46,9 @@ class PreprocessorDialog(QDialog, Ui_dialog):
     def remove_useless(self):
         rm_nums = self.chk_del_num.isChecked()
         rm_comm = self.chk_del_comments.isChecked()
+        minimize = self.chk_optimize_bounding_box.isChecked()
+        if minimize:
+            x,y = self.get_minimize_bounding_box()
         r = ''
         for i in parse(self.gcode):
             if 'M' in i['name'] or 'G' in i['name']:
@@ -51,13 +56,57 @@ class PreprocessorDialog(QDialog, Ui_dialog):
                     r += 'N' + str(int(i['args']['N'])) + ' '
                 r += i['name'] + str(int(i['value'])) + ' '
                 for a in i['args']:
-                    if a in 'XYZIJF':
+                    if (not minimize and a in 'XY') or (a in 'ZIJKF'):
                         r += a + str(i['args'][a]) + ' '
-                if 'comment' in i['args'] and not rm_comm:
-                    t += '(' + i['args']['comment'] + ')'
+                    elif minimize and a =='X':
+                        r += a + str(i['args'][a]-x) + ' '
+                    elif minimize and a == 'Y':
+                        r += a + str(i['args'][a]-y) + ' '
                 r += '\n'
+            if 'comment' in i['args'] and not rm_comm:
+                logger.debug(i)
+                r += '(' + i['args']['comment'] + ')\n'
         self.output.setText(r)
         self.gcode = r
+
+    def get_minimize_bounding_box(self):
+        min_x, min_y = 0,0
+        set_x, set_y = False, False
+        x_o, y_o = 0,0
+        x,y = 0,0
+        z = 0
+        r = ''
+        for t in parse(self.gcode):
+            if t['name'] is not 'G':
+                continue
+            if 'Z' in t['args']:
+                z = t['args']['Z']
+            if z > 0 :
+                continue
+            if 'X' in t['args']:
+                x = t['args']['X']
+                if not set_x :
+                    min_x = x
+                    set_x = True
+                min_x = min(min_x, x)
+            if 'Y' in t['args']:
+                y = t['args']['Y']
+                if not set_y :
+                    min_y = y
+                    set_y = True
+                min_y = min(min_y, y)
+
+            if t['value'] in (2,3):
+                i = t['args'].get('I', 0)
+                j = t['args'].get('J', 0)
+                k = t['args'].get('K', 0)
+                clockwise = (t['value'] == 2)
+                for xc, yc in arc_to_segments((x_o, y_o), (i,j), (x,y), clockwise):
+                    min_x = min(min_x, xc)
+                    min_y = min(min_y, yc)
+            x_o, y_o = x,y
+        logger.debug("Minimizing by setting origin to {},{}".format(x,y))
+        return min_x, min_y
 
     def run_calcs(self):
         # for i in parse_instr(self.gcode):
