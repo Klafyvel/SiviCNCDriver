@@ -351,6 +351,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def manage_auto_cmd_number(self, n):
         self.auto_cmd_number.setValue(1)
         self.auto_cmd_number.setEnabled(n != 0)
+        self.auto_cmd_2.setEnabled(n != 0)
 
     @pyqtSlot()
     def auto_cmd(self):

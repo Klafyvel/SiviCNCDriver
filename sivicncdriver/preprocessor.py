@@ -56,9 +56,10 @@ class PreprocessorDialog(QDialog, Ui_dialog):
                 logger.debug(i)
                 r += '(' + i['args']['comment'] + ')\n'
                 line += 1
-        r = r.split('\n')
-        r[last_g00] = 'G00 X0.0000 Y0.0000'
-        r = '\n'.join(r)
+        if last_g00:
+            r = r.split('\n')
+            r[last_g00] = 'G00 X0.0000 Y0.0000'
+            r = '\n'.join(r)
         self.output.setText(r)
         self.gcode = r
 

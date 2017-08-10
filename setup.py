@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
-import sivi_cnc_driver
+import sivicncdriver
 
 setup(name='SiviCNCDriver',
-      version=sivi_cnc_driver.__version__,
+      version=sivicncdriver.__version__,
       description='A software to control my CNC',
       long_description=open('README.md').read(),
       url='http://github.com/klafyvel/SiviCNCDriver',
