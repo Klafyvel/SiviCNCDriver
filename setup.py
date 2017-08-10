@@ -4,7 +4,7 @@ import sivicncdriver
 setup(name='SiviCNCDriver',
       version=sivicncdriver.__version__,
       description='A software to control my CNC',
-      long_description=open('README.md').read(),
+      long_description=open('README.rst').read(),
       url='http://github.com/klafyvel/SiviCNCDriver',
       author='klafyvel',
       author_email="sivigik@gmail.com",
@@ -22,6 +22,9 @@ setup(name='SiviCNCDriver',
         'Programming Language :: Python :: 3',
         'Topic :: Utilities',
       ],
-      scripts=['bin/cnc'],
-      # zip_safe=False
-      )
+      entry_points = {
+        'gui_scripts': [
+            'sivicnc = sivicncdriver.__main__:main',
+        ],
+    },
+)
