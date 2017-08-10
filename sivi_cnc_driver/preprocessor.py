@@ -50,6 +50,8 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         if minimize:
             x,y = self.get_minimize_bounding_box()
         r = ''
+        last_g00 = None
+        line = 0
         for i in parse(self.gcode):
             if 'M' in i['name'] or 'G' in i['name']:
                 if not rm_nums and 'N' in i['args']:
@@ -62,10 +64,17 @@ class PreprocessorDialog(QDialog, Ui_dialog):
                         r += a + str(i['args'][a]-x) + ' '
                     elif minimize and a == 'Y':
                         r += a + str(i['args'][a]-y) + ' '
+                if i['name'] == 'G' and i['value'] == 0:
+                    last_g00 = line
                 r += '\n'
+                line += 1
             if 'comment' in i['args'] and not rm_comm:
                 logger.debug(i)
                 r += '(' + i['args']['comment'] + ')\n'
+                line += 1
+        r = r.split('\n')
+        r[last_g00] = 'G00 X0.0000 Y0.0000'
+        r = '\n'.join(r)
         self.output.setText(r)
         self.gcode = r
 
@@ -81,8 +90,10 @@ class PreprocessorDialog(QDialog, Ui_dialog):
                 continue
             if 'Z' in t['args']:
                 z = t['args']['Z']
+            logger.debug("Z = {}".format(z))
             if z > 0 :
                 continue
+            logger.debug("Obviously, z<=0.")
             if 'X' in t['args']:
                 x = t['args']['X']
                 if not set_x :
