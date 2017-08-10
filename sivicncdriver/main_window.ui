@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1203</width>
-    <height>674</height>
+    <width>1211</width>
+    <height>684</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -152,7 +152,7 @@
                 <item row="2" column="0">
                  <widget class="QLabel" name="afficherLaBoTeDeDLimitationLabel">
                   <property name="text">
-                   <string>Afficher la &amp;boîte de délimitation</string>
+                   <string>Afficher la boîte de délimitation</string>
                   </property>
                  </widget>
                 </item>
@@ -172,7 +172,7 @@
                 <item row="4" column="0">
                  <widget class="QLabel" name="inverserLAxeYLabel">
                   <property name="text">
-                   <string>Retourner l'axe &amp;Y</string>
+                   <string>Retourner l'axe Y</string>
                   </property>
                  </widget>
                 </item>
@@ -186,7 +186,7 @@
                 <item row="5" column="0">
                  <widget class="QLabel" name="inverserLAxeZLabel">
                   <property name="text">
-                   <string>Retourner l'axe &amp;Z</string>
+                   <string>Retourner l'axe Z</string>
                   </property>
                  </widget>
                 </item>
@@ -207,7 +207,7 @@
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_5">
                   <property name="text">
-                   <string>Dé&amp;veloppement selon X</string>
+                   <string>Développement selon X</string>
                   </property>
                  </widget>
                 </item>
@@ -506,7 +506,7 @@ Zéro</string>
                <item>
                 <widget class="QLabel" name="label_6">
                  <property name="text">
-                  <string>Les commandes automatiques permettent d'en&amp;voyer des commandes directement en pas afin de régler la machine.</string>
+                  <string>Les commandes automatiques permettent d'envoyer des commandes directement en pas afin de régler la machine.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -603,7 +603,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_13">
                     <property name="text">
-                     <string>Entre cha&amp;que étape, l'axe</string>
+                     <string>Entre chaque étape, l'axe</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::PlainText</enum>
@@ -679,7 +679,7 @@ Zéro</string>
                <item>
                 <widget class="QLabel" name="label_16">
                  <property name="text">
-                  <string>Les commandes personnalisées permettent d'envo&amp;yer des commandes définies par l'utilisateur un certain nombre de fois afin de régler la machine.</string>
+                  <string>Les commandes personnalisées permettent d'envoyer des commandes définies par l'utilisateur un certain nombre de fois afin de régler la machine.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -1091,7 +1091,7 @@ Zéro</string>
            <item>
             <widget class="QLabel" name="label_20">
              <property name="text">
-              <string>&amp;Baudrate</string>
+              <string>Baudrate</string>
              </property>
             </widget>
            </item>
@@ -1239,8 +1239,6 @@ Zéro</string>
         </widget>
        </item>
       </layout>
-      <zorder>label_2</zorder>
-      <zorder>label_2</zorder>
       <zorder>label_2</zorder>
       <zorder>btn_license</zorder>
       <zorder>btn_about_qt</zorder>
