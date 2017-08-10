@@ -189,6 +189,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_send_config.setIcon(icon8)
         self.btn_save_config.setIcon(icon5)
         self.btn_save_config_as.setIcon(icon5)
+        self.btn_run_perso_cmd.setIcon(icon6)
+        self.btn_serial_ports_list.setIcon(icon2)
 
     def connectUi(self):
         logger.debug("Connecting Ui.")
@@ -386,7 +388,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_serial_ports_list.setEnabled(not st)
         self.btn_connect.setEnabled(not st)
         if st:
-            self.tabWidget.setCurrentIndex(1)
             self.print("Emulating serial port.", "info")
         else:
             self.print("Exiting serial port emulation.", "info")

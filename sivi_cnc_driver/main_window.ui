@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>913</width>
-    <height>540</height>
+    <width>1203</width>
+    <height>646</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -291,8 +291,8 @@
        <attribute name="title">
         <string>Port Série</string>
        </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox">
           <property name="title">
            <string>Moniteur série</string>
@@ -335,6 +335,9 @@ p, li { white-space: pre-wrap; }
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetMinimumSize</enum>
+             </property>
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
@@ -379,7 +382,7 @@ p, li { white-space: pre-wrap; }
           </layout>
          </widget>
         </item>
-        <item>
+        <item row="1" column="1">
          <widget class="QTabWidget" name="tabWidget">
           <property name="enabled">
            <bool>true</bool>
@@ -387,147 +390,12 @@ p, li { white-space: pre-wrap; }
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tab_serial">
-           <attribute name="title">
-            <string>Port série</string>
-           </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <item>
-             <widget class="QWidget" name="trueSerialContainer" native="true">
-              <layout class="QVBoxLayout" name="verticalLayout_10">
-               <item>
-                <layout class="QFormLayout" name="serial_settings">
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="mulerUnPortSRieLabel">
-                   <property name="text">
-                    <string>Émuler un port série</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QCheckBox" name="chk_fake_serial"/>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QLabel" name="label">
-                   <property name="text">
-                    <string>Baudrate</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QComboBox" name="baudrate">
-                   <property name="currentIndex">
-                    <number>4</number>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>300</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>1200</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>2400</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>4800</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>9600</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>19200</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>38400</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>57600</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>115200</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>230400</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>250000</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="QLabel" name="portSRieLabel">
-                   <property name="text">
-                    <string>Port série</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="QComboBox" name="serial_ports_list"/>
-                 </item>
-                 <item row="3" column="1">
-                  <widget class="QPushButton" name="btn_serial_ports_list">
-                   <property name="text">
-                    <string>Lister les ports série</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="QPushButton" name="btn_connect">
-                 <property name="text">
-                  <string>Connecter</string>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>rc/connect.png</normaloff>rc/connect.png</iconset>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </widget>
           <widget class="QWidget" name="tab_command">
            <attribute name="title">
             <string>Commande</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_8">
-            <item>
-             <widget class="QPushButton" name="btn_set_origin">
-              <property name="text">
-               <string>Définir l'origine</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>rc/origin.png</normaloff>rc/origin.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="1" column="0">
              <widget class="QGroupBox" name="grp_cmd">
               <property name="title">
                <string>Commande manuelle</string>
@@ -557,28 +425,6 @@ p, li { white-space: pre-wrap; }
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
-                  <widget class="QPushButton" name="btn_y_minus">
-                   <property name="text">
-                    <string>Y-</string>
-                   </property>
-                   <property name="icon">
-                    <iconset>
-                     <normaloff>rc/down.png</normaloff>rc/down.png</iconset>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="QPushButton" name="btn_x_minus">
-                   <property name="text">
-                    <string>X-</string>
-                   </property>
-                   <property name="icon">
-                    <iconset>
-                     <normaloff>rc/left.png</normaloff>rc/left.png</iconset>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="0" column="3">
                   <widget class="QPushButton" name="btn_z_plus">
                    <property name="text">
@@ -600,6 +446,28 @@ p, li { white-space: pre-wrap; }
                     <iconset>
                      <normalon>rc/down.png</normalon>
                     </iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QPushButton" name="btn_y_minus">
+                   <property name="text">
+                    <string>Y-</string>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>rc/down.png</normaloff>rc/down.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="btn_x_minus">
+                   <property name="text">
+                    <string>X-</string>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>rc/left.png</normaloff>rc/left.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -629,7 +497,7 @@ Zéro</string>
               </layout>
              </widget>
             </item>
-            <item>
+            <item row="2" column="0">
              <widget class="QGroupBox" name="grp_auto">
               <property name="title">
                <string>Commandes automatiques</string>
@@ -646,82 +514,144 @@ Zéro</string>
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_10">
-                 <item>
-                  <widget class="QLabel" name="label_7">
-                   <property name="text">
-                    <string>L'axe</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="auto_cmd_axis">
-                   <item>
+                <widget class="QWidget" name="" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_10">
+                  <item>
+                   <widget class="QLabel" name="label_7">
                     <property name="text">
-                     <string>X</string>
+                     <string>L'axe</string>
                     </property>
-                   </item>
-                   <item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="auto_cmd_axis">
+                    <item>
+                     <property name="text">
+                      <string>X</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Y</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Z</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_8">
                     <property name="text">
-                     <string>Y</string>
+                     <string>effectue</string>
                     </property>
-                   </item>
-                   <item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="auto_cmd_number">
+                    <property name="value">
+                     <number>1</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="auto_cmd_type">
+                    <item>
+                     <property name="text">
+                      <string>aller</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>aller(s)-retour(s)</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_9">
                     <property name="text">
-                     <string>Z</string>
+                     <string>de</string>
                     </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_8">
-                   <property name="text">
-                    <string>effectue</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QSpinBox" name="auto_cmd_number"/>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="auto_cmd_type">
-                   <item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="auto_cmd_step">
+                    <property name="minimum">
+                     <number>-1000</number>
+                    </property>
+                    <property name="maximum">
+                     <number>1000</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_10">
                     <property name="text">
-                     <string>aller</string>
+                     <string>pas.</string>
                     </property>
-                   </item>
-                   <item>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_3" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_6">
+                  <item>
+                   <widget class="QLabel" name="label_13">
                     <property name="text">
-                     <string>aller(s)-retour(s)</string>
+                     <string>Entre chaque étape, l'axe</string>
                     </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_9">
-                   <property name="text">
-                    <string>de</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QSpinBox" name="auto_cmd_step">
-                   <property name="minimum">
-                    <number>1</number>
-                   </property>
-                   <property name="maximum">
-                    <number>1000</number>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_10">
-                   <property name="text">
-                    <string>pas.</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="auto_cmd_axis_2">
+                    <item>
+                     <property name="text">
+                      <string>X</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Y</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Z</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_14">
+                    <property name="text">
+                     <string>se déplace de</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="auto_cmd_step_2">
+                    <property name="minimum">
+                     <number>-1000</number>
+                    </property>
+                    <property name="maximum">
+                     <number>1000</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_15">
+                    <property name="text">
+                     <string>pas.</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="btn_run_auto_cmd">
@@ -735,6 +665,80 @@ Zéro</string>
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+            <item row="1" column="1" rowspan="2">
+             <widget class="QGroupBox" name="groupBox_6">
+              <property name="title">
+               <string>Commandes personnalisées</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <widget class="QLabel" name="label_16">
+                 <property name="text">
+                  <string>Les commandes personnalisées permettent d'envoyer des commandes définies par l'utilisateur un certain nombre de fois afin de régler la machine.</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QWidget" name="widget_4" native="true">
+                 <layout class="QHBoxLayout" name="horizontalLayout_7">
+                  <item>
+                   <widget class="QLabel" name="label_17">
+                    <property name="text">
+                     <string>Répéter</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="perso_cmd_number">
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="maximum">
+                     <number>1000</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_18">
+                    <property name="text">
+                     <string>fois les commandes :</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTextEdit" name="perso_cmd"/>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btn_run_perso_cmd">
+                 <property name="text">
+                  <string>Envoyer</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>rc/run.png</normaloff>rc/run.png</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="2">
+             <widget class="QPushButton" name="btn_set_origin">
+              <property name="text">
+               <string>Définir l'origine</string>
+              </property>
+              <property name="icon">
+               <iconset>
+                <normaloff>rc/origin.png</normaloff>rc/origin.png</iconset>
+              </property>
              </widget>
             </item>
            </layout>
@@ -1038,6 +1042,150 @@ Zéro</string>
             </item>
            </layout>
           </widget>
+         </widget>
+        </item>
+        <item row="0" column="0" colspan="2">
+         <widget class="QGroupBox" name="groupBox_7">
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="label_19">
+             <property name="text">
+              <string>Émuler un port série </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="chk_fake_serial"/>
+           </item>
+           <item>
+            <widget class="Line" name="line_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_serial_ports_list">
+             <property name="text">
+              <string>Lister les ports série</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>rc/reload.png</normaloff>rc/reload.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_20">
+             <property name="text">
+              <string>Baudrate</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="baudrate">
+             <property name="currentIndex">
+              <number>4</number>
+             </property>
+             <item>
+              <property name="text">
+               <string>300</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>1200</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>2400</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>4800</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>9600</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>19200</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>38400</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>57600</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>115200</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>230400</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>250000</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_21">
+             <property name="text">
+              <string>Port série</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="serial_ports_list"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_connect">
+             <property name="text">
+              <string>Connecter</string>
+             </property>
+             <property name="icon">
+              <iconset>
+               <normaloff>rc/connect.png</normaloff>rc/connect.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
