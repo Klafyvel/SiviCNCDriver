@@ -30,7 +30,7 @@ end, path to center and sense of rotation.
 (10, 0)
 
 """
-from math import atan2, cos, sin, sqrt
+from math import atan2, cos, sin, sqrt, pi
 from decimal import *
 
 from sivicncdriver.settings import logger
@@ -39,7 +39,7 @@ from sivicncdriver.settings import logger
 getcontext().prec = 6
 
 
-def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1):
+def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1,):
     """
     Creates small segments from an arc.
 
@@ -63,27 +63,30 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1):
     e = Decimal(end[0]), Decimal(end[1])
     s = Decimal(start[0]), Decimal(start[1])
     radius = (v[0]**2 + v[1]**2).sqrt()
-    start_angle = Decimal(atan2(-v[1], -v[0]))
-    end_angle = Decimal(atan2(e[1]-s[1]-v[1], e[0]-s[0]-v[0]))
-
+    start_angle = Decimal(atan2(-v[1], -v[0])) % Decimal(2*pi)
     center = (s[0]+v[0], s[1]+v[1])
-    nb_step = int(abs((end_angle-start_angle)*radius/Decimal(length)))
+    end_angle = Decimal(atan2(e[1]-center[1], e[0]-center[0])) 
 
-    arc_length = end_angle - start_angle
-    logger.debug("Arc to segments : start_angle={start_angle}, end_angle={end_angle}, radius={radius}, arc_length={arc_length}".format(**locals()))
+    if clockwise:
+        arc_length = -Decimal(2*pi) + (end_angle - start_angle)
+    else:
+        arc_length = (end_angle - start_angle)
 
-    if abs(arc_length * radius) < 2:
+    arc_length = arc_length % Decimal(2*pi)
+    if arc_length < 0 and not clockwise:
+        arc_length += Decimal(2*pi)
+    elif arc_length > 0 and clockwise:
+        arc_length -= Decimal(2*pi)
+    nb_step = int(abs(arc_length*radius/Decimal(length)))
+    
+    logger.debug("Arc to segments : start={s}, end={e}, v={v}".format(**locals()))
+    logger.debug("Arc to segments : start_angle={start_angle}, end_angle={end_angle}, radius={radius}, arc_length={arc_length}, nb_step={nb_step}".format(**locals()))
+    logger.debug(arc_length * radius)
+    if abs(arc_length * radius) < length:
         yield start
         yield end
-
-    elif arc_length*radius < 2:
-        logger.debug("Negatives : {}".format(arc_length*radius))
-
     else:
-        if clockwise:
-            d_angle = -Decimal(length) / radius
-        else:
-            d_angle = Decimal(length) / radius
+        d_angle = arc_length / nb_step
         angle = start_angle
         for _ in range(nb_step):
             yield (

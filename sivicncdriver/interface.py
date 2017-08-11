@@ -306,6 +306,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_save_file.clicked.connect(self.save_file)
         self.btn_save_as.clicked.connect(self.save_file_as)
         self.redraw.clicked.connect(self.draw_file)
+        self.btn_close.clicked.connect(self.close_file)
 
         self.serial_manager.send_print.connect(self.print)
 
@@ -321,8 +322,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_license.clicked.connect(self.about_license)
         self.btn_about_qt.clicked.connect(self.about_qt)
 
-        self.actionZoomIn.triggered.connect(self.zoomIn)
-        self.actionZoomOut.triggered.connect(self.zoomOut)
+        self.zoomIn_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Plus), self)
+        self.zoomOut_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self)
+
+        self.zoomIn_shortcut.activated.connect(self.zoomIn)
+        self.zoomOut_shortcut.activated.connect(self.zoomOut)
 
         self.sc.selectionChanged.connect(self.highlight_selected_path)
 
@@ -735,6 +739,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 f.write(self.code_edit.toPlainText())
 
     @pyqtSlot()
+    def close_file(self):
+        """
+        Close the current file.
+        """
+        self.filename.setText("Pas de fichier.")
+        self.code_edit.setText("")
+        self.draw_file()
+
+    @pyqtSlot()
     def draw_file(self):
         """
         Draws a gcode file.
@@ -760,9 +773,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 txt.setFlags(QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemIsMovable |
                              QGraphicsItem.ItemIsSelectable | txt.flags())
 
-            x = -t['args'].get('X', -x) if reverse_x else t['args'].get('X', x)
-            y = -t['args'].get('Y', -y) if reverse_y else t['args'].get('Y', y)
-            z = -t['args'].get('Z', -z) if reverse_z else t['args'].get('Z', z)
+            x = t['args'].get('X', x)
+            y = t['args'].get('Y', y)
+            z = t['args'].get('Z', z)
 
             p = QPen(QColor((z <= 0) * 255, 0, (z > 0) * 255))
             p.setWidthF(1/self.zoom)
@@ -773,12 +786,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     QGraphicsItem.ItemIsSelectable | s.flags())
                 s.setData(0, t['line'])
             elif t['value'] in (2, 3):
-                i = -t['args'].get('I',
-                                   0) if reverse_x else t['args'].get('I', 0)
-                j = -t['args'].get('J',
-                                   0) if reverse_y else t['args'].get('J', 0)
-                k = -t['args'].get('K',
-                                   0) if reverse_z else t['args'].get('K', 0)
+                i = t['args'].get('I', 0)
+                j = t['args'].get('J', 0)
+                k = t['args'].get('K', 0)
 
                 x_o = current_pos[0]
                 y_o = current_pos[1]
@@ -787,13 +797,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 logger.debug(
                     "Drawing circle clockwise={clockwise} from {t}".format(**locals()))
-                pp = QPainterPath(QPoint(x_o,y_o))
+                pp = QPainterPath()
+                pp.moveTo(x_o,y_o)
                 for xc, yc in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise, 1/self.zoom):
-                    min_x = min(min_x, xc)
-                    max_x = max(max_x, xc)
-                    min_y = min(min_y, yc)
-                    max_y = max(max_y, yc)
-                    pp.lineTo(xc,yc)
+                    effective_x = xc #if not reverse_x else -xc
+                    effective_y = yc #if not reverse_y else -yc
+                    min_x = min(min_x, effective_x)
+                    max_x = max(max_x, effective_x)
+                    min_y = min(min_y, effective_y)
+                    max_y = max(max_y, effective_y)
+                    pp.lineTo(effective_x,effective_y)
 
                 path_item = self.sc.addPath(pp,pen=p)
                 path_item.setFlags(QGraphicsItem.ItemIsFocusable | 
@@ -802,10 +815,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             current_pos = x, y, z
 
-            min_x = min(min_x, current_pos[0])
-            max_x = max(max_x, current_pos[0])
-            min_y = min(min_y, current_pos[1])
-            max_y = max(max_y, current_pos[1])
+            min_x = min(min_x, current_pos[0] if not reverse_x else -current_pos[0])
+            max_x = max(max_x, current_pos[0] if not reverse_x else -current_pos[0])
+            min_y = min(min_y, current_pos[1] if not reverse_y else -current_pos[1])
+            max_y = max(max_y, current_pos[1] if not reverse_y else -current_pos[1])
             min_z = min(min_z, current_pos[2])
             max_z = max(max_z, current_pos[2])
 
