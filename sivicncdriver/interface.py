@@ -779,9 +779,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             p = QPen(QColor((z <= 0) * 255, 0, (z > 0) * 255))
             p.setWidthF(1/self.zoom)
+            effective_x_o = current_pos[0] if not reverse_x else -current_pos[0]
+            effective_y_o = current_pos[1] if not reverse_y else -current_pos[1]
 
             if t['value'] in (0, 1):
-                s = self.sc.addLine(current_pos[0], current_pos[1], x, y, pen=p)
+                effective_x = x if not reverse_x else -x
+                effective_y = y if not reverse_y else -y
+                s = self.sc.addLine(effective_x_o, effective_y_o, effective_x, effective_y, pen=p)
                 s.setFlags(QGraphicsItem.ItemIsFocusable | 
                     QGraphicsItem.ItemIsSelectable | s.flags())
                 s.setData(0, t['line'])
@@ -798,10 +802,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 logger.debug(
                     "Drawing circle clockwise={clockwise} from {t}".format(**locals()))
                 pp = QPainterPath()
-                pp.moveTo(x_o,y_o)
+                pp.moveTo(effective_x_o,effective_y_o)
                 for xc, yc in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise, 1/self.zoom):
-                    effective_x = xc #if not reverse_x else -xc
-                    effective_y = yc #if not reverse_y else -yc
+                    effective_x = xc if not reverse_x else -xc
+                    effective_y = yc if not reverse_y else -yc
                     min_x = min(min_x, effective_x)
                     max_x = max(max_x, effective_x)
                     min_y = min(min_y, effective_y)
