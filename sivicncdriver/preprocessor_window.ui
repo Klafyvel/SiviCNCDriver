@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
+    <width>561</width>
     <height>298</height>
    </rect>
   </property>
@@ -61,25 +61,8 @@
               <property name="text">
                <string>Minimiser l'aire d'encadrement</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="chk_optimize_trace">
-              <property name="toolTip">
-               <string>Non disponible</string>
-              </property>
-              <property name="text">
-               <string>Optimiser le déplacement entre les traçés</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="chk_do_calcs">
-              <property name="toolTip">
-               <string>Non disponible</string>
-              </property>
-              <property name="text">
-               <string>Effectuer les calculs</string>
+              <property name="checked">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -128,22 +111,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>btn_run_preproc</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>455</x>
-     <y>267</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
-     <y>231</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

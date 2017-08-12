@@ -4,13 +4,14 @@ The preprocessor module
 
 Provides the PreprocessorDialog class.
 """
+import os
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 from sivicncdriver.preprocessor_window import Ui_dialog
-
+from sivicncdriver import settings
 from sivicncdriver.settings import logger
 from sivicncdriver.gcode import parse
 from sivicncdriver.arc_calculator import arc_to_segments
@@ -31,12 +32,15 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         self.setupUi(self)
         self.gcode = gcode
         self.original = gcode
+        self.has_been_run_once = False
+
+        icon1 = QIcon()
+        icon1.addPixmap(QPixmap(os.path.join(settings.APP_DIR, "rc/work.png")), QIcon.Normal, QIcon.Off)
+        self.btn_run_preproc.setIcon(icon1)
 
         self.btn_run_preproc.clicked.connect(self.run_preprocessor)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.cancel)
-
-        self.gcode_vars = {}
 
     @pyqtSlot()
     def run_preprocessor(self):
@@ -44,6 +48,7 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         Runs the preprocessor on the G-Code.
         """
         self.remove_useless()
+        self.has_been_run_once = True
 
     def remove_useless(self):
         """
@@ -128,10 +133,12 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         logger.debug("Minimizing by setting origin to {},{}".format(x,y))
         return min_x, min_y
 
-    def run_calcs(self):
-        # for i in parse_instr(self.gcode):
-        #     if ''
-        pass
+
+    @pyqtSlot()
+    def accept(self):
+        if not self.has_been_run_once:
+            self.run_preprocessor()
+        super(PreprocessorDialog, self).accept()
 
     @pyqtSlot()
     def cancel(self):
