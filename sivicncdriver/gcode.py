@@ -75,13 +75,6 @@ def parse_iterator(gcode):
         elif c is '\n':
             yield ('__next__', '__next__', line)
             line += 1
-        elif c is '#':
-            var_name = '#' + str(int(parse_value(stack).calc()))
-            # wait for the '='
-            while stack.peek() in SEPARATOR:
-                stack.pop()
-            var_value = parse_value(stack).calc()
-            yield ('__new_var__', {var_name: var_value}, line)
         else:
             yield (c, parse_value(stack), line)
 
@@ -115,9 +108,9 @@ def parse(gcode):
                     yield {'name': '__new_var__', 'var': a, 'value': i[1][a], 'line':i[2]}
             if i[0] in ('G', 'M'):
                 name = i[0]
-                value = i[1].calc()
+                value = i[1]
             elif i[0] in 'XYZIJKN':
-                args[i[0]] = i[1].calc()
+                args[i[0]] = i[1]
             elif i[0] == '__comment__':
                 if name is "":
                     name = 'comment'
@@ -138,84 +131,5 @@ def parse_value(stack):
     """
     r = ''
     while stack.peek() not in SEPARATOR:
-        if stack.peek() not in '[]':
-            r += stack.pop()
-        else:
-            stack.pop()
-    v = OpNode(r)
-    return v
-
-
-class OpNode:
-    OP = {
-        '+': lambda l, r: l.calc() + r.calc(),
-        '-': lambda l, r: l.calc() - r.calc(),
-        '*': lambda l, r: l.calc() * r.calc(),
-        '/': lambda l, r: l.calc() / r.calc(),
-        'Nop_var': lambda l, r: OpNode.var[l],
-        'Nop_val': lambda l, r: float(l),
-    }
-    var = {}
-
-    def __init__(self, input_str, print_this=False):
-        p = input_str.split('+')
-        m = input_str.split('-')
-        d = input_str.split('/')
-        t = input_str.split('*')
-
-        if len(p) > 1:
-            self.op_name = '+'
-            self.op = self.OP['+']
-            self.left = OpNode(p[0])
-            self.right = OpNode('+'.join(p[1:]))
-        elif len(m) > 1:
-            self.op_name = '-'
-            self.op = self.OP['-']
-            if m[0] == '':  # i.e. a negative number
-                self.left = OpNode('0')
-            else:
-                self.left = OpNode(m[0])
-            self.right = OpNode('-'.join(m[1:]))
-        elif len(t) > 1:
-            self.op_name = '*'
-            self.op = self.OP['*']
-            self.left = OpNode(t[0])
-            self.right = OpNode('*'.join(t[1:]))
-        elif len(d) > 1:
-            self.op_name = '/'
-            self.op = self.OP['/']
-            self.left = OpNode(d[0])
-            self.right = OpNode('/'.join(d[1:]))
-        else:
-            self.op_name = 'Nop'
-            try:
-                float(input_str)
-            except ValueError:
-                self.op = self.OP['Nop_var']
-            else:
-                self.op = self.OP['Nop_val']
-            self.left = input_str
-            self.right = None
-        if print_this:
-            self.print()
-
-    def calc(self):
-        return self.op(self.left, self.right)
-
-    def print(self, space_before=0):
-        print(' ' * space_before + "->" + self.op_name, end="")
-        if self.op_name is 'Nop':
-            print(" = " + str(self.left))
-        else:
-            print()
-            self.left.print(space_before + 1)
-            print()
-            self.right.print(space_before + 1)
-            print()
-
-
-
-if __name__ == '__main__':
-    i = input()
-    o = OpNode(i)
-    print(o.calc())
+        r += stack.pop()
+    return float(r)
