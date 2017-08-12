@@ -136,6 +136,54 @@ class SendAutoCmdThread(QThread):
                     break
 
 
+class SendCustomCommandThread(QThread):
+    """
+    A thread to send custom commands without blocking the main thread.
+    """
+    update_progress = pyqtSignal(int)
+
+    def __init__(self, serial_manager, gcode, n):
+        """
+        The __init__ method.
+
+        :param serial_manager: The main window's serial manager
+        :param gcode: The gcode which is to be sent
+        :param n: The number of times the command will be sent
+        :type serial_manager: SerialManager
+        :type gcode: str
+        :type n: int
+        """
+        QThread.__init__(self)
+        self.gcode = gcode
+        self.serial_manager = serial_manager
+        self.n = n
+        self.user_stop = False
+
+    def __del__(self):
+        self.wait()
+
+    @pyqtSlot()
+    def stop(self):
+        """
+        A simple slot to tell the thread to stop.
+        """
+        self.user_stop = True
+
+    def run(self):
+        """
+        Runs the thread.
+
+        The commands are sent using the serial manager. If an error occurs or if
+        the thread is stopped by the user, then it quits.
+        """
+        for _ in range(self.n):
+            for n, l in enumerate(self.gcode):
+                self.serial_manager.sendMsg(l)
+                self.update_progress.emit(n)
+                if not self.serial_manager.waitForConfirm() or self.user_stop:
+                    break
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
     The main window of the application.
@@ -261,7 +309,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_send_config.setIcon(icon8)
         self.btn_save_config.setIcon(icon5)
         self.btn_save_config_as.setIcon(icon5)
-        self.btn_run_perso_cmd.setIcon(icon6)
+        self.btn_run_custom_cmd.setIcon(icon6)
         self.btn_serial_ports_list.setIcon(icon2)
 
     def connectUi(self):
@@ -301,6 +349,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.manage_auto_cmd_number)
         self.btn_run_auto_cmd.clicked.connect(self.auto_cmd)
         self.manage_auto_cmd_number(self.auto_cmd_type.currentIndex())
+
+        self.btn_run_custom_cmd.clicked.connect(self.run_custom_cmd)
 
         self.chk_fake_serial.stateChanged.connect(
             self.manage_emulate_serial_port)
@@ -470,7 +520,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def auto_cmd(self):
         """
-        Send auto commands using a thread if they are too long.
+        Sends auto commands using a thread if they are too long.
         """
         logger.info("Sending auto command.")
         self.print("Sending auto command.", "info")
@@ -499,6 +549,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.send_thread.finished.connect(self.file_sent)
             self.send_thread.update_progress.connect(self.update_progress)
             self.send_thread.start()
+
+    @pyqtSlot()
+    def run_custom_cmd(self):
+        """
+        Sends a custom command using a thread.
+        """
+        logger.info("Sending custom command.")
+        self.print("Sending custom command.", "info")
+        gcode = self.custom_cmd.toPlainText().split('\n')
+        n = self.custom_cmd_number.value()
+        self.send_thread = SendCustomCommandThread(self.serial_manager, gcode, n)
+        self.sending_progress.setMaximum(n)
+        self.sending_progress.setValue(0)
+        self.btn_send_current_file.setText("Annuler l'envoi")
+        self.btn_send_current_file.clicked.disconnect()
+        self.btn_send_current_file.clicked.connect(self.send_thread.stop)
+        self.tabWidget.setEnabled(False)
+
+        self.send_thread.finished.connect(self.file_sent)
+        self.send_thread.update_progress.connect(self.update_progress)
+        self.send_thread.start()
 
     @pyqtSlot(int)
     def manage_emulate_serial_port(self, s):

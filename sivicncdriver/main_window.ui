@@ -28,7 +28,7 @@
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -704,7 +704,7 @@ Zéro</string>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QSpinBox" name="perso_cmd_number">
+                   <widget class="QSpinBox" name="custom_cmd_number">
                     <property name="minimum">
                      <number>1</number>
                     </property>
@@ -724,10 +724,10 @@ Zéro</string>
                 </widget>
                </item>
                <item>
-                <widget class="QTextEdit" name="perso_cmd"/>
+                <widget class="QTextEdit" name="custom_cmd"/>
                </item>
                <item>
-                <widget class="QPushButton" name="btn_run_perso_cmd">
+                <widget class="QPushButton" name="btn_run_custom_cmd">
                  <property name="text">
                   <string>Envoyer</string>
                  </property>
@@ -1264,12 +1264,12 @@ Zéro</string>
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>243</x>
-     <y>497</y>
+     <x>38</x>
+     <y>85</y>
     </hint>
     <hint type="destinationlabel">
-     <x>335</x>
-     <y>498</y>
+     <x>47</x>
+     <y>85</y>
     </hint>
    </hints>
   </connection>
