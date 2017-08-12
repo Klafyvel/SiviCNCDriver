@@ -10,11 +10,9 @@ function of the package which doesn't take any parameter.
 
 :Example:
 
->>> from sivicncdriver import main
+>>> from sivicncdriver.app import main
 >>> main()
 
 """
-
-from sivicncdriver.app import main
 
 __version__ = "0.1.2"
