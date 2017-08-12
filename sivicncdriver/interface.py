@@ -848,12 +848,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         reverse_y = self.reverse_display_y.isChecked()
         reverse_z = self.reverse_display_z.isChecked()
 
-        x_axis_arrow = QPainterPath()
-        x_axis_arrow.lineTo((10,0))
-        x_axis_arrow.lineTo((7.5,2))
-        x_axis_arrow.moveTo((10,0))
-        x_axis_arrow.lineTo((7.5,-2))
-
         for n, t in enumerate(parse(gcode)):
             if t['name'] is not 'G':
                 continue
@@ -935,6 +929,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             txt1.setPos((min_x+max_x)/2, max_y)
             txt2 = self.sc.addText(str(max_y-min_y))
             txt2.setPos(max_x, (min_y+max_y)/2)
+
+        if self.display_axis.isChecked():
+            arrow_length = min(self.space_x.value(), self.space_y.value())
+            if reverse_x:
+                arrow_length_x = - arrow_length
+            else:
+                arrow_length_x = arrow_length
+            if reverse_y:
+                arrow_length_y = - arrow_length
+            else:
+                arrow_length_y = arrow_length
+            
+            sign = lambda x: (1, -1)[x < 0]
+
+            x_axis_arrow = QPainterPath()
+            x_axis_arrow.lineTo(arrow_length_x,0)
+            x_axis_arrow.lineTo(0.95*arrow_length_x,0.05*arrow_length_x)
+            x_axis_arrow.moveTo(arrow_length_x,0)
+            x_axis_arrow.lineTo(0.95*arrow_length_x,-0.05*arrow_length_x)
+            x_axis_arrow.addText(arrow_length_x*1.1, -10 * sign(arrow_length_y), QFont("sans-serif"), "X")
+            self.sc.addPath(x_axis_arrow)
+
+            y_axis_arrow = QPainterPath()
+            y_axis_arrow.lineTo(0, arrow_length_y)
+            y_axis_arrow.lineTo(0.05*arrow_length_y, 0.95*arrow_length_y)
+            y_axis_arrow.moveTo(0, arrow_length_y)
+            y_axis_arrow.lineTo(-0.05*arrow_length_y, 0.95*arrow_length_y)
+            y_axis_arrow.addText(-10 * sign(arrow_length_x), arrow_length_y*1.1, QFont("sans-serif"), "Y")
+            self.sc.addPath(y_axis_arrow)
 
         self.fileview.setScene(self.sc)
 
