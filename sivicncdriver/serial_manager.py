@@ -28,6 +28,7 @@ class SerialManager(QObject):
         self.send_print.emit("Opening {} with baudrate {}".format(repr(serial_port), baudrate), "info")
         self.serial.port = serial_port
         self.serial.baudrate = baudrate
+        self.serial.timeout = None
         try :
             self.serial.open()
             self.is_open = True
@@ -36,6 +37,7 @@ class SerialManager(QObject):
             logger.error("Could not open serial port.")
             self.send_print.emit("Could not open serial port.", "error")
             return False
+        logger.debug(self.serial.timeout)
         return True
 
     def close(self):
@@ -73,7 +75,7 @@ class SerialManager(QObject):
             return False
         else:
             logger.info("Received {}".format(repr(txt)))
-            self.send_print.emit(txt, "machine")
+            self.send_print.emit("m> {}".format(txt), "machine")
             return True
 
     def step(self, axis, n):
