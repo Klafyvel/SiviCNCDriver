@@ -78,7 +78,7 @@ class SendAutoCmdThread(QThread):
     """
     update_progress = pyqtSignal(int)
 
-    def __init__(self, serial_manager, axis, step, n):
+    def __init__(self, serial_manager, axis, step, n, axis2=None, step2=None):
         """
         The __init__ method.
 
@@ -86,10 +86,15 @@ class SendAutoCmdThread(QThread):
         :param axis: The axis on which the thread will operate
         :param step: The number of step of one movement
         :param n: The number of movements
+        :param axis2: You can ask a second axis to move between two first axis
+            moves.
+        :param step2: The number of steps the second axis has to move.
         :type serial_manager: SerialManager
         :type axis: str
         :type step: int
         :type n: int
+        :type axis2: str
+        :type step2: int
         """
         QThread.__init__(self)
         self.axis = axis
@@ -97,6 +102,8 @@ class SendAutoCmdThread(QThread):
         self.n = n
         self.serial_manager = serial_manager
         self.user_stop = False
+        self.axis2 = axis2
+        self.step2 = step2
 
     def __del__(self):
         self.wait()
@@ -119,8 +126,14 @@ class SendAutoCmdThread(QThread):
             self.update_progress.emit(i)
             if not self.serial_manager.step(self.axis, self.step) or self.user_stop:
                 break
+            if self.axis2 and self.step2:
+                if not self.serial_manager.step(self.axis2, self.step2) or self.user_stop:
+                    break
             if not self.serial_manager.step(self.axis, -self.step) or self.user_stop:
                 break
+            if self.axis2 and self.step2:
+                if not self.serial_manager.step(self.axis2, self.step2) or self.user_stop:
+                    break
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -471,9 +484,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.print("Done.", "info")
             logger.info("Auto command sent.")
         else:
-
+            axis2 = self.auto_cmd_axis_2.currentText()
+            step2 = self.auto_cmd_step_2.value()
             self.send_thread = SendAutoCmdThread(
-                self.serial_manager, axis, step, n)
+                self.serial_manager, axis, step, n, axis2, step2)
 
             self.sending_progress.setMaximum(n)
             self.sending_progress.setValue(0)
