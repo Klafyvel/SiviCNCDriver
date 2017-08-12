@@ -848,6 +848,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         reverse_y = self.reverse_display_y.isChecked()
         reverse_z = self.reverse_display_z.isChecked()
 
+        x_axis_arrow = QPainterPath()
+        x_axis_arrow.lineTo((10,0))
+        x_axis_arrow.lineTo((7.5,2))
+        x_axis_arrow.moveTo((10,0))
+        x_axis_arrow.lineTo((7.5,-2))
+
         for n, t in enumerate(parse(gcode)):
             if t['name'] is not 'G':
                 continue
