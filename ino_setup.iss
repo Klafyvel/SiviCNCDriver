@@ -45,7 +45,7 @@ Source: "README.rst"; DestDir: "{app}"; Flags: ignoreversion isreadme
 
 [Icons]
 Name: "{commonprograms}\{#MyAppName}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}";IconFilename: "{app}\icon.ico"
-Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}";IconFilename: "{app}\myicon.ico"; Tasks: desktopicon
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}";IconFilename: "{app}\icon.ico"; Tasks: desktopicon
 Name: "{commonprograms}\{#MyAppName}\Uninstall SiviCNCDriver"; Filename: "{uninstallexe}"
 
 [Run]
