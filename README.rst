@@ -31,7 +31,9 @@ Then you should be able to run the program with a simple::
 
 Binary distribution (Windows)
 -----------------------------
-If, for some reasons, you can't or don't want to use pip, a binary version should be available here, some day.
+If, for some reasons, you can't or don't want to use pip, a binary is available here_ .
+
+.. _here: https://github.com/Klafyvel/SiviCNCDriver/releases/tag/v0.1.2
 
 Contribute
 ===========
