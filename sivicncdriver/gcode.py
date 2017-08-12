@@ -132,5 +132,4 @@ def parse_value(stack):
     r = ''
     while stack.peek() not in SEPARATOR:
         r += stack.pop()
-    logger.debug(r)
     return float(r)
