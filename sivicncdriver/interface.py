@@ -176,10 +176,11 @@ class SendCustomCommandThread(QThread):
         The commands are sent using the serial manager. If an error occurs or if
         the thread is stopped by the user, then it quits.
         """
-        for _ in range(self.n):
+        l = len(self.gcode)
+        for k in range(self.n):
             for n, l in enumerate(self.gcode):
+                self.update_progress.emit(k*l + n)
                 self.serial_manager.sendMsg(l)
-                self.update_progress.emit(n)
                 if not self.serial_manager.waitForConfirm() or self.user_stop:
                     break
 
@@ -559,8 +560,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.print("Sending custom command.", "info")
         gcode = self.custom_cmd.toPlainText().split('\n')
         n = self.custom_cmd_number.value()
+
         self.send_thread = SendCustomCommandThread(self.serial_manager, gcode, n)
-        self.sending_progress.setMaximum(n)
+        self.sending_progress.setMaximum(n*len(gcode))
         self.sending_progress.setValue(0)
         self.btn_send_current_file.setText("Annuler l'envoi")
         self.btn_send_current_file.clicked.disconnect()
