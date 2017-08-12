@@ -176,10 +176,10 @@ class SendCustomCommandThread(QThread):
         The commands are sent using the serial manager. If an error occurs or if
         the thread is stopped by the user, then it quits.
         """
-        l = len(self.gcode)
+        length = len(self.gcode)
         for k in range(self.n):
             for n, l in enumerate(self.gcode):
-                self.update_progress.emit(k*l + n)
+                self.update_progress.emit(k*length + n)
                 self.serial_manager.sendMsg(l)
                 if not self.serial_manager.waitForConfirm() or self.user_stop:
                     break
