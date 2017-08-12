@@ -305,6 +305,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.btn_z_minus.setIcon(icon15)
 
+        icon16 = QtGui.QIcon()
+        icon16.addPixmap(QtGui.QPixmap(os.path.join(
+            settings.RC_DIR,"close.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_close.setIcon(icon16)
+
         self.btn_go_to_zero.setIcon(icon9)
         self.btn_run_auto_cmd.setIcon(icon6)
         self.btn_send_config.setIcon(icon8)

@@ -35,7 +35,7 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         self.has_been_run_once = False
 
         icon1 = QIcon()
-        icon1.addPixmap(QPixmap(os.path.join(settings.APP_DIR, "rc/work.png")), QIcon.Normal, QIcon.Off)
+        icon1.addPixmap(QPixmap(os.path.join(settings.RC_DIR, "work.png")), QIcon.Normal, QIcon.Off)
         self.btn_run_preproc.setIcon(icon1)
 
         self.btn_run_preproc.clicked.connect(self.run_preprocessor)

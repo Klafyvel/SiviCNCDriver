@@ -71,6 +71,10 @@
             <property name="text">
              <string>Fermer</string>
             </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>rc/close.png</normaloff>rc/close.png</iconset>
+            </property>
            </widget>
           </item>
          </layout>
