@@ -2,4 +2,3 @@ include *.md
 include requirements.txt
 recursive-include sivicncdriver/rc *.png
 recursive-include sivicncdriver/configs example.json
-recursive-include sivicncdriver/configs hello_world.ngc

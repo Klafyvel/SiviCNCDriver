@@ -8,7 +8,7 @@ from logging.handlers import RotatingFileHandler
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = True
+DEBUG = False
 
 CONFIG_DIR = os.path.join(APP_DIR, "configs", "")
 
