@@ -855,8 +855,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             x, y, z = current_pos
 
             if self.display_draw_steps.isChecked():
+                effective_x = x if not reverse_x else -x
+                effective_y = y if not reverse_y else -y
                 txt = self.sc.addText(str(n))
-                txt.setPos(x, y)
+                txt.setPos(effective_x, effective_y)
                 txt.setFlags(QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemIsMovable |
                              QGraphicsItem.ItemIsSelectable | txt.flags())
 
@@ -864,7 +866,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             y = t['args'].get('Y', y)
             z = t['args'].get('Z', z)
 
-            p = QPen(QColor((z <= 0) * 255, 0, (z > 0) * 255))
+
+            effective_z = z if not reverse_z else -z
+
+            p = QPen(QColor((effective_z <= 0) * 255, 0, (effective_z > 0) * 255))
             p.setWidthF(1/self.zoom)
             effective_x_o = current_pos[0] if not reverse_x else -current_pos[0]
             effective_y_o = current_pos[1] if not reverse_y else -current_pos[1]
