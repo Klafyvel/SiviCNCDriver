@@ -79,9 +79,6 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1,):
         arc_length -= Decimal(2*pi)
     nb_step = int(abs(arc_length*radius/Decimal(length)))
     
-    logger.debug("Arc to segments : start={s}, end={e}, v={v}".format(**locals()))
-    logger.debug("Arc to segments : start_angle={start_angle}, end_angle={end_angle}, radius={radius}, arc_length={arc_length}, nb_step={nb_step}".format(**locals()))
-    logger.debug(arc_length * radius)
     if abs(arc_length * radius) < length:
         yield start
         yield end

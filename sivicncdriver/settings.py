@@ -9,7 +9,7 @@ from logging.handlers import RotatingFileHandler
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     DATA_DIR = APP_DIR
