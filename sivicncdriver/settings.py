@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 from pathlib import Path
+import shutil
  
 from logging.handlers import RotatingFileHandler
 
@@ -10,7 +11,19 @@ APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 
-CONFIG_DIR = os.path.join(APP_DIR, "configs", "")
+if DEBUG:
+    DATA_DIR = APP_DIR
+else:
+    DATA_DIR = os.path.join(str(Path.home()), "SiviCNCDriver", "")
+    if not os.path.exists(DATA_DIR):
+        os.makedirs(DATA_DIR)
+
+if DEBUG:
+    CONFIG_DIR = os.path.join(APP_DIR, "configs", "")
+else:
+    CONFIG_DIR = os.path.join(DATA_DIR, "configs", "")
+    if not os.path.exists(CONFIG_DIR):
+        shutil.copytree(os.path.join(APP_DIR, "configs", ""), CONFIG_DIR)
 
 if DEBUG:
     FILE_DIR = os.path.join(APP_DIR, 'gcodes', '')
@@ -28,7 +41,9 @@ else:
 formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
 
 # File log
-file_handler = RotatingFileHandler(os.path.join(APP_DIR, 'log.txt'), 'a', 1000000, 1)
+
+file_handler = RotatingFileHandler(os.path.join(DATA_DIR, 'log.txt'), 'a', 1000000, 1)
+
 
 if DEBUG:
     file_handler.setLevel(logging.DEBUG)
