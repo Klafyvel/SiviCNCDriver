@@ -154,8 +154,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for _ in range(self.config_list.count()):
             self.config_list.removeItem(0)
         logger.debug("Listing available configurations.")
-        config_dir = os.path.join(settings.APP_DIR, "configs", "")
-        for f in os.listdir(config_dir):
+        for f in os.listdir(settings.CONFIG_DIR):
             if f.endswith(".json"):
                 logger.debug("Found {}".format(f))
                 self.config_list.addItem(f[:-5])
@@ -480,7 +479,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.reset_config()
         else:
             file = self.config_list.currentText() + ".json"
-            file = os.path.join(settings.APP_DIR, "configs", file)
+            file = os.path.join(settings.CONFIG_DIR, file)
             logger.info("Loading config {}".format(file))
             config = {}
             with open(file) as f:
