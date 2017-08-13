@@ -14,8 +14,8 @@
    <string>SiviCNCDriver</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../sivi_cnc_driver/rc/siviIcon.png</normaloff>../sivi_cnc_driver/rc/siviIcon.png</iconset>
+   <iconset resource="ressources.qrc">
+    <normaloff>:/rc/rc/siviIcon.png</normaloff>:/rc/rc/siviIcon.png</iconset>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Triangular</enum>
@@ -50,8 +50,8 @@
              <string>Choisir le fichier</string>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>../sivi_cnc_driver/rc/load.png</normaloff>../sivi_cnc_driver/rc/load.png</iconset>
+             <iconset resource="ressources.qrc">
+              <normaloff>:/rc/rc/load.png</normaloff>:/rc/rc/load.png</iconset>
             </property>
            </widget>
           </item>
@@ -61,8 +61,8 @@
              <string>Recharger</string>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>../sivi_cnc_driver/rc/reload.png</normaloff>../sivi_cnc_driver/rc/reload.png</iconset>
+             <iconset resource="ressources.qrc">
+              <normaloff>:/rc/rc/reload.png</normaloff>:/rc/rc/reload.png</iconset>
             </property>
            </widget>
           </item>
@@ -72,8 +72,8 @@
              <string>Fermer</string>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>rc/close.png</normaloff>rc/close.png</iconset>
+             <iconset resource="ressources.qrc">
+              <normaloff>:/rc/rc/close.png</normaloff>:/rc/rc/close.png</iconset>
             </property>
            </widget>
           </item>
@@ -88,8 +88,8 @@
               <string>Redessiner</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/writing.png</normaloff>../sivi_cnc_driver/rc/writing.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/writing.png</normaloff>:/rc/rc/writing.png</iconset>
              </property>
             </widget>
            </item>
@@ -99,8 +99,8 @@
               <string>Utiliser le préprocesseur sur le fichier</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/work.png</normaloff>../sivi_cnc_driver/rc/work.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/work.png</normaloff>:/rc/rc/work.png</iconset>
              </property>
             </widget>
            </item>
@@ -110,8 +110,8 @@
               <string>Enregister sous...</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/save.png</normaloff>:/rc/rc/save.png</iconset>
              </property>
             </widget>
            </item>
@@ -121,8 +121,8 @@
               <string>Enregistrer</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/save.png</normaloff>:/rc/rc/save.png</iconset>
              </property>
             </widget>
            </item>
@@ -365,8 +365,8 @@ p, li { white-space: pre-wrap; }
                 <string>Envoyer</string>
                </property>
                <property name="icon">
-                <iconset>
-                 <normaloff>../sivi_cnc_driver/rc/run.png</normaloff>../sivi_cnc_driver/rc/run.png</iconset>
+                <iconset resource="ressources.qrc">
+                 <normaloff>:/rc/rc/run.png</normaloff>:/rc/rc/run.png</iconset>
                </property>
               </widget>
              </item>
@@ -378,8 +378,8 @@ p, li { white-space: pre-wrap; }
               <string>Envoyer le fichier courrant</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/upload.png</normaloff>../sivi_cnc_driver/rc/upload.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/upload.png</normaloff>:/rc/rc/upload.png</iconset>
              </property>
             </widget>
            </item>
@@ -420,8 +420,8 @@ p, li { white-space: pre-wrap; }
                     <string>X+</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normaloff>../sivi_cnc_driver/rc/right.png</normaloff>../sivi_cnc_driver/rc/right.png</iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/right.png</normaloff>:/rc/rc/right.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -431,8 +431,8 @@ p, li { white-space: pre-wrap; }
                     <string>Y+</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normaloff>../sivi_cnc_driver/rc/up.png</normaloff>../sivi_cnc_driver/rc/up.png</iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/up.png</normaloff>:/rc/rc/up.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -442,9 +442,8 @@ p, li { white-space: pre-wrap; }
                     <string>Z+</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normalon>../sivi_cnc_driver/rc/up.png</normalon>
-                    </iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/up.png</normaloff>:/rc/rc/up.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -454,9 +453,8 @@ p, li { white-space: pre-wrap; }
                     <string>Z-</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normalon>../sivi_cnc_driver/rc/down.png</normalon>
-                    </iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/down.png</normaloff>:/rc/rc/down.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -466,8 +464,8 @@ p, li { white-space: pre-wrap; }
                     <string>Y-</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normaloff>../sivi_cnc_driver/rc/down.png</normaloff>../sivi_cnc_driver/rc/down.png</iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/down.png</normaloff>:/rc/rc/down.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -477,8 +475,8 @@ p, li { white-space: pre-wrap; }
                     <string>X-</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normaloff>../sivi_cnc_driver/rc/left.png</normaloff>../sivi_cnc_driver/rc/left.png</iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/left.png</normaloff>:/rc/rc/left.png</iconset>
                    </property>
                   </widget>
                  </item>
@@ -489,8 +487,8 @@ p, li { white-space: pre-wrap; }
 Zéro</string>
                    </property>
                    <property name="icon">
-                    <iconset>
-                     <normaloff>../sivi_cnc_driver/rc/origin.png</normaloff>../sivi_cnc_driver/rc/origin.png</iconset>
+                    <iconset resource="ressources.qrc">
+                     <normaloff>:/rc/rc/origin.png</normaloff>:/rc/rc/origin.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -673,8 +671,8 @@ Zéro</string>
                   <string>Envoyer</string>
                  </property>
                  <property name="icon">
-                  <iconset>
-                   <normaloff>../sivi_cnc_driver/rc/run.png</normaloff>../sivi_cnc_driver/rc/run.png</iconset>
+                  <iconset resource="ressources.qrc">
+                   <normaloff>:/rc/rc/run.png</normaloff>:/rc/rc/run.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -736,8 +734,8 @@ Zéro</string>
                   <string>Envoyer</string>
                  </property>
                  <property name="icon">
-                  <iconset>
-                   <normaloff>../sivi_cnc_driver/rc/run.png</normaloff>../sivi_cnc_driver/rc/run.png</iconset>
+                  <iconset resource="ressources.qrc">
+                   <normaloff>:/rc/rc/run.png</normaloff>:/rc/rc/run.png</iconset>
                  </property>
                 </widget>
                </item>
@@ -750,8 +748,8 @@ Zéro</string>
                <string>Définir l'origine</string>
               </property>
               <property name="icon">
-               <iconset>
-                <normaloff>../sivi_cnc_driver/rc/origin.png</normaloff>../sivi_cnc_driver/rc/origin.png</iconset>
+               <iconset resource="ressources.qrc">
+                <normaloff>:/rc/rc/origin.png</normaloff>:/rc/rc/origin.png</iconset>
               </property>
              </widget>
             </item>
@@ -950,8 +948,8 @@ Zéro</string>
                    <string>Envoyer la configuration</string>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>../sivi_cnc_driver/rc/connect.png</normaloff>../sivi_cnc_driver/rc/connect.png</iconset>
+                   <iconset resource="ressources.qrc">
+                    <normaloff>:/rc/rc/connect.png</normaloff>:/rc/rc/connect.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -961,8 +959,8 @@ Zéro</string>
                    <string>Enregister</string>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
+                   <iconset resource="ressources.qrc">
+                    <normaloff>:/rc/rc/save.png</normaloff>:/rc/rc/save.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -972,8 +970,8 @@ Zéro</string>
                    <string>Enregister sous</string>
                   </property>
                   <property name="icon">
-                   <iconset>
-                    <normaloff>../sivi_cnc_driver/rc/save.png</normaloff>../sivi_cnc_driver/rc/save.png</iconset>
+                   <iconset resource="ressources.qrc">
+                    <normaloff>:/rc/rc/save.png</normaloff>:/rc/rc/save.png</iconset>
                   </property>
                  </widget>
                 </item>
@@ -1087,8 +1085,8 @@ Zéro</string>
               <string>Lister les ports série</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/reload.png</normaloff>../sivi_cnc_driver/rc/reload.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/reload.png</normaloff>:/rc/rc/reload.png</iconset>
              </property>
             </widget>
            </item>
@@ -1184,8 +1182,8 @@ Zéro</string>
               <string>Connecter</string>
              </property>
              <property name="icon">
-              <iconset>
-               <normaloff>../sivi_cnc_driver/rc/connect.png</normaloff>../sivi_cnc_driver/rc/connect.png</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/connect.png</normaloff>:/rc/rc/connect.png</iconset>
              </property>
             </widget>
            </item>
@@ -1259,7 +1257,9 @@ Zéro</string>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>command_edit</sender>

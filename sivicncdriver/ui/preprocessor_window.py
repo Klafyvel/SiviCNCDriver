@@ -48,7 +48,7 @@ class Ui_dialog(object):
         self.verticalLayout_3.addWidget(self.groupBox)
         self.btn_run_preproc = QtWidgets.QPushButton(self.widget)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("rc/work.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/rc/rc/work.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_run_preproc.setIcon(icon1)
         self.btn_run_preproc.setObjectName("btn_run_preproc")
         self.verticalLayout_3.addWidget(self.btn_run_preproc)
@@ -81,3 +81,4 @@ class Ui_dialog(object):
         self.btn_run_preproc.setText(_translate("dialog", "Lancer le préprocesseur"))
         self.groupBox_2.setTitle(_translate("dialog", "Sortie"))
 
+from sivicncdriver.ui import ressources_rc

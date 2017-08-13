@@ -2,7 +2,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
-from sivicncdriver.interface import MainWindow
+from sivicncdriver.ui.interface import MainWindow
 
 def main():
     """

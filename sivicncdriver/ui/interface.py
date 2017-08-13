@@ -20,12 +20,12 @@ from sivicncdriver.settings import logger
 from sivicncdriver.gcode import parse
 from sivicncdriver.serial_list import serial_ports
 from sivicncdriver.serial_manager import SerialManager
-from sivicncdriver.preprocessor import PreprocessorDialog
+from sivicncdriver.ui.preprocessor import PreprocessorDialog
 from sivicncdriver.arc_calculator import arc_to_segments
 from sivicncdriver.thread_send import SendThread
 import sivicncdriver.gcode_maker as gcode_maker
 
-from .main_window import Ui_MainWindow
+from sivicncdriver.ui.main_window import Ui_MainWindow
 
 __all__ = ['MainWindow']
 
@@ -56,7 +56,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.print(s, msg_type="info")
 
         self.sc = QGraphicsScene(self.fileview)
-        self.attach_icons()
         self.connectUi()
         self.update_config(self.config_list.currentIndex())
 
@@ -64,107 +63,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.send_thread = None
         self.waiting_cmd = []
-
-    def attach_icons(self):
-        """
-        Attach the icons to the buttons.
-
-        Actually there must be a better way to do it (using the .ui file) but
-        I could not figure out how.
-        """        
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "siviIcon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.setWindowIcon(icon)
-
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "load.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_file.setIcon(icon1)
-
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "reload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_reload.setIcon(icon2)
-
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "writing.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.redraw.setIcon(icon3)
-
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "work.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_preprocessor.setIcon(icon4)
-
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_save_as.setIcon(icon5)
-        self.btn_save_file.setIcon(icon5)
-
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "run.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_command.setIcon(icon6)
-
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "upload.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_send_current_file.setIcon(icon7)
-
-        icon8 = QtGui.QIcon()
-        icon8.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "connect.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_connect.setIcon(icon8)
-
-        icon9 = QtGui.QIcon()
-        icon9.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "origin.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_set_origin.setIcon(icon9)
-
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_x_plus.setIcon(icon10)
-
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_y_plus.setIcon(icon11)
-
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_y_minus.setIcon(icon12)
-
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "left.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_x_minus.setIcon(icon13)
-
-        icon14 = QtGui.QIcon()
-        icon14.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "up.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.btn_z_plus.setIcon(icon14)
-
-        icon15 = QtGui.QIcon()
-        icon15.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR, "down.png")), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.btn_z_minus.setIcon(icon15)
-
-        icon16 = QtGui.QIcon()
-        icon16.addPixmap(QtGui.QPixmap(os.path.join(
-            settings.RC_DIR,"close.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_close.setIcon(icon16)
-
-        self.btn_go_to_zero.setIcon(icon9)
-        self.btn_run_auto_cmd.setIcon(icon6)
-        self.btn_send_config.setIcon(icon8)
-        self.btn_save_config.setIcon(icon5)
-        self.btn_save_config_as.setIcon(icon5)
-        self.btn_run_custom_cmd.setIcon(icon6)
-        self.btn_serial_ports_list.setIcon(icon2)
 
     def connectUi(self):
         """

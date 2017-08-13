@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
-from sivicncdriver.preprocessor_window import Ui_dialog
+from sivicncdriver.ui.preprocessor_window import Ui_dialog
 from sivicncdriver import settings
 from sivicncdriver.settings import logger
 from sivicncdriver.gcode import parse
@@ -33,11 +33,7 @@ class PreprocessorDialog(QDialog, Ui_dialog):
         self.gcode = gcode
         self.original = gcode
         self.has_been_run_once = False
-
-        icon1 = QIcon()
-        icon1.addPixmap(QPixmap(os.path.join(settings.RC_DIR, "work.png")), QIcon.Normal, QIcon.Off)
-        self.btn_run_preproc.setIcon(icon1)
-
+        
         self.btn_run_preproc.clicked.connect(self.run_preprocessor)
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.cancel)

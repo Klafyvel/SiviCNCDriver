@@ -75,8 +75,8 @@
             <string>Lancer le préprocesseur</string>
            </property>
            <property name="icon">
-            <iconset>
-             <normaloff>rc/work.png</normaloff>rc/work.png</iconset>
+            <iconset resource="ressources.qrc">
+             <normaloff>:/rc/rc/work.png</normaloff>:/rc/rc/work.png</iconset>
            </property>
           </widget>
          </item>
@@ -110,6 +110,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/rc">
+        <file>rc/close.png</file>
+        <file>rc/writing.png</file>
+        <file>rc/connect.png</file>
+        <file>rc/down.png</file>
+        <file>rc/left.png</file>
+        <file>rc/load.png</file>
+        <file>rc/origin.png</file>
+        <file>rc/reload.png</file>
+        <file>rc/right.png</file>
+        <file>rc/run.png</file>
+        <file>rc/save.png</file>
+        <file>rc/siviIcon.png</file>
+        <file>rc/up.png</file>
+        <file>rc/upload.png</file>
+        <file>rc/work.png</file>
+    </qresource>
+</RCC>
