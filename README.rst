@@ -33,7 +33,7 @@ Binary distribution (Windows)
 -----------------------------
 If, for some reasons, you can't or don't want to use pip, a binary is available here_ .
 
-.. _here: https://github.com/Klafyvel/SiviCNCDriver/releases/tag/v0.1.2
+.. _here: https://github.com/Klafyvel/SiviCNCDriver/releases/latest
 
 Contribute
 ===========
