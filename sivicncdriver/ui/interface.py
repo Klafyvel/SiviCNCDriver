@@ -649,9 +649,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         reverse_y = self.reverse_display_y.isChecked()
         reverse_z = self.reverse_display_z.isChecked()
 
+        current_line = None
+
+        self.code_edit.setExtraSelections([])
+
         for n, t in enumerate(parse(gcode)):
+            if t['name'] == '__error__':
+                QMessageBox.critical(self, "Erreur.", "Une erreur est survenue lors du parsing.")
+                logger.error("While parsing line {}".format(t['line']))
+                highlight = QTextEdit.ExtraSelection()
+                highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(t['line']))
+                highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
+                highlight.format.setBackground(Qt.red)
+                self.code_edit.setTextCursor(highlight.cursor)
+                self.code_edit.setExtraSelections([highlight])
+                break
+
             if t['name'] is not 'G':
                 continue
+
+            current_line = t['line']
 
             x, y, z = current_pos
 
@@ -759,7 +776,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             y_axis_arrow.lineTo(-0.05*arrow_length_y, 0.95*arrow_length_y)
             y_axis_arrow.addText(-10 * sign(arrow_length_x), arrow_length_y*1.1, QFont("sans-serif"), "Y")
             self.sc.addPath(y_axis_arrow)
-
+        
         self.fileview.setScene(self.sc)
 
     @pyqtSlot()

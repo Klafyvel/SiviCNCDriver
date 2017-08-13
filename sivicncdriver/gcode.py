@@ -76,7 +76,10 @@ def parse_iterator(gcode):
             yield ('__next__', '__next__', line)
             line += 1
         else:
-            yield (c, parse_value(stack), line)
+            try:
+                yield (c, parse_value(stack), line)
+            except ValueError:
+                yield ('__error__', '__error__', line)
 
 
 def parse(gcode):
@@ -99,7 +102,9 @@ def parse(gcode):
     value = 0
     args = {}
     for i in parse_iterator(gcode):
-        if not i[0] == '__next__':
+        if i[0] == '__error__':
+            yield {'name' : '__error__', 'line':i[2]}
+        elif not i[0] == '__next__':
             if i[0] == '__new_var__':
                 name = ''
                 value = None
