@@ -673,7 +673,7 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("MainWindow", "Développement selon X"))
         self.label_11.setText(_translate("MainWindow", "Développement selon Y"))
         self.label_12.setText(_translate("MainWindow", "Développement selon Z"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p>Vous pouvez zoomer avec <span style=\" font-weight:600;\">Ctrl</span> + <span style=\" font-weight:600;\">+</span> et <span style=\" font-weight:600;\">Ctrl</span> + <span style=\" font-weight:600;\">-</span>. Vous pouvez également déplacer la vue avec le curseur et les flêches du clavier.</p></body></html>"))
+        self.label.setText(_translate("MainWindow", "<html><head/><body><p>Vous pouvez zoomer avec <span style=\" font-weight:600;\">Ctrl</span> + <span style=\" font-weight:600;\">+</span> et <span style=\" font-weight:600;\">Ctrl</span> + <span style=\" font-weight:600;\">-</span>. Vous pouvez également déplacer la vue avec le curseur et les flèches du clavier.</p></body></html>"))
         self.tabWidget_2.setTabText(self.tabWidget_2.indexOf(self.tab_2), _translate("MainWindow", "Fichier"))
         self.groupBox.setTitle(_translate("MainWindow", "Moniteur série"))
         self.serial_monitor.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

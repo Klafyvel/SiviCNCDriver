@@ -312,7 +312,7 @@
 }</string>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez zoomer avec &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; et &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. Vous pouvez également déplacer la vue avec le curseur et les flêches du clavier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez zoomer avec &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; et &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. Vous pouvez également déplacer la vue avec le curseur et les flèches du clavier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
