@@ -15,5 +15,6 @@
         <file>rc/up.png</file>
         <file>rc/upload.png</file>
         <file>rc/work.png</file>
+        <file>rc/warning.png</file>
     </qresource>
 </RCC>

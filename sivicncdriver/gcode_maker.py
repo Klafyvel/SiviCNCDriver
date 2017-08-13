@@ -86,29 +86,35 @@ def start_continuous_z_backward():
     """
     return start_continuous("Z", "backward")
 
-def stop_continuous(axis):
+def stop(axis):
     """
-    Stop any continuous movement on the given axis.
+    Stop any movement on the given axis.
     """
     return "S3 {}".format(axis)
 
-def stop_continuous_x():
+def stop_x():
     """
-    Stop any continuous movement on the X axis.
+    Stop any movement on the X axis.
     """
-    return stop_continuous("X")
+    return stop("X")
 
-def stop_continuous_y():
+def stop_y():
     """
-    Stop any continuous movement on the Y axis.
+    Stop any movement on the Y axis.
     """
-    return stop_continuous("Y")
+    return stop("Y")
 
-def stop_continuous_z():
+def stop_z():
     """
-    Stop any continuous movement on the Z axis.
+    Stop any movement on the Z axis.
     """
-    return stop_continuous("Z")
+    return stop("Z")
+
+def emergency_stop():
+    """
+    Stop every axis.
+    """
+    return "M112"
 
 def set_origin():
     """

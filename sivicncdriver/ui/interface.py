@@ -77,14 +77,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_x_minus.pressed.connect(self.start_continuous_x_backward)
         self.btn_z_plus.pressed.connect(self.start_continuous_z_forward)
         self.btn_z_minus.pressed.connect(self.start_continuous_z_backward)
-        self.btn_y_plus.released.connect(self.stop_continuous_y)
-        self.btn_y_minus.released.connect(self.stop_continuous_y)
-        self.btn_x_plus.released.connect(self.stop_continuous_x)
-        self.btn_x_minus.released.connect(self.stop_continuous_x)
-        self.btn_z_plus.released.connect(self.stop_continuous_z)
-        self.btn_z_minus.released.connect(self.stop_continuous_z)
+        self.btn_y_plus.released.connect(self.stop_y)
+        self.btn_y_minus.released.connect(self.stop_y)
+        self.btn_x_plus.released.connect(self.stop_x)
+        self.btn_x_minus.released.connect(self.stop_x)
+        self.btn_z_plus.released.connect(self.stop_z)
+        self.btn_z_minus.released.connect(self.stop_z)
         self.btn_set_origin.clicked.connect(self.set_origin)
         self.btn_go_to_zero.clicked.connect(self.goto_origin)
+        self.btn_emergency_stop.clicked.connect(self.emergency_stop)
 
         self.auto_cmd_type.currentIndexChanged.connect(
             self.manage_auto_cmd_number)
@@ -422,16 +423,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.run_thread([gcode_maker.start_continuous_z_backward()], disable=False)
 
     @pyqtSlot()
-    def stop_continuous_y(self):
-        self.run_thread([gcode_maker.stop_continuous_y()])
+    def stop_y(self):
+        self.run_thread([gcode_maker.stop_y()])
 
     @pyqtSlot()
-    def stop_continuous_x(self):
-        self.run_thread([gcode_maker.stop_continuous_x()])
+    def stop_x(self):
+        self.run_thread([gcode_maker.stop_x()])
 
     @pyqtSlot()
-    def stop_continuous_z(self):
-        self.run_thread([gcode_maker.stop_continuous_z()])
+    def stop_z(self):
+        self.run_thread([gcode_maker.stop_z()])
+
+    @pyqtSlot()
+    def emergency_stop(self):
+        self.run_thread([gcode_maker.emergency_stop()], allow_waiting=False)
 
     @pyqtSlot()
     def set_origin(self):

@@ -373,6 +373,23 @@ p, li { white-space: pre-wrap; }
             </layout>
            </item>
            <item>
+            <widget class="QPushButton" name="btn_emergency_stop">
+             <property name="autoFillBackground">
+              <bool>false</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color:red;color:white;font-weight:bold;</string>
+             </property>
+             <property name="text">
+              <string>ARRÊT D'URGENCE</string>
+             </property>
+             <property name="icon">
+              <iconset resource="ressources.qrc">
+               <normaloff>:/rc/rc/warning.png</normaloff>:/rc/rc/warning.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QPushButton" name="btn_send_current_file">
              <property name="text">
               <string>Envoyer le fichier courrant</string>
