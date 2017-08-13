@@ -22,167 +22,12 @@ from sivicncdriver.serial_list import serial_ports
 from sivicncdriver.serial_manager import SerialManager
 from sivicncdriver.preprocessor import PreprocessorDialog
 from sivicncdriver.arc_calculator import arc_to_segments
+from sivicncdriver.thread_send import SendThread
+import sivicncdriver.gcode_maker as gcode_maker
 
 from .main_window import Ui_MainWindow
 
 __all__ = ['MainWindow']
-
-
-class SendFileThread(QThread):
-    """
-    A thread to send file without blocking the main thread.
-    """
-    update_progress = pyqtSignal(int)
-
-    def __init__(self, serial_manager, gcode):
-        """
-        The __init__ method.
-
-        :param serial_manager: The main window's serial manager
-        :param gcode: The gcode which is to be sent
-        :type serial_manager: SerialManager
-        :type gcode: str
-        """
-        QThread.__init__(self)
-        self.gcode = gcode
-        self.serial_manager = serial_manager
-        self.user_stop = False
-
-    def __del__(self):
-        self.wait()
-
-    @pyqtSlot()
-    def stop(self):
-        """
-        A simple slot to tell the thread to stop.
-        """
-        self.user_stop = True
-
-    def run(self):
-        """
-        Runs the thread.
-
-        The commands are sent using the serial manager. If an error occurs or if
-        the thread is stopped by the user, then it quits.
-        """
-        for n, l in enumerate(self.gcode):
-            self.serial_manager.sendMsg(l)
-            self.update_progress.emit(n)
-            if not self.serial_manager.waitForConfirm() or self.user_stop:
-                break
-
-
-class SendAutoCmdThread(QThread):
-    """
-    A thread to send auto commands without blocking the main thread.
-    """
-    update_progress = pyqtSignal(int)
-
-    def __init__(self, serial_manager, axis, step, n, axis2=None, step2=None):
-        """
-        The __init__ method.
-
-        :param serial_manager: The main window's serial manager
-        :param axis: The axis on which the thread will operate
-        :param step: The number of step of one movement
-        :param n: The number of movements
-        :param axis2: You can ask a second axis to move between two first axis
-            moves.
-        :param step2: The number of steps the second axis has to move.
-        :type serial_manager: SerialManager
-        :type axis: str
-        :type step: int
-        :type n: int
-        :type axis2: str
-        :type step2: int
-        """
-        QThread.__init__(self)
-        self.axis = axis
-        self.step = step
-        self.n = n
-        self.serial_manager = serial_manager
-        self.user_stop = False
-        self.axis2 = axis2
-        self.step2 = step2
-
-    def __del__(self):
-        self.wait()
-
-    @pyqtSlot()
-    def stop(self):
-        """
-        A simple slot to tell the thread to stop.
-        """
-        self.user_stop = True
-
-    def run(self):
-        """
-        Runs the thread.
-
-        The commands are sent using the serial manager. If an error occurs or if
-        the thread is stopped by the user, then it quits.
-        """
-        for i in range(self.n):
-            self.update_progress.emit(i)
-            if not self.serial_manager.step(self.axis, self.step) or self.user_stop:
-                break
-            if self.axis2 and self.step2:
-                if not self.serial_manager.step(self.axis2, self.step2) or self.user_stop:
-                    break
-            if not self.serial_manager.step(self.axis, -self.step) or self.user_stop:
-                break
-            if self.axis2 and self.step2:
-                if not self.serial_manager.step(self.axis2, self.step2) or self.user_stop:
-                    break
-
-
-class SendCustomCommandThread(QThread):
-    """
-    A thread to send custom commands without blocking the main thread.
-    """
-    update_progress = pyqtSignal(int)
-
-    def __init__(self, serial_manager, gcode, n):
-        """
-        The __init__ method.
-
-        :param serial_manager: The main window's serial manager
-        :param gcode: The gcode which is to be sent
-        :param n: The number of times the command will be sent
-        :type serial_manager: SerialManager
-        :type gcode: str
-        :type n: int
-        """
-        QThread.__init__(self)
-        self.gcode = gcode
-        self.serial_manager = serial_manager
-        self.n = n
-        self.user_stop = False
-
-    def __del__(self):
-        self.wait()
-
-    @pyqtSlot()
-    def stop(self):
-        """
-        A simple slot to tell the thread to stop.
-        """
-        self.user_stop = True
-
-    def run(self):
-        """
-        Runs the thread.
-
-        The commands are sent using the serial manager. If an error occurs or if
-        the thread is stopped by the user, then it quits.
-        """
-        length = len(self.gcode)
-        for k in range(self.n):
-            for n, l in enumerate(self.gcode):
-                self.update_progress.emit(k*length + n)
-                self.serial_manager.sendMsg(l)
-                if not self.serial_manager.waitForConfirm() or self.user_stop:
-                    break
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -216,6 +61,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.update_config(self.config_list.currentIndex())
 
         self.file_loaded = False
+
+        self.send_thread = None
+        self.waiting_cmd = []
 
     def attach_icons(self):
         """
@@ -325,31 +173,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         logger.debug("Connecting Ui.")
         self.btn_serial_ports_list.clicked.connect(self.list_serials)
 
-        self.btn_y_plus.pressed.connect(
-            self.serial_manager.start_continuous_y_forward)
-        self.btn_y_minus.pressed.connect(
-            self.serial_manager.start_continuous_y_backward)
-        self.btn_x_plus.pressed.connect(
-            self.serial_manager.start_continuous_x_forward)
-        self.btn_x_minus.pressed.connect(
-            self.serial_manager.start_continuous_x_backward)
-        self.btn_z_plus.pressed.connect(
-            self.serial_manager.start_continuous_z_forward)
-        self.btn_z_minus.pressed.connect(
-            self.serial_manager.start_continuous_z_backward)
-
-        self.btn_y_plus.released.connect(self.serial_manager.stop_continuous_y)
-        self.btn_y_minus.released.connect(
-            self.serial_manager.stop_continuous_y)
-        self.btn_x_plus.released.connect(self.serial_manager.stop_continuous_x)
-        self.btn_x_minus.released.connect(
-            self.serial_manager.stop_continuous_x)
-        self.btn_z_plus.released.connect(self.serial_manager.stop_continuous_z)
-        self.btn_z_minus.released.connect(
-            self.serial_manager.stop_continuous_z)
-
-        self.btn_set_origin.clicked.connect(self.serial_manager.set_origin)
-        self.btn_go_to_zero.clicked.connect(self.serial_manager.goto_origin)
+        self.btn_y_plus.pressed.connect(self.start_continuous_y_forward)
+        self.btn_y_minus.pressed.connect(self.start_continuous_y_backward)
+        self.btn_x_plus.pressed.connect(self.start_continuous_x_forward)
+        self.btn_x_minus.pressed.connect(self.start_continuous_x_backward)
+        self.btn_z_plus.pressed.connect(self.start_continuous_z_forward)
+        self.btn_z_minus.pressed.connect(self.start_continuous_z_backward)
+        self.btn_y_plus.released.connect(self.stop_continuous_y)
+        self.btn_y_minus.released.connect(self.stop_continuous_y)
+        self.btn_x_plus.released.connect(self.stop_continuous_x)
+        self.btn_x_minus.released.connect(self.stop_continuous_x)
+        self.btn_z_plus.released.connect(self.stop_continuous_z)
+        self.btn_z_minus.released.connect(self.stop_continuous_z)
+        self.btn_set_origin.clicked.connect(self.set_origin)
+        self.btn_go_to_zero.clicked.connect(self.goto_origin)
 
         self.auto_cmd_type.currentIndexChanged.connect(
             self.manage_auto_cmd_number)
@@ -488,6 +325,45 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             "z_reverse": bool(self.reverse_z.checkState()),
         }
 
+    def run_thread(self, gcode, n=None, disable=True, allow_waiting=True):
+        """
+        Run a thread to send the diven gcode.
+        :param gcode: The gcode as a list of commands.
+        :param n: a length for the sending_process.
+        :param disable: Should the ui elements which trigger sending be
+            disabled ?
+        :param allow_waiting: If True and a thread is already running, wait for
+            it to end before sending the command. Else stop the current thread.
+        :type gcode: list
+        :type n: int
+        :type disable: bool
+        :type allow_waiting: bool
+        """
+        if self.send_thread and allow_waiting:
+            logger.info("Thread already in use, waiting for the end.")
+            self.waiting_cmd.append({"gcode":gcode, "n":n, "disable":disable})
+            return
+        elif self.send_thread:
+            self.send_thread.stop()
+
+        self.send_thread = SendThread(self.serial_manager, gcode)
+        if n:
+            self.sending_progress.setMaximum(n)
+        else:
+            self.sending_progress.setMaximum(len(gcode))
+        self.sending_progress.setValue(0)
+        self.btn_send_current_file.setText("Annuler l'envoi")
+        self.btn_send_current_file.clicked.disconnect()
+        self.btn_send_current_file.clicked.connect(self.send_thread.stop)
+        
+        if disable:
+            self.tabWidget.setEnabled(False)
+
+        self.send_thread.finished.connect(self.sending_end)
+        self.send_thread.update_progress.connect(self.update_progress)
+        self.send_thread.start()
+
+
     # Slots
     @pyqtSlot(str, str)
     def print(self, txt, msg_type="operator"):
@@ -536,25 +412,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         step = self.auto_cmd_step.value()
 
         if self.auto_cmd_type.currentIndex() == 0:
-            self.serial_manager.step(axis, step)
-            self.print("Done.", "info")
-            logger.info("Auto command sent.")
+            it = [gcode_maker.step(axis, step)]
         else:
             axis2 = self.auto_cmd_axis_2.currentText()
             step2 = self.auto_cmd_step_2.value()
-            self.send_thread = SendAutoCmdThread(
-                self.serial_manager, axis, step, n, axis2, step2)
 
-            self.sending_progress.setMaximum(n)
-            self.sending_progress.setValue(0)
-            self.btn_send_current_file.setText("Annuler l'envoi")
-            self.btn_send_current_file.clicked.disconnect()
-            self.btn_send_current_file.clicked.connect(self.send_thread.stop)
-            self.tabWidget.setEnabled(False)
+            # AKA "Do not do this at home kids" :
+            it = (
+                (
+                    (
+                        gcode_maker.step(axis, step),
+                        gcode_maker.step(axis, -step)
+                    )[(i%4)>=2], 
+                    gcode_maker.step(axis2, step2)
+                )[i%2] for i in range(4*n-1)
+            )
 
-            self.send_thread.finished.connect(self.file_sent)
-            self.send_thread.update_progress.connect(self.update_progress)
-            self.send_thread.start()
+        self.run_thread(it, n)
 
     @pyqtSlot()
     def run_custom_cmd(self):
@@ -565,18 +439,117 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.print("Sending custom command.", "info")
         gcode = self.custom_cmd.toPlainText().split('\n')
         n = self.custom_cmd_number.value()
+        l = len(gcode)
 
-        self.send_thread = SendCustomCommandThread(self.serial_manager, gcode, n)
-        self.sending_progress.setMaximum(n*len(gcode))
+        it = (gcode[i%l] for i in range(n*l))
+
+        self.run_thread(it, n*l)
+
+    @pyqtSlot()
+    def send_file(self):
+        """
+        Send a file using a different thread.
+        """
+        logger.info("Sending file.")
+        self.print("Sending file.", "info")
+        gcode = self.code_edit.toPlainText().split('\n')
+        self.run_thread(gcode)
+
+    @pyqtSlot()
+    def send_cmd(self):
+        """
+        Sends an user command using a thread.
+        """
+        gcode = [self.command_edit.text()]
+        logger.info("Sending command.")
+        self.print("Sending command.", "info")
+        self.run_thread(gcode)
+
+    @pyqtSlot()
+    def send_config(self):
+        """
+        Send a configuration to the machine.
+        """
+        self.save_config()
+        gcode = gcode_maker.config_as_gcode(**self.config_as_dict()).split('\n')
+        logger.info("Sending configuration.")
+        self.print("Sending configuration.", "info")
+        self.run_thread(gcode)
+
+    @pyqtSlot()
+    def sending_end(self):
+        """
+        Manages the end of upload. If some commands are waiting, run them at the
+        end.
+        """
+        if self.send_thread.user_stop:
+            self.print("Stopped by user.", "error")
+            logger.error("Upload stopped by user.")
+        else:
+            self.print("Done.", "info")
+            logger.info("Upload done.")
         self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText("Annuler l'envoi")
+        self.btn_send_current_file.setText("Envoyer le fichier courrant")
         self.btn_send_current_file.clicked.disconnect()
-        self.btn_send_current_file.clicked.connect(self.send_thread.stop)
-        self.tabWidget.setEnabled(False)
+        self.btn_send_current_file.clicked.connect(self.send_file)
+        self.tabWidget.setEnabled(True)
 
-        self.send_thread.finished.connect(self.file_sent)
-        self.send_thread.update_progress.connect(self.update_progress)
-        self.send_thread.start()
+        self.send_thread = None
+
+        if len(self.waiting_cmd)>0:
+            self.run_thread(**self.waiting_cmd.pop(0))
+
+    @pyqtSlot()
+    def start_continuous_y_forward(self):
+        self.run_thread([gcode_maker.start_continuous_y_forward()], disable=False)
+
+    @pyqtSlot()
+    def start_continuous_y_backward(self):
+        self.run_thread([gcode_maker.start_continuous_y_backward()], disable=False)
+
+    @pyqtSlot()
+    def start_continuous_x_forward(self):
+        self.run_thread([gcode_maker.start_continuous_x_forward()], disable=False)
+
+    @pyqtSlot()
+    def start_continuous_x_backward(self):
+        self.run_thread([gcode_maker.start_continuous_x_backward()], disable=False)
+
+    @pyqtSlot()
+    def start_continuous_z_forward(self):
+        self.run_thread([gcode_maker.start_continuous_z_forward()], disable=False)
+
+    @pyqtSlot()
+    def start_continuous_z_backward(self):
+        self.run_thread([gcode_maker.start_continuous_z_backward()], disable=False)
+
+    @pyqtSlot()
+    def stop_continuous_y(self):
+        self.run_thread([gcode_maker.stop_continuous_y()])
+
+    @pyqtSlot()
+    def stop_continuous_x(self):
+        self.run_thread([gcode_maker.stop_continuous_x()])
+
+    @pyqtSlot()
+    def stop_continuous_z(self):
+        self.run_thread([gcode_maker.stop_continuous_z()])
+
+    @pyqtSlot()
+    def set_origin(self):
+        self.run_thread([gcode_maker.set_origin()])
+
+    @pyqtSlot()
+    def goto_origin(self):
+        self.run_thread([gcode_maker.goto_origin()])
+
+
+    @pyqtSlot(int)
+    def update_progress(self, s):
+        """
+        Updates the progress bar.
+        """
+        self.sending_progress.setValue(s)
 
     @pyqtSlot(int)
     def manage_emulate_serial_port(self, s):
@@ -593,77 +566,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.print("Emulating serial port.", "info")
         else:
             self.print("Exiting serial port emulation.", "info")
-
-    @pyqtSlot()
-    def send_file(self):
-        """
-        Send a file using a different thread.
-        """
-        logger.info("Sending file.")
-        self.print("Sending file.", "info")
-        gcode = self.code_edit.toPlainText().split('\n')
-        self.send_thread = SendFileThread(self.serial_manager, gcode)
-
-        self.sending_progress.setMaximum(len(gcode))
-        self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText("Annuler l'envoi")
-        self.btn_send_current_file.clicked.disconnect()
-        self.btn_send_current_file.clicked.connect(self.send_thread.stop)
-        self.tabWidget.setEnabled(False)
-
-        self.send_thread.finished.connect(self.auto_cmd_sent)
-        self.send_thread.update_progress.connect(self.update_progress)
-        self.send_thread.start()
-
-    @pyqtSlot(int)
-    def update_progress(self, s):
-        """
-        Updates the progress bar.
-        """
-        self.sending_progress.setValue(s)
-
-    @pyqtSlot()
-    def file_sent(self):
-        """
-        Manages the end of a file sending.
-        """
-        if self.send_thread.user_stop:
-            self.print("Stopped by user.", "error")
-            logger.error("File sending stopped by user.")
-        else:
-            self.print("Done.", "info")
-            logger.info("File sent.")
-        self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText("Envoyer le fichier courrant")
-        self.btn_send_current_file.clicked.disconnect()
-        self.btn_send_current_file.clicked.connect(self.send_file)
-        self.tabWidget.setEnabled(True)
-
-    @pyqtSlot()
-    def auto_cmd_sent(self):
-        """
-        Manages the end of an auto command sending.
-        """
-        if self.send_thread.user_stop:
-            self.print("Stopped by user.", "error")
-            logger.error("Auto command sending stopped by user.")
-        else:
-            self.print("Done.", "info")
-            logger.info("Auto command sent.")
-        self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText("Envoyer le fichier courrant")
-        self.btn_send_current_file.clicked.disconnect()
-        self.btn_send_current_file.clicked.connect(self.send_file)
-        self.tabWidget.setEnabled(True)
-
-    @pyqtSlot()
-    def send_cmd(self):
-        """
-        Sends an user command.
-        """
-        gcode = self.command_edit.text()
-        self.serial_manager.sendMsg(gcode)
-        self.serial_manager.waitForConfirm()
 
     @pyqtSlot(int)
     def update_config(self, i):
@@ -735,14 +637,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.save_config(f)
             self.list_configs()
             self.update_config(self.config_list.currentIndex())
-
-    @pyqtSlot()
-    def send_config(self):
-        """
-        Send a configuration to the machine.
-        """
-        self.save_config()
-        self.serial_manager.send_config(self.config_as_dict())
 
     @pyqtSlot()
     def manage_connection(self):
