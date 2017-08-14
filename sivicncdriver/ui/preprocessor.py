@@ -100,21 +100,25 @@ class PreprocessorDialog(QDialog, Ui_dialog):
                 continue
             if 'Z' in t['args']:
                 z = t['args']['Z']
-            logger.debug("Z = {}".format(z))
-            if z > 0 :
+            if z > 0 or t['value'] not in (1,2,3) or not('X' in t['args'] or 'Y' in t['args']):
+                x_o = t['args'].get('X', x_o)
+                y_o = t['args'].get('Y', y_o)
                 continue
-            logger.debug("Obviously, z<=0.")
             if 'X' in t['args']:
                 x = t['args']['X']
-                if not set_x :
+                if not set_x:
                     min_x = x
                     set_x = True
+                if x < min_x:
+                    logger.debug("min_x becomes {x} from {t}".format(**locals()))
                 min_x = min(min_x, x)
             if 'Y' in t['args']:
                 y = t['args']['Y']
                 if not set_y :
                     min_y = y
                     set_y = True
+                if y < min_y:
+                    logger.debug("min_y becomes {y} from {t}".format(**locals()))
                 min_y = min(min_y, y)
 
             if t['value'] in (2,3):
@@ -123,10 +127,21 @@ class PreprocessorDialog(QDialog, Ui_dialog):
                 k = t['args'].get('K', 0)
                 clockwise = (t['value'] == 2)
                 for xc, yc in arc_to_segments((x_o, y_o), (i,j), (x,y), clockwise):
+                    print(xc, yc)
+                    if not set_x:
+                        min_x = xc
+                        set_x = True
+                    if not set_y:
+                        min_y = yc
+                        set_y = True
+                    if xc < min_x:
+                        logger.debug("min_x becomes {xc} from {t}".format(**locals()))
+                    if yc < min_y:
+                        logger.debug("min_y becomes {yc} from {t}".format(**locals()))
                     min_x = min(min_x, xc)
                     min_y = min(min_y, yc)
             x_o, y_o = x,y
-        logger.debug("Minimizing by setting origin to {},{}".format(x,y))
+        logger.debug("Minimizing by setting origin to {},{}".format(min_x,min_y))
         return min_x, min_y
 
 

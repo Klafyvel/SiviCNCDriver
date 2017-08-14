@@ -2,6 +2,12 @@
 SiviCNCDriver
 =============
 
+.. image:: https://readthedocs.org/projects/sivicncdriver/badge/?version=latest
+:target: http://sivicncdriver.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status
+
+SiviCNCDriver, a software to control my CNC.
+
 :Info: This is a Python program to control a CNC.
 :Author: Hugo LEVY-FALK
 :Date: 2017-08
@@ -15,7 +21,14 @@ SiviCNCDriver
 Goal
 ====
 
-SiviCNCDriver, as its name lets you guess, is designed to drive a CNC.
+SiviCNCDriver, as its name lets you guess, is designed to drive a CNC. What does it do ?
+
+- Provides a basic tool to view and edit G-Codes files. You can see which G-Code line draws which path and perform some basic edits with the preprocessor, such as finding an origin to the coordinate system which minimize the bounding box of the drawing.
+- Allows you to control manually your CNC, by :
+    - Sending your own G-Codes;
+    - Sending `custom G-Codes`_ so the machine performs continuous movements, or step-by-step movements;
+    - Sending automatic commands so the machine performs some goings and comings and you can measure the play or the steps/mm.
+- Sends as `custom G-Codes`_ and store as JSON configuration files for your machine.
 
 Installation
 ============
@@ -75,7 +88,7 @@ You can code ! To test the code, run the application as package ::
 If you need to re-create the ui after editing it with QtCreator, you can use `make_ui.sh` or directly `pyuic5`.
 
 
-Custom G-codes
+Custom G-Codes
 ==============
 
 SiviCNCDriver uses several custom G-Codes, they may change in the future.

@@ -749,10 +749,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
             current_pos = x, y, z
 
-            min_x = min(min_x, current_pos[0] if not reverse_x else -current_pos[0])
-            max_x = max(max_x, current_pos[0] if not reverse_x else -current_pos[0])
-            min_y = min(min_y, current_pos[1] if not reverse_y else -current_pos[1])
-            max_y = max(max_y, current_pos[1] if not reverse_y else -current_pos[1])
+            min_x = min(min_x, effective_x_o)
+            max_x = max(max_x, effective_x_o)
+            min_y = min(min_y, effective_y_o)
+            max_y = max(max_y, effective_y_o)
             min_z = min(min_z, current_pos[2])
             max_z = max(max_z, current_pos[2])
 
@@ -800,6 +800,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         logger.debug("Drawing done, setting scene to view.")
         self.fileview.setScene(self.sc)
         logger.debug("Done.")
+        logger.debug("Min x : {min_x}, min y : {min_y}".format(**locals()))
 
     @pyqtSlot()
     def run_preprocessor(self):
