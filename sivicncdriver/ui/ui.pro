@@ -5,7 +5,7 @@ SOURCES += \
     preprocessor_window.py \
     ressources_rc.py
 
-TRANSLATIONS += translate/SiviCNCDriver_fr.ts
+TRANSLATIONS += translate/SiviCNCDriver_fr_FR.ts
 
 FORMS += \
     main_window.ui \

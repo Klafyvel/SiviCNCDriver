@@ -17,4 +17,7 @@
         <file>rc/work.png</file>
         <file>rc/warning.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>translate/SiviCNCDriver_fr.qm</file>
+    </qresource>
 </RCC>

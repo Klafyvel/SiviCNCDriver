@@ -11,6 +11,8 @@ APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 
+TRANSLATE_DIR = os.path.join(APP_DIR, "ui", "translate")
+
 if DEBUG:
     DATA_DIR = APP_DIR
 else:

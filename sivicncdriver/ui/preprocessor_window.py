@@ -73,7 +73,7 @@ class Ui_dialog(object):
 
     def retranslateUi(self, dialog):
         _translate = QtCore.QCoreApplication.translate
-        dialog.setWindowTitle(_translate("dialog", "Préprocesseur"))
+        dialog.setWindowTitle(_translate("dialog", "Preprocessor"))
         self.groupBox.setTitle(_translate("dialog", "Parameters"))
         self.chk_del_num.setText(_translate("dialog", "Remove numbering (NXX)"))
         self.chk_del_comments.setText(_translate("dialog", "Remove comments"))
