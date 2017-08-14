@@ -11,8 +11,8 @@ Welcome to SiviCNCDriver's documentation!
    :caption: Contents:
 
    Getting started
+   Code documentation <modules>
 
-   docs/modules.rst
 
 Indices and tables
 ==================
