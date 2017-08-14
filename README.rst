@@ -3,8 +3,8 @@ SiviCNCDriver
 =============
 
 .. image:: https://readthedocs.org/projects/sivicncdriver/badge/?version=latest
-:target: http://sivicncdriver.readthedocs.io/en/latest/?badge=latest
-:alt: Documentation Status
+    :target: http://sivicncdriver.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 SiviCNCDriver, a software to control my CNC.
 
