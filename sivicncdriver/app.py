@@ -16,8 +16,6 @@ def main():
     """
     app = QApplication(sys.argv)
 
-    print(QLocale.system().name())
-
     qtTranslator = QTranslator()
     qtTranslator.load(os.path.join(settings.TRANSLATE_DIR, "SiviCNCDriver_" + QLocale.system().name()))
     app.installTranslator(qtTranslator)
