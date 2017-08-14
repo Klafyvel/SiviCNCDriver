@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
+    <width>1161</width>
     <height>684</height>
    </rect>
   </property>
@@ -32,7 +32,7 @@
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
-        <string>Fichier</string>
+        <string>File</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_9">
         <item>
@@ -40,14 +40,14 @@
           <item>
            <widget class="QLabel" name="filename">
             <property name="text">
-             <string>Pas de fichier</string>
+             <string>No file.</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="btn_file">
             <property name="text">
-             <string>Choisir le fichier</string>
+             <string>Choose file</string>
             </property>
             <property name="icon">
              <iconset resource="ressources.qrc">
@@ -58,7 +58,7 @@
           <item>
            <widget class="QPushButton" name="btn_reload">
             <property name="text">
-             <string>Recharger</string>
+             <string>Reload</string>
             </property>
             <property name="icon">
              <iconset resource="ressources.qrc">
@@ -69,7 +69,7 @@
           <item>
            <widget class="QPushButton" name="btn_close">
             <property name="text">
-             <string>Fermer</string>
+             <string>Close</string>
             </property>
             <property name="icon">
              <iconset resource="ressources.qrc">
@@ -85,7 +85,7 @@
            <item>
             <widget class="QPushButton" name="redraw">
              <property name="text">
-              <string>Redessiner</string>
+              <string>Redraw</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -96,7 +96,7 @@
            <item>
             <widget class="QPushButton" name="btn_preprocessor">
              <property name="text">
-              <string>Utiliser le préprocesseur sur le fichier</string>
+              <string>Run preprocessor on file</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -107,7 +107,7 @@
            <item>
             <widget class="QPushButton" name="btn_save_as">
              <property name="text">
-              <string>Enregister sous...</string>
+              <string>Save as ...</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -118,7 +118,7 @@
            <item>
             <widget class="QPushButton" name="btn_save_file">
              <property name="text">
-              <string>Enregistrer</string>
+              <string>Save</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -135,7 +135,7 @@
            <item>
             <widget class="QGroupBox" name="groupBox_5">
              <property name="title">
-              <string>Affichage</string>
+              <string>Display</string>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
               <item>
@@ -143,7 +143,7 @@
                 <item row="0" column="0">
                  <widget class="QLabel" name="afficherLesAxesLabel">
                   <property name="text">
-                   <string>Afficher les axes</string>
+                   <string>Draw axes</string>
                   </property>
                  </widget>
                 </item>
@@ -153,7 +153,7 @@
                 <item row="1" column="0">
                  <widget class="QLabel" name="afficherLesTapesLabel">
                   <property name="text">
-                   <string>Afficher les étapes</string>
+                   <string>Draw steps</string>
                   </property>
                  </widget>
                 </item>
@@ -163,7 +163,7 @@
                 <item row="2" column="0">
                  <widget class="QLabel" name="afficherLaBoTeDeDLimitationLabel">
                   <property name="text">
-                   <string>Afficher la boîte de délimitation</string>
+                   <string>Draw bounding box</string>
                   </property>
                   <property name="wordWrap">
                    <bool>true</bool>
@@ -176,7 +176,7 @@
                 <item row="3" column="0">
                  <widget class="QLabel" name="inverserLAxeXLabel">
                   <property name="text">
-                   <string>Retourner l'axe X</string>
+                   <string>Reverse X axis</string>
                   </property>
                  </widget>
                 </item>
@@ -186,7 +186,7 @@
                 <item row="4" column="0">
                  <widget class="QLabel" name="inverserLAxeYLabel">
                   <property name="text">
-                   <string>Retourner l'axe Y</string>
+                   <string>Reverse Y axis</string>
                   </property>
                  </widget>
                 </item>
@@ -200,7 +200,7 @@
                 <item row="5" column="0">
                  <widget class="QLabel" name="inverserLAxeZLabel">
                   <property name="text">
-                   <string>Retourner l'axe Z</string>
+                   <string>Reverse Z axis</string>
                   </property>
                  </widget>
                 </item>
@@ -210,7 +210,7 @@
                 <item row="6" column="0">
                  <widget class="QLabel" name="surlignerLeDessinDeLaLigneCourranteLabel">
                   <property name="text">
-                   <string>Surligner le dessin de la ligne courrante</string>
+                   <string>Highlight current line</string>
                   </property>
                   <property name="wordWrap">
                    <bool>true</bool>
@@ -238,7 +238,7 @@
                 <item row="0" column="0">
                  <widget class="QLabel" name="label_5">
                   <property name="text">
-                   <string>Développement selon X</string>
+                   <string>X size</string>
                   </property>
                  </widget>
                 </item>
@@ -258,7 +258,7 @@
                 <item row="1" column="0">
                  <widget class="QLabel" name="label_11">
                   <property name="text">
-                   <string>Développement selon Y</string>
+                   <string>Y size</string>
                   </property>
                  </widget>
                 </item>
@@ -278,7 +278,7 @@
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_12">
                   <property name="text">
-                   <string>Développement selon Z</string>
+                   <string>Z size</string>
                   </property>
                  </widget>
                 </item>
@@ -312,7 +312,7 @@
 }</string>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez zoomer avec &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; et &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. Vous pouvez également déplacer la vue avec le curseur et les flèches du clavier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can zoom with &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; and &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. You can also move the view using the mouse and the keyboard arrows.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
@@ -345,13 +345,13 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
-        <string>Port Série</string>
+        <string>Serial port</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox">
           <property name="title">
-           <string>Moniteur série</string>
+           <string>Serial monitor</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
@@ -397,7 +397,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QLabel" name="label_4">
                <property name="text">
-                <string>Commande :</string>
+                <string>Command :</string>
                </property>
               </widget>
              </item>
@@ -407,7 +407,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <widget class="QPushButton" name="btn_command">
                <property name="text">
-                <string>Envoyer</string>
+                <string>Send</string>
                </property>
                <property name="icon">
                 <iconset resource="ressources.qrc">
@@ -426,7 +426,7 @@ p, li { white-space: pre-wrap; }
               <string notr="true">background-color:red;color:white;font-weight:bold;</string>
              </property>
              <property name="text">
-              <string>ARRÊT D'URGENCE</string>
+              <string>EMERGENCY STOP</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -437,7 +437,7 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="QPushButton" name="btn_send_current_file">
              <property name="text">
-              <string>Envoyer le fichier courrant</string>
+              <string>Send current file</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -465,13 +465,13 @@ p, li { white-space: pre-wrap; }
           </property>
           <widget class="QWidget" name="tab_command">
            <attribute name="title">
-            <string>Commande</string>
+            <string>Command</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout">
             <item row="1" column="0">
              <widget class="QGroupBox" name="grp_cmd">
               <property name="title">
-               <string>Commande manuelle</string>
+               <string>Manual command</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_6">
                <item>
@@ -545,8 +545,7 @@ p, li { white-space: pre-wrap; }
                  <item row="1" column="1">
                   <widget class="QPushButton" name="btn_go_to_zero">
                    <property name="text">
-                    <string>Aller à la position
-Zéro</string>
+                    <string>Go to origin</string>
                    </property>
                    <property name="icon">
                     <iconset resource="ressources.qrc">
@@ -571,13 +570,13 @@ Zéro</string>
             <item row="2" column="0">
              <widget class="QGroupBox" name="grp_auto">
               <property name="title">
-               <string>Commandes automatiques</string>
+               <string>Automatic controls</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_14">
                <item>
                 <widget class="QLabel" name="label_6">
                  <property name="text">
-                  <string>Les commandes automatiques permettent d'envoyer des commandes directement en pas afin de régler la machine.</string>
+                  <string>Automatic controls allow you to send commands in step in order to set the machine.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -590,7 +589,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_7">
                     <property name="text">
-                     <string>L'axe</string>
+                     <string>Axis</string>
                     </property>
                    </widget>
                   </item>
@@ -616,7 +615,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_8">
                     <property name="text">
-                     <string>effectue</string>
+                     <string>does</string>
                     </property>
                    </widget>
                   </item>
@@ -631,12 +630,12 @@ Zéro</string>
                    <widget class="QComboBox" name="auto_cmd_type">
                     <item>
                      <property name="text">
-                      <string>aller</string>
+                      <string>go</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
-                      <string>aller(s)-retour(s)</string>
+                      <string>round trip</string>
                      </property>
                     </item>
                    </widget>
@@ -644,7 +643,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_9">
                     <property name="text">
-                     <string>de</string>
+                     <string>of</string>
                     </property>
                    </widget>
                   </item>
@@ -661,7 +660,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_10">
                     <property name="text">
-                     <string>pas.</string>
+                     <string>steps.</string>
                     </property>
                    </widget>
                   </item>
@@ -674,7 +673,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_13">
                     <property name="text">
-                     <string>Entre chaque étape, l'axe</string>
+                     <string>Between each stage, axis</string>
                     </property>
                     <property name="textFormat">
                      <enum>Qt::PlainText</enum>
@@ -703,7 +702,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_14">
                     <property name="text">
-                     <string>se déplace de</string>
+                     <string>move by</string>
                     </property>
                    </widget>
                   </item>
@@ -720,7 +719,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_15">
                     <property name="text">
-                     <string>pas.</string>
+                     <string>steps.</string>
                     </property>
                    </widget>
                   </item>
@@ -730,7 +729,7 @@ Zéro</string>
                <item>
                 <widget class="QPushButton" name="btn_run_auto_cmd">
                  <property name="text">
-                  <string>Envoyer</string>
+                  <string>Send</string>
                  </property>
                  <property name="icon">
                   <iconset resource="ressources.qrc">
@@ -744,13 +743,13 @@ Zéro</string>
             <item row="1" column="1" rowspan="2">
              <widget class="QGroupBox" name="groupBox_6">
               <property name="title">
-               <string>Commandes personnalisées</string>
+               <string>Custom controls</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_5">
                <item>
                 <widget class="QLabel" name="label_16">
                  <property name="text">
-                  <string>Les commandes personnalisées permettent d'envoyer des commandes définies par l'utilisateur un certain nombre de fois afin de régler la machine.</string>
+                  <string>Custom controls allow you to send user-defined commands repetitively.</string>
                  </property>
                  <property name="wordWrap">
                   <bool>true</bool>
@@ -763,7 +762,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_17">
                     <property name="text">
-                     <string>Répéter</string>
+                     <string>Repeat</string>
                     </property>
                    </widget>
                   </item>
@@ -780,7 +779,7 @@ Zéro</string>
                   <item>
                    <widget class="QLabel" name="label_18">
                     <property name="text">
-                     <string>fois les commandes :</string>
+                     <string>times the commands :</string>
                     </property>
                    </widget>
                   </item>
@@ -793,7 +792,7 @@ Zéro</string>
                <item>
                 <widget class="QPushButton" name="btn_run_custom_cmd">
                  <property name="text">
-                  <string>Envoyer</string>
+                  <string>Send</string>
                  </property>
                  <property name="icon">
                   <iconset resource="ressources.qrc">
@@ -807,7 +806,7 @@ Zéro</string>
             <item row="0" column="0" colspan="2">
              <widget class="QPushButton" name="btn_set_origin">
               <property name="text">
-               <string>Définir l'origine</string>
+               <string>Set origin</string>
               </property>
               <property name="icon">
                <iconset resource="ressources.qrc">
@@ -835,7 +834,7 @@ Zéro</string>
                <widget class="QComboBox" name="config_list">
                 <item>
                  <property name="text">
-                  <string>Nouvelle configuration</string>
+                  <string>New configuration</string>
                  </property>
                 </item>
                </widget>
@@ -853,13 +852,13 @@ Zéro</string>
                  </sizepolicy>
                 </property>
                 <property name="title">
-                 <string>Axe Y</string>
+                 <string>Y axis</string>
                 </property>
                 <layout class="QFormLayout" name="formLayout_2">
                  <item row="0" column="0">
                   <widget class="QLabel" name="modeDePilotageLabel_2">
                    <property name="text">
-                    <string>Mode de pilotage</string>
+                    <string>Driving mode</string>
                    </property>
                   </widget>
                  </item>
@@ -872,12 +871,12 @@ Zéro</string>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Couple maximal</string>
+                     <string>Full torque</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Demi pas</string>
+                     <string>Half step</string>
                     </property>
                    </item>
                   </widget>
@@ -892,14 +891,14 @@ Zéro</string>
                  <item row="1" column="1">
                   <widget class="QDoubleSpinBox" name="ratio_y">
                    <property name="suffix">
-                    <string> mm/pas</string>
+                    <string> mm/step</string>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="jeuLabel_2">
                    <property name="text">
-                    <string>Jeu</string>
+                    <string>Play</string>
                    </property>
                   </widget>
                  </item>
@@ -913,7 +912,7 @@ Zéro</string>
                  <item row="3" column="0">
                   <widget class="QLabel" name="inverserLAxeLabel_2">
                    <property name="text">
-                    <string>Inverser l'axe</string>
+                    <string>Reverse axis</string>
                    </property>
                   </widget>
                  </item>
@@ -932,13 +931,13 @@ Zéro</string>
                  </sizepolicy>
                 </property>
                 <property name="title">
-                 <string>Axe X</string>
+                 <string>X axis</string>
                 </property>
                 <layout class="QFormLayout" name="formLayout">
                  <item row="0" column="0">
                   <widget class="QLabel" name="modeDePilotageLabel">
                    <property name="text">
-                    <string>Mode de pilotage</string>
+                    <string>Driving mode</string>
                    </property>
                   </widget>
                  </item>
@@ -951,12 +950,12 @@ Zéro</string>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Couple maximal</string>
+                     <string>Full torque</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Demi pas</string>
+                     <string>Half step</string>
                     </property>
                    </item>
                   </widget>
@@ -971,14 +970,14 @@ Zéro</string>
                  <item row="1" column="1">
                   <widget class="QDoubleSpinBox" name="ratio_x">
                    <property name="suffix">
-                    <string> mm/pas</string>
+                    <string> mm/step</string>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="jeuLabel">
                    <property name="text">
-                    <string>Jeu</string>
+                    <string>Play</string>
                    </property>
                   </widget>
                  </item>
@@ -992,7 +991,7 @@ Zéro</string>
                  <item row="3" column="0">
                   <widget class="QLabel" name="inverserLAxeLabel">
                    <property name="text">
-                    <string>Inverser l'axe</string>
+                    <string>Reverse axis</string>
                    </property>
                   </widget>
                  </item>
@@ -1007,7 +1006,7 @@ Zéro</string>
                 <item>
                  <widget class="QPushButton" name="btn_send_config">
                   <property name="text">
-                   <string>Envoyer la configuration</string>
+                   <string>Send configuration</string>
                   </property>
                   <property name="icon">
                    <iconset resource="ressources.qrc">
@@ -1018,7 +1017,7 @@ Zéro</string>
                 <item>
                  <widget class="QPushButton" name="btn_save_config">
                   <property name="text">
-                   <string>Enregister</string>
+                   <string>Save</string>
                   </property>
                   <property name="icon">
                    <iconset resource="ressources.qrc">
@@ -1029,7 +1028,7 @@ Zéro</string>
                 <item>
                  <widget class="QPushButton" name="btn_save_config_as">
                   <property name="text">
-                   <string>Enregister sous</string>
+                   <string>Save as ...</string>
                   </property>
                   <property name="icon">
                    <iconset resource="ressources.qrc">
@@ -1042,13 +1041,13 @@ Zéro</string>
               <item row="1" column="0">
                <widget class="QGroupBox" name="groupBox_4">
                 <property name="title">
-                 <string>Axe Z</string>
+                 <string>Z axis</string>
                 </property>
                 <layout class="QFormLayout" name="formLayout_3">
                  <item row="0" column="0">
                   <widget class="QLabel" name="modeDePilotageLabel_3">
                    <property name="text">
-                    <string>Mode de pilotage</string>
+                    <string>Driving mode</string>
                    </property>
                   </widget>
                  </item>
@@ -1061,12 +1060,12 @@ Zéro</string>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Couple maximal</string>
+                     <string>Full torque</string>
                     </property>
                    </item>
                    <item>
                     <property name="text">
-                     <string>Demi pas</string>
+                     <string>Half step</string>
                     </property>
                    </item>
                   </widget>
@@ -1081,14 +1080,14 @@ Zéro</string>
                  <item row="1" column="1">
                   <widget class="QDoubleSpinBox" name="ratio_z">
                    <property name="suffix">
-                    <string> mm/pas</string>
+                    <string> mm/step</string>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="jeuLabel_3">
                    <property name="text">
-                    <string>Jeu</string>
+                    <string>Play</string>
                    </property>
                   </widget>
                  </item>
@@ -1102,7 +1101,7 @@ Zéro</string>
                  <item row="3" column="0">
                   <widget class="QLabel" name="inverserLAxeLabel_3">
                    <property name="text">
-                    <string>Inverser l'axe</string>
+                    <string>Reverse axis</string>
                    </property>
                   </widget>
                  </item>
@@ -1127,7 +1126,7 @@ Zéro</string>
            <item>
             <widget class="QLabel" name="label_19">
              <property name="text">
-              <string>Émuler un port série </string>
+              <string>Emulate a serial port</string>
              </property>
             </widget>
            </item>
@@ -1144,7 +1143,7 @@ Zéro</string>
            <item>
             <widget class="QPushButton" name="btn_serial_ports_list">
              <property name="text">
-              <string>Lister les ports série</string>
+              <string>List serial ports</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -1231,7 +1230,7 @@ Zéro</string>
            <item>
             <widget class="QLabel" name="label_21">
              <property name="text">
-              <string>Port série</string>
+              <string>Serial port</string>
              </property>
             </widget>
            </item>
@@ -1241,7 +1240,7 @@ Zéro</string>
            <item>
             <widget class="QPushButton" name="btn_connect">
              <property name="text">
-              <string>Connecter</string>
+              <string>Connect</string>
              </property>
              <property name="icon">
               <iconset resource="ressources.qrc">
@@ -1275,7 +1274,7 @@ Zéro</string>
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SiviCNCDriver est un logiciel développé par klafyvel. Pour plus d'informations voir &lt;a href=&quot;http://sivigik.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#4c6b8a;&quot;&gt;sivigik.com&lt;/span&gt;&lt;/a&gt; .&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SiviCNCDriver is provided with &amp;lt;3 by Klafyvel from &lt;a href=&quot;http://sivigik.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#4c6b8a;&quot;&gt;sivigik.com&lt;/span&gt;&lt;/a&gt; .&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::RichText</enum>
@@ -1298,14 +1297,14 @@ Zéro</string>
        <item>
         <widget class="QPushButton" name="btn_license">
          <property name="text">
-          <string>Licence</string>
+          <string>License</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="btn_about_qt">
          <property name="text">
-          <string>À propos de Qt</string>
+          <string>About Qt</string>
          </property>
         </widget>
        </item>

@@ -10,7 +10,7 @@ Welcome to SiviCNCDriver's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   Getting started
+   Getting started <Getting started>
    Code documentation <modules>
 
 

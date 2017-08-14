@@ -74,11 +74,11 @@ class Ui_dialog(object):
     def retranslateUi(self, dialog):
         _translate = QtCore.QCoreApplication.translate
         dialog.setWindowTitle(_translate("dialog", "Préprocesseur"))
-        self.groupBox.setTitle(_translate("dialog", "Paramètres"))
-        self.chk_del_num.setText(_translate("dialog", "Supprimer la numérotation (NXX)"))
-        self.chk_del_comments.setText(_translate("dialog", "Supprimer les commentaires"))
-        self.chk_optimize_bounding_box.setText(_translate("dialog", "Minimiser l\'aire d\'encadrement"))
-        self.btn_run_preproc.setText(_translate("dialog", "Lancer le préprocesseur"))
-        self.groupBox_2.setTitle(_translate("dialog", "Sortie"))
+        self.groupBox.setTitle(_translate("dialog", "Parameters"))
+        self.chk_del_num.setText(_translate("dialog", "Remove numbering (NXX)"))
+        self.chk_del_comments.setText(_translate("dialog", "Remove comments"))
+        self.chk_optimize_bounding_box.setText(_translate("dialog", "Minimize bounding box"))
+        self.btn_run_preproc.setText(_translate("dialog", "Run preprocessor"))
+        self.groupBox_2.setTitle(_translate("dialog", "Output"))
 
 from sivicncdriver.ui import ressources_rc

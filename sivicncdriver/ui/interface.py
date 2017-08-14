@@ -29,6 +29,7 @@ from sivicncdriver.ui.main_window import Ui_MainWindow
 
 __all__ = ['MainWindow']
 
+_translate = QtCore.QCoreApplication.translate
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
@@ -162,7 +163,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if f.endswith(".json"):
                 logger.debug("Found {}".format(f))
                 self.config_list.addItem(f[:-5])
-        self.config_list.addItem("Nouvelle configuration")
+        self.config_list.addItem(_translate("MainWindow", "New configuration"))
 
     def set_serial_mode(self, mode):
         """
@@ -533,7 +534,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Saves a configuration in a new file.
         """
         f = QFileDialog.getSaveFileName(
-            self, "Sélectionner un fichier",
+            self, _translate("MainWindow","Select file"),
             directory=settings.CONFIG_DIR,
             filter='JSON files (*.json)\nAll files (*)')[0]
         if f is not '':
@@ -553,7 +554,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.baudrate.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
             self.btn_serial_ports_list.setEnabled(True)
-            self.btn_connect.setText("Connecter")
+            self.btn_connect.setText(_translate("MainWindow", "Connect"))
             self.serial_manager.close()
         else:
             port = self.serial_ports_list.currentText()
@@ -562,7 +563,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.baudrate.setEnabled(False)
                 self.serial_ports_list.setEnabled(False)
                 self.btn_serial_ports_list.setEnabled(False)
-                self.btn_connect.setText("Déconnecter")
+                self.btn_connect.setText(_translate("MainWindow", "Disconnect"))
 
     @pyqtSlot()
     def choose_file(self):
@@ -574,7 +575,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             directory = os.path.dirname(self.filename.text())
         file = QFileDialog.getOpenFileName(
-            self, "Sélectionner un fichier",
+            self, _translate("MainWindow", "Select file"),
             directory=directory,
             filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
 
@@ -607,7 +608,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             directory = os.path.dirname(self.filename.text())
         file = QFileDialog.getSaveFileName(
-            self, "Sélectionner un fichier",
+            self, _translate("MainWindow", "Select file"),
             directory=directory,
             filter='GCode files (*.gcode, *.ngc)\nAll files (*)')[0]
         if file is not '':
@@ -635,7 +636,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Close the current file.
         """
-        self.filename.setText("Pas de fichier.")
+        self.filename.setText(_translate("MainWindow", "No file."))
         self.code_edit.setText("")
         self.draw_file()
 
@@ -663,7 +664,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if t['name'] == '__error__':
                 self.chk_display_current_line.setChecked(False)
                 self.code_edit.setExtraSelections([])
-                QMessageBox.critical(self, "Erreur.", "Une erreur est survenue lors du parsing.")
+                QMessageBox.critical(self, _translate("MainWindow", "Error."), 
+                    _translate("MainWindow", "An error occurred during parsing."))
                 logger.error("While parsing line {}".format(t['line']))
                 highlight = QTextEdit.ExtraSelection()
                 highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(t['line']))
@@ -826,7 +828,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Displays informations about the license.
         """
         with open(os.path.join(settings.APP_DIR, 'license_dialog_text')) as f:
-            QMessageBox.about(self, "Licence", f.read())
+            QMessageBox.about(self, _translate("MainWindow", "License"), f.read())
 
     @pyqtSlot()
     def about_qt(self):
