@@ -661,6 +661,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for n, t in enumerate(parse(gcode)):
             logger.debug("Processing from {t}, highlight={highlight_line}".format(**locals()))
             if t['name'] == '__error__':
+                self.chk_display_current_line.setChecked(False)
                 self.code_edit.setExtraSelections([])
                 QMessageBox.critical(self, "Erreur.", "Une erreur est survenue lors du parsing.")
                 logger.error("While parsing line {}".format(t['line']))

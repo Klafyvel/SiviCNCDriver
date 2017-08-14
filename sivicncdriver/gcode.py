@@ -21,6 +21,9 @@ class Stack:
         self.in_str = in_str
         self.next = None
 
+    def __str__(self):
+        return self.in_str
+
     def token(self):
         """
         Yields the elements of the stack.
@@ -51,6 +54,12 @@ class Stack:
             self.in_str = self.in_str[1:]
         return self.next
 
+    def is_empty(self):
+        """
+        Returns True if the stack is empty.
+        """
+        return len(self.in_str) <= 0
+
 SEPARATOR = ('\n', ' ', '(', '=')
 
 
@@ -64,7 +73,7 @@ def parse_iterator(gcode):
     stack = Stack(gcode + '\n')
     line = 0
     for c in stack.token():
-        if c is ' ':
+        if c in ' %':
             continue
         elif c is '(':
             com = ''
@@ -79,7 +88,7 @@ def parse_iterator(gcode):
             try:
                 yield (c, parse_value(stack), line)
             except ValueError:
-                yield ('__error__', '__error__', line)
+                yield ('__error__', c, line)
 
 
 def parse(gcode):
@@ -103,7 +112,7 @@ def parse(gcode):
     args = {}
     for i in parse_iterator(gcode):
         if i[0] == '__error__':
-            yield {'name' : '__error__', 'line':i[2]}
+            yield {'name' : '__error__', 'line':i[2], 'value':i[1]}
         elif not i[0] == '__next__':
             if i[0] == '__new_var__':
                 name = ''
@@ -135,6 +144,6 @@ def parse_value(stack):
     :return: The value.
     """
     r = ''
-    while stack.peek() not in SEPARATOR:
+    while (not stack.is_empty()) and ((stack.peek() not in SEPARATOR) or (not r)):
         r += stack.pop()
     return float(r)
