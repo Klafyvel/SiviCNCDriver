@@ -1,1 +1,1 @@
-{"x_drive": 0, "x_ratio": 1.0, "x_play": 0.0, "x_reverse": true, "y_drive": 0, "y_ratio": 1.0, "y_play": 0.0, "y_reverse": false, "z_drive": 0, "z_ratio": 1.0, "z_play": 0.0, "z_reverse": false}
+{"x_drive": 0, "x_ratio": 1.0, "x_play": 0.0, "x_reverse": false, "y_drive": 0, "y_ratio": 1.0, "y_play": 0.0, "y_reverse": false, "z_drive": 0, "z_ratio": 1.0, "z_play": 0.0, "z_reverse": true}

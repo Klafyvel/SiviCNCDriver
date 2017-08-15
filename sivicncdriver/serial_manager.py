@@ -43,6 +43,7 @@ class SerialManager(QObject):
     def close(self):
         logger.info("Closing serial port.")
         self.send_print.emit("Closing serial port.", "info")
+        self.is_open = False
         self.serial.close()
 
     def sendMsg(self, msg):
@@ -55,6 +56,8 @@ class SerialManager(QObject):
         else:
             logger.info("Sending {} through {}".format(repr(msg),self.serial))
             self.send_print.emit(msg, "operator")
+            if msg[-1] != '\n':
+                msg += '\n'
             self.serial.write(bytes(msg, encoding='utf8'))
 
     def waitForConfirm(self):
@@ -68,6 +71,7 @@ class SerialManager(QObject):
             logger.error("Serial manager has no serial opened to read data.")
             return False
 
+        logger.debug("Reading...");
         txt = self.serial.readline().decode('ascii').lower()
         if not "ok" in txt:
             logger.error("Machine could not perform task.")
