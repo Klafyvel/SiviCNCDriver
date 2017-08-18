@@ -148,6 +148,13 @@ def config_as_gcode(**kwargs):
     :param y_reverse: Should the Y axis be reversed ?
     :param z_reverse: Should the Z axis be reversed ?
 
+    :param x_min_time: The minimal duration between 2 pulse for the x axis in
+        milliseconds.
+    :param y_min_time: The minimal duration between 2 pulse for the y axis in
+        milliseconds.
+    :param z_min_time: The minimal duration between 2 pulse for the z axis in
+        milliseconds.
+
     :type x_ratio: float
     :type y_ratio: float
     :type z_ratio: float
@@ -163,6 +170,10 @@ def config_as_gcode(**kwargs):
     :type x_reverse: bool
     :type y_reverse: bool
     :type z_reverse: bool
+
+    :type x_min_time: int
+    :type y_min_time: int
+    :type z_min_time: int
     """
 
     r = []
@@ -179,5 +190,7 @@ def config_as_gcode(**kwargs):
     r.append("S{} X".format(reverse[kwargs["x_reverse"]]))
     r.append("S{} Y".format(reverse[kwargs["y_reverse"]]))
     r.append("S{} Z".format(reverse[kwargs["z_reverse"]]))
+
+    r.append("S11 X{x_min_time} Y{y_min_time} Z{z_min_time}".format(**kwargs))
 
     return '\n'.join(r)

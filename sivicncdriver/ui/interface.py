@@ -205,6 +205,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reverse_y.setChecked(False)
         self.reverse_z.setChecked(False)
 
+        self.minTime_x.setValue(5)
+        self.minTime_y.setValue(5)
+        self.minTime_z.setValue(5)
+
         logger.info("Reset config.")
 
     def config_as_dict(self):
@@ -219,14 +223,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             "x_ratio": self.ratio_x.value(),
             "x_play": self.play_x.value(),
             "x_reverse": bool(self.reverse_x.checkState()),
+            "x_min_time": self.minTime_x.value(),
             "y_drive": self.drive_y.currentIndex(),
             "y_ratio": self.ratio_y.value(),
             "y_play": self.play_y.value(),
             "y_reverse": bool(self.reverse_y.checkState()),
+            "y_min_time": self.minTime_y.value(),
             "z_drive": self.drive_z.currentIndex(),
             "z_ratio": self.ratio_z.value(),
             "z_play": self.play_z.value(),
             "z_reverse": bool(self.reverse_z.checkState()),
+            "z_min_time": self.minTime_z.value(),
         }
 
     def run_thread(self, gcode, n=None, disable=True, allow_waiting=True):
@@ -506,6 +513,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.reverse_x.setChecked(config.get("x_reverse", False))
             self.reverse_y.setChecked(config.get("y_reverse", False))
             self.reverse_z.setChecked(config.get("z_reverse", False))
+
+            self.minTime_x.setValue(config.get("x_min_time", 5));
+            self.minTime_y.setValue(config.get("y_min_time", 5));
+            self.minTime_z.setValue(config.get("z_min_time", 5));
 
     @pyqtSlot()
     def save_config(self, filename=None):
