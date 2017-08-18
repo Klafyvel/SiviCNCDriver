@@ -994,10 +994,10 @@ p, li { white-space: pre-wrap; }
                   <item>
                    <widget class="QSpinBox" name="auto_cmd_step">
                     <property name="minimum">
-                     <number>-1000</number>
+                     <number>-5000</number>
                     </property>
                     <property name="maximum">
-                     <number>1000</number>
+                     <number>5000</number>
                     </property>
                    </widget>
                   </item>
@@ -1053,10 +1053,10 @@ p, li { white-space: pre-wrap; }
                   <item>
                    <widget class="QSpinBox" name="auto_cmd_step_2">
                     <property name="minimum">
-                     <number>-1000</number>
+                     <number>-5000</number>
                     </property>
                     <property name="maximum">
-                     <number>1000</number>
+                     <number>5000</number>
                     </property>
                    </widget>
                   </item>
