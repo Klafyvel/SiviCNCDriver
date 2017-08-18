@@ -12,6 +12,7 @@ class SendThread(QThread):
     A thread to send a list of instructions without blocking the main thread.
     """
     update_progress = pyqtSignal(int)
+    read_allowed = pyqtSignal(bool)
 
     def __init__(self, serial_manager, gcode):
         """
@@ -26,6 +27,8 @@ class SendThread(QThread):
         self.gcode = gcode
         self.serial_manager = serial_manager
         self.user_stop = False
+        self.error = False
+        self.confirmed = True
 
     def __del__(self):
         self.wait()
@@ -37,6 +40,17 @@ class SendThread(QThread):
         """
         self.user_stop = True
 
+    @pyqtSlot(bool)
+    def confirm(self, st):
+        """
+        Receive confirmation from the readThread.
+
+        :param st: Everything ok ?
+        """
+        self.error = st
+        self.confirmed = True
+        logger.debug("Confirmation.")
+
     def run(self):
         """
         Runs the thread.
@@ -45,7 +59,14 @@ class SendThread(QThread):
         the thread is stopped by the user, then it quits.
         """
         for n, l in enumerate(self.gcode):
-            self.serial_manager.sendMsg(l)
-            self.update_progress.emit(n)
-            if not self.serial_manager.waitForConfirm() or self.user_stop:
+            if self.confirmed:
+                self.read_allowed.emit(False)
+                self.serial_manager.sendMsg(l)
+                self.update_progress.emit(n)
+                self.confirmed = False
+                self.read_allowed.emit(True)
+                while not self.confirmed:
+                    pass
+
+            if (not self.error) or self.user_stop:
                 break

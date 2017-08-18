@@ -24,6 +24,7 @@ from sivicncdriver.serial_manager import SerialManager
 from sivicncdriver.ui.preprocessor import PreprocessorDialog
 from sivicncdriver.arc_calculator import arc_to_segments
 from sivicncdriver.thread_send import SendThread
+from sivicncdriver.thread_read import ReadThread
 import sivicncdriver.gcode_maker as gcode_maker
 
 from sivicncdriver.ui.main_window import Ui_MainWindow
@@ -68,6 +69,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.last_selected_path = None
         self.last_selected_item = None
+
+        self.read_thread = None
 
     def connectUi(self):
         """
@@ -271,6 +274,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if disable:
             self.tabWidget.setEnabled(False)
 
+        
+        self.send_thread.read_allowed.connect(self.read_thread.set_read_allowed)
+        self.read_thread.send_confirm.connect(self.send_thread.confirm)
+
         self.send_thread.finished.connect(self.sending_end)
         self.send_thread.update_progress.connect(self.update_progress)
         self.send_thread.start()
@@ -394,6 +401,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Manages the end of upload. If some commands are waiting, run them at the
         end.
         """
+
+        self.send_thread.read_allowed.disconnect()
+        self.read_thread.send_confirm.disconnect()
+
         if self.send_thread and self.send_thread.user_stop:
             self.print("Stopped by user.", "error")
             logger.error("Upload stopped by user.")
@@ -566,6 +577,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.serial_manager.is_open:
             if self.send_thread:
                 self.emergency_stop()
+            self.read_thread.stop()
             self.baudrate.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
             self.btn_serial_ports_list.setEnabled(True)
@@ -575,10 +587,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             port = self.serial_ports_list.currentText()
             baudrate = int(self.baudrate.currentText())
             if self.serial_manager.open(baudrate, port):
+                self.read_thread = ReadThread(self.serial_manager)
                 self.baudrate.setEnabled(False)
                 self.serial_ports_list.setEnabled(False)
                 self.btn_serial_ports_list.setEnabled(False)
                 self.btn_connect.setText(_translate("MainWindow", "Disconnect"))
+                self.read_thread.print_message.connect(self.print)
+                self.read_thread.start()
 
     @pyqtSlot()
     def choose_file(self):

@@ -540,6 +540,9 @@ p, li { white-space: pre-wrap; }
                    <property name="suffix">
                     <string> mm/step</string>
                    </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
@@ -553,6 +556,9 @@ p, li { white-space: pre-wrap; }
                   <widget class="QDoubleSpinBox" name="play_y">
                    <property name="suffix">
                     <string>  mm</string>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -633,6 +639,9 @@ p, li { white-space: pre-wrap; }
                    <property name="suffix">
                     <string> mm/step</string>
                    </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
@@ -646,6 +655,9 @@ p, li { white-space: pre-wrap; }
                   <widget class="QDoubleSpinBox" name="play_x">
                    <property name="suffix">
                     <string> mm</string>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
@@ -757,6 +769,9 @@ p, li { white-space: pre-wrap; }
                    <property name="suffix">
                     <string> mm/step</string>
                    </property>
+                   <property name="decimals">
+                    <number>4</number>
+                   </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
@@ -770,6 +785,9 @@ p, li { white-space: pre-wrap; }
                   <widget class="QDoubleSpinBox" name="play_z">
                    <property name="suffix">
                     <string> mm</string>
+                   </property>
+                   <property name="decimals">
+                    <number>4</number>
                    </property>
                   </widget>
                  </item>
