@@ -301,8 +301,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Enable the widgets for auto commands
         """
         self.auto_cmd_number.setValue(1)
-        self.auto_cmd_number.setEnabled(n != 0)
-        self.auto_cmd_2.setEnabled(n != 0)
+        self.auto_cmd_number.setEnabled(n != 1)
+        self.auto_cmd_2.setEnabled(n != 1)
 
     @pyqtSlot()
     def auto_cmd(self):
@@ -316,7 +316,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         n = self.auto_cmd_number.value()
         step = self.auto_cmd_step.value()
 
-        if self.auto_cmd_type.currentIndex() == 0:
+        if self.auto_cmd_type.currentIndex() == 1:
             it = [gcode_maker.step(axis, step)]
         else:
             axis2 = self.auto_cmd_axis_2.currentText()
@@ -553,6 +553,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Manages the connection widgets.
         """
         if self.serial_manager.is_open:
+            if self.send_thread:
+                self.emergency_stop()
             self.baudrate.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
             self.btn_serial_ports_list.setEnabled(True)

@@ -4,127 +4,127 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main_window.py" line="656"/>
+        <location filename="../main_window.py" line="675"/>
         <source>SiviCNCDriver</source>
         <translation>SiviCNCDriver</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="677"/>
+        <location filename="../main_window.py" line="696"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="657"/>
+        <location filename="../main_window.py" line="676"/>
         <source>No file.</source>
         <translation>Pas de fichier.</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="658"/>
+        <location filename="../main_window.py" line="677"/>
         <source>Choose file</source>
         <translation>Choisir un fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="659"/>
+        <location filename="../main_window.py" line="678"/>
         <source>Reload</source>
         <translation>Recharger</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="660"/>
+        <location filename="../main_window.py" line="679"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="661"/>
+        <location filename="../main_window.py" line="680"/>
         <source>Redraw</source>
         <translation>Redessiner</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="662"/>
+        <location filename="../main_window.py" line="681"/>
         <source>Run preprocessor on file</source>
         <translation>Lancer le préprocesseur sur le fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="745"/>
+        <location filename="../main_window.py" line="735"/>
         <source>Save as ...</source>
         <translation>Enregistrer sous ...</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="744"/>
+        <location filename="../main_window.py" line="734"/>
         <source>Save</source>
         <translation>Enregister</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="665"/>
+        <location filename="../main_window.py" line="684"/>
         <source>Display</source>
         <translation>Affichage</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="666"/>
+        <location filename="../main_window.py" line="685"/>
         <source>Draw axes</source>
         <translation>Afficher les axes</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="667"/>
+        <location filename="../main_window.py" line="686"/>
         <source>Draw steps</source>
         <translation>Afficher les étapes</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="668"/>
+        <location filename="../main_window.py" line="687"/>
         <source>Draw bounding box</source>
         <translation>Afficher la boîte de délimitation</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="669"/>
+        <location filename="../main_window.py" line="688"/>
         <source>Reverse X axis</source>
         <translation>Inverser l&apos;axe X</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="670"/>
+        <location filename="../main_window.py" line="689"/>
         <source>Reverse Y axis</source>
         <translation>Inverser l&apos;axe Y</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="671"/>
+        <location filename="../main_window.py" line="690"/>
         <source>Reverse Z axis</source>
         <translation>Inverser l&apos;axe Z</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="672"/>
+        <location filename="../main_window.py" line="691"/>
         <source>Highlight current line</source>
         <translation>Surligner la ligne courrante</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="673"/>
+        <location filename="../main_window.py" line="692"/>
         <source>X size</source>
         <translation>Développement selon X</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="674"/>
+        <location filename="../main_window.py" line="693"/>
         <source>Y size</source>
         <translation>Développement selon Y</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="675"/>
+        <location filename="../main_window.py" line="694"/>
         <source>Z size</source>
         <translation>Développement selon Z</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="676"/>
+        <location filename="../main_window.py" line="695"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can zoom with &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; and &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. You can also move the view using the mouse and the keyboard arrows.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez zommer avec &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; et &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. Vous pouvez également déplacer la vue avec le curseur et les flèches du clavier.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="773"/>
+        <location filename="../main_window.py" line="798"/>
         <source>Serial port</source>
         <translation>Port série</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="678"/>
+        <location filename="../main_window.py" line="697"/>
         <source>Serial monitor</source>
         <translation>Moniteur série</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="679"/>
+        <location filename="../main_window.py" line="698"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -137,354 +137,364 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Ubuntu&apos;; font-size:11pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="684"/>
+        <location filename="../main_window.py" line="703"/>
         <source>Command :</source>
         <translation>Commande :</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="718"/>
+        <location filename="../main_window.py" line="779"/>
         <source>Send</source>
         <translation>Envoyer</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="686"/>
+        <location filename="../main_window.py" line="705"/>
         <source>EMERGENCY STOP</source>
         <translation>ARRÊT D&apos;URGENCE</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="687"/>
+        <location filename="../main_window.py" line="706"/>
         <source>Send current file</source>
         <translation>Envoyer le fichier</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="720"/>
+        <location filename="../main_window.py" line="781"/>
         <source>Command</source>
         <translation>Commande</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="688"/>
+        <location filename="../main_window.py" line="749"/>
         <source>Manual command</source>
         <translation>Commande manuelle</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="689"/>
+        <location filename="../main_window.py" line="750"/>
         <source>X+</source>
         <translation>X+</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="690"/>
+        <location filename="../main_window.py" line="751"/>
         <source>Y+</source>
         <translation>Y+</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="691"/>
+        <location filename="../main_window.py" line="752"/>
         <source>Z+</source>
         <translation>Z+</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="692"/>
+        <location filename="../main_window.py" line="753"/>
         <source>Z-</source>
         <translation>Z-</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="693"/>
+        <location filename="../main_window.py" line="754"/>
         <source>Y-</source>
         <translation>Y-</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="694"/>
+        <location filename="../main_window.py" line="755"/>
         <source>X-</source>
         <translation>X-</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="695"/>
+        <location filename="../main_window.py" line="756"/>
         <source>Go to origin</source>
         <translation>Aller à l&apos;origine</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="696"/>
+        <location filename="../main_window.py" line="757"/>
         <source>Automatic controls</source>
         <translation>Commandes automatiques</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="697"/>
+        <location filename="../main_window.py" line="758"/>
         <source>Automatic controls allow you to send commands in step in order to set the machine.</source>
         <translation>Les commandes automatiques vous permettent d&apos;envoyer des commandes directement en pas afin de régler la machine.</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="698"/>
+        <location filename="../main_window.py" line="759"/>
         <source>Axis</source>
         <translation>L&apos;axe</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="708"/>
+        <location filename="../main_window.py" line="769"/>
         <source>X</source>
         <translation>X</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="709"/>
+        <location filename="../main_window.py" line="770"/>
         <source>Y</source>
         <translation>Y</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="710"/>
+        <location filename="../main_window.py" line="771"/>
         <source>Z</source>
         <translation>Z</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="702"/>
+        <location filename="../main_window.py" line="763"/>
         <source>does</source>
         <translation>effectue</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="703"/>
+        <location filename="../main_window.py" line="765"/>
         <source>go</source>
         <translation>aller</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="704"/>
+        <location filename="../main_window.py" line="764"/>
         <source>round trip</source>
         <translation>aller(s)-retour(s)</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="705"/>
+        <location filename="../main_window.py" line="766"/>
         <source>of</source>
         <translation>de</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="712"/>
+        <location filename="../main_window.py" line="773"/>
         <source>steps.</source>
         <translation>pas.</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="707"/>
+        <location filename="../main_window.py" line="768"/>
         <source>Between each stage, axis</source>
         <translation>Entre chaque étape, l&apos;axe</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="711"/>
+        <location filename="../main_window.py" line="772"/>
         <source>move by</source>
         <translation>bouge de</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="714"/>
+        <location filename="../main_window.py" line="775"/>
         <source>Custom controls</source>
         <translation>Commandes personnalisées</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="715"/>
+        <location filename="../main_window.py" line="776"/>
         <source>Custom controls allow you to send user-defined commands repetitively.</source>
         <translation>Les commandes personnalisées permettent d&apos;envoyer de manière répétitive un ensemble de commandes.</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="716"/>
+        <location filename="../main_window.py" line="777"/>
         <source>Repeat</source>
         <translation>Répéter</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="717"/>
+        <location filename="../main_window.py" line="778"/>
         <source>times the commands :</source>
         <translation>fois les commandes :</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="719"/>
+        <location filename="../main_window.py" line="780"/>
         <source>Set origin</source>
         <translation>Définir l&apos;origine</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="756"/>
+        <location filename="../main_window.py" line="748"/>
         <source>Configuration</source>
         <translation>Configuration</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="721"/>
+        <location filename="../main_window.py" line="707"/>
         <source>Configuration :</source>
         <translation>Configuration :</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="722"/>
+        <location filename="../main_window.py" line="708"/>
         <source>New configuration</source>
         <translation>Nouvelle configuration</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="723"/>
+        <location filename="../main_window.py" line="709"/>
         <source>Y axis</source>
         <translation>Axe Y</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="747"/>
+        <location filename="../main_window.py" line="737"/>
         <source>Driving mode</source>
         <translation>Mode de pilotage</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="748"/>
+        <location filename="../main_window.py" line="738"/>
         <source>Normal</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="749"/>
+        <location filename="../main_window.py" line="739"/>
         <source>Full torque</source>
         <translation>Couple maximal</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="750"/>
+        <location filename="../main_window.py" line="740"/>
         <source>Half step</source>
         <translation>Demi pas</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="751"/>
+        <location filename="../main_window.py" line="741"/>
         <source>Ratio</source>
         <translation>Ratio</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="752"/>
+        <location filename="../main_window.py" line="742"/>
         <source> mm/step</source>
         <translation> mm/pas</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="753"/>
+        <location filename="../main_window.py" line="743"/>
         <source>Play</source>
         <translation>Jeu</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="731"/>
+        <location filename="../main_window.py" line="717"/>
         <source>  mm</source>
         <translation>  mm</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="755"/>
+        <location filename="../main_window.py" line="745"/>
         <source>Reverse axis</source>
         <translation>Inverser l&apos;axe</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="733"/>
+        <location filename="../main_window.py" line="721"/>
         <source>X axis</source>
         <translation>Axe X</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="754"/>
+        <location filename="../main_window.py" line="744"/>
         <source> mm</source>
         <translation> mm</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="743"/>
+        <location filename="../main_window.py" line="733"/>
         <source>Send configuration</source>
         <translation>Envoyer la configuration</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="746"/>
+        <location filename="../main_window.py" line="736"/>
         <source>Z axis</source>
         <translation>Axe Z</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="757"/>
+        <location filename="../main_window.py" line="782"/>
         <source>Emulate a serial port</source>
         <translation>Émuler un port série</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="758"/>
+        <location filename="../main_window.py" line="783"/>
         <source>List serial ports</source>
         <translation>Liter les ports série</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="759"/>
+        <location filename="../main_window.py" line="784"/>
         <source>Baudrate</source>
         <translation>Baudrate</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="760"/>
+        <location filename="../main_window.py" line="785"/>
         <source>300</source>
         <translation>300</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="761"/>
+        <location filename="../main_window.py" line="786"/>
         <source>1200</source>
         <translation>1200</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="762"/>
+        <location filename="../main_window.py" line="787"/>
         <source>2400</source>
         <translation>2400</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="763"/>
+        <location filename="../main_window.py" line="788"/>
         <source>4800</source>
         <translation>4800</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="764"/>
+        <location filename="../main_window.py" line="789"/>
         <source>9600</source>
         <translation>9600</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="765"/>
+        <location filename="../main_window.py" line="790"/>
         <source>19200</source>
         <translation>19200</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="766"/>
+        <location filename="../main_window.py" line="791"/>
         <source>38400</source>
         <translation>38400</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="767"/>
+        <location filename="../main_window.py" line="792"/>
         <source>57600</source>
         <translation>57600</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="768"/>
+        <location filename="../main_window.py" line="793"/>
         <source>115200</source>
         <translation>115200</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="769"/>
+        <location filename="../main_window.py" line="794"/>
         <source>230400</source>
         <translation>230400</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="770"/>
+        <location filename="../main_window.py" line="795"/>
         <source>250000</source>
         <translation>250000</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="772"/>
+        <location filename="../main_window.py" line="797"/>
         <source>Connect</source>
         <translation>Connecter</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="774"/>
+        <location filename="../main_window.py" line="799"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SiviCNCDriver is provided with &amp;lt;3 by Klafyvel from &lt;a href=&quot;http://sivigik.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#4c6b8a;&quot;&gt;sivigik.com&lt;/span&gt;&lt;/a&gt; .&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SiviCNCDriver est fournis avec des &amp;lt;3 par Klafyvel de &lt;a href=&quot;http://sivigik.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#4c6b8a;&quot;&gt;sivigik.com&lt;/span&gt;&lt;/a&gt; .&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="775"/>
+        <location filename="../main_window.py" line="800"/>
         <source>License</source>
         <translation>Licence</translation>
     </message>
     <message>
-        <location filename="../main_window.py" line="776"/>
+        <location filename="../main_window.py" line="801"/>
         <source>About Qt</source>
         <translation>À propos de Qt</translation>
     </message>
     <message>
-        <location filename="../interface.py" line="612"/>
+        <location filename="../interface.py" line="616"/>
         <source>Select file</source>
         <translation>Sélectionner un fichier</translation>
     </message>
     <message>
-        <location filename="../interface.py" line="568"/>
+        <location filename="../interface.py" line="572"/>
         <source>Disconnect</source>
         <translation>Déconnecter</translation>
     </message>
     <message>
-        <location filename="../interface.py" line="669"/>
+        <location filename="../interface.py" line="673"/>
         <source>Error.</source>
         <translation>Erreur.</translation>
     </message>
     <message>
-        <location filename="../interface.py" line="669"/>
+        <location filename="../interface.py" line="673"/>
         <source>An error occurred during parsing.</source>
         <translation>Une erreur s&apos;est produite lors de l&apos;analyse.</translation>
+    </message>
+    <message>
+        <location filename="../main_window.py" line="746"/>
+        <source>Minimal pulse period</source>
+        <translation>Période minimale des impulsions</translation>
+    </message>
+    <message>
+        <location filename="../main_window.py" line="747"/>
+        <source> ms</source>
+        <translation> ms</translation>
     </message>
 </context>
 <context>
