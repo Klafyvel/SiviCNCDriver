@@ -72,7 +72,12 @@ class SerialManager(QObject):
             return False
 
         logger.debug("Reading...");
-        txt = self.serial.readline().decode('ascii').lower()
+        txt = ""
+        try:
+            txt = self.serial.readline().decode('ascii').lower()
+        except serial.serialutil.SerialException as e:
+            logger.error("Serial error : {}".format(e))
+            self.send_print.emit("Serial error while reading.", "error")
         if not "ok" in txt:
             logger.error("Machine could not perform task.")
             self.send_print.emit(txt, "error")

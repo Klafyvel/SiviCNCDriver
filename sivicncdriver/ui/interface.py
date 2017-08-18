@@ -249,6 +249,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         elif self.send_thread:
             self.send_thread.stop()
+            self.serial_manager.serial.flush()
 
         self.send_thread = SendThread(self.serial_manager, gcode)
         if n:
@@ -386,7 +387,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Manages the end of upload. If some commands are waiting, run them at the
         end.
         """
-        if self.send_thread.user_stop:
+        if self.send_thread and self.send_thread.user_stop:
             self.print("Stopped by user.", "error")
             logger.error("Upload stopped by user.")
         else:
@@ -908,7 +909,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         highlight.format.setBackground(Qt.green)
         self.code_edit.setExtraSelections([highlight])
         self.draw_file(highlight_line=i)
-
-
-
-
