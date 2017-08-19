@@ -276,7 +276,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         
         self.send_thread.read_allowed.connect(self.read_thread.set_read_allowed)
-        self.read_thread.send_confirm.connect(self.send_thread.confirm)
+        self.serial_manager.send_confirm.connect(self.send_thread.confirm)
 
         self.send_thread.finished.connect(self.sending_end)
         self.send_thread.update_progress.connect(self.update_progress)
@@ -403,7 +403,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
 
         self.send_thread.read_allowed.disconnect()
-        self.read_thread.send_confirm.disconnect()
+        self.serial_manager.send_confirm.disconnect()
 
         if self.send_thread and self.send_thread.user_stop:
             self.print("Stopped by user.", "error")
@@ -491,8 +491,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_connect.setEnabled(not st)
         if st:
             self.print("Emulating serial port.", "info")
+            self.read_thread = ReadThread()
+            self.read_thread.read.connect(self.serial_manager.readMsg)
+            self.read_thread.start()
         else:
             self.print("Exiting serial port emulation.", "info")
+            self.read_thread.read.disconnect()
+            self.read_thread.stop()
 
     @pyqtSlot(int)
     def update_config(self, i):
@@ -577,6 +582,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.serial_manager.is_open:
             if self.send_thread:
                 self.emergency_stop()
+            self.read_thread.read.disconnect()
             self.read_thread.stop()
             self.baudrate.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
@@ -587,12 +593,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             port = self.serial_ports_list.currentText()
             baudrate = int(self.baudrate.currentText())
             if self.serial_manager.open(baudrate, port):
-                self.read_thread = ReadThread(self.serial_manager)
+                self.read_thread = ReadThread()
                 self.baudrate.setEnabled(False)
                 self.serial_ports_list.setEnabled(False)
                 self.btn_serial_ports_list.setEnabled(False)
                 self.btn_connect.setText(_translate("MainWindow", "Disconnect"))
-                self.read_thread.print_message.connect(self.print)
+                self.read_thread.read.connect(self.serial_manager.readMsg)
                 self.read_thread.start()
 
     @pyqtSlot()

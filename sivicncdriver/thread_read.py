@@ -13,18 +13,14 @@ class ReadThread(QThread):
     """
     A thread to read the serial link.
     """
-    print_message = pyqtSignal(str, str)
-    send_confirm = pyqtSignal(bool)
 
-    def __init__(self, serial_manager):
+    read = pyqtSignal()
+
+    def __init__(self):
         """
         The __init__ method.
-
-        :param serial_manager: The main window's serial manager
-        :type serial_manager: SerialManager
         """
         QThread.__init__(self)
-        self.serial_manager = serial_manager
         self.user_stop = False
         self.read_allowed = True
 
@@ -56,20 +52,6 @@ class ReadThread(QThread):
         the thread is stopped by the user, then it quits.
         """
         while not self.user_stop:
-            l = None
             if self.read_allowed:
-                try:
-                    l = self.serial_manager.serial.readline().decode('ascii')
-                except serial.serialutil.SerialException as e:
-                    logger.error("Serial error : {}".format(e))
-                    self.print_message.emit("Serial error while reading.", "error")
-                except UnicodeDecodeError as e:
-                    logger.error("Serial error : {}".format(e))
-                    self.print_message.emit("Serial error while reading.", "error")
-            if l:
-                logger.info("Received {}".format(repr(l)))
-                if "error" in l.lower():
-                    self.print_message.emit(l, "error")
-                else:
-                    self.print_message.emit("m> {}".format(l), "machine")
-                self.send_confirm.emit("ok" in l.lower())
+                self.read.emit()
+            self.msleep(50)

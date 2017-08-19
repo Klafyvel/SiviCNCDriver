@@ -16,12 +16,14 @@ __all__ = ["SerialManager"]
 
 class SerialManager(QObject):
     send_print = pyqtSignal(str, str)
+    send_confirm = pyqtSignal(bool)
 
     def __init__(self, serial, fake_mode=False):
         super(SerialManager, self).__init__()
         self.serial = serial
         self.fake_mode = fake_mode
         self.is_open = self.serial.isOpen()
+        self.something_sent = False
 
     def open(self, baudrate, serial_port):
         logger.info("Opening {} with baudrate {}".format(repr(serial_port), baudrate))
@@ -53,6 +55,7 @@ class SerialManager(QObject):
         elif self.fake_mode:
             self.send_print.emit(msg, "operator")
             logger.info("Sending {} through fake serial port".format(repr(msg)))
+            self.something_sent = True
         else:
             logger.info("Sending {} through {}".format(repr(msg),self.serial))
             self.send_print.emit(msg, "operator")
@@ -60,33 +63,37 @@ class SerialManager(QObject):
                 msg += '\n'
             self.serial.write(bytes(msg, encoding='utf8'))
 
-    def waitForConfirm(self):
+
+    @pyqtSlot()
+    def readMsg(self):
         if self.fake_mode:
-            time.sleep(0.01)
-            logger.info("Received {}".format(repr("ok")))
-            self.send_print.emit("ok", "machine")
-            return True
+            if self.something_sent:
+                logger.info("Received {}".format(repr("ok")))
+                self.send_print.emit("ok", "machine")
+                self.something_sent = False
+                self.send_confirm.emit(True)
+            return
         elif not (self.serial and self.serial.isOpen()):
             self.send_print.emit("Error, no serial port to read.", "error")
             logger.error("Serial manager has no serial opened to read data.")
-            return False
-
+            self.send_confirm.emit(False)
+            return
+        elif not self.serial.in_waiting:
+            return
         logger.debug("Reading...");
         txt = ""
         try:
-            txt = self.serial.readline().decode('ascii').lower()
+            txt = self.serial.readline().decode('ascii')
         except serial.serialutil.SerialException as e:
             logger.error("Serial error : {}".format(e))
             self.send_print.emit("Serial error while reading.", "error")
         except UnicodeDecodeError as e:
             logger.error("Serial error : {}".format(e))
             self.send_print.emit("Serial error while reading.", "error")
-            
-        if not "ok" in txt:
-            logger.error("Machine could not perform task.")
-            self.send_print.emit(txt, "error")
-            return False
-        else:
-            logger.info("Received {}".format(repr(txt)))
-            self.send_print.emit("m> {}".format(txt), "machine")
-            return True
+
+        if txt:
+                if "error" in txt.lower():
+                    self.send_print.emit(txt, "error")
+                else:
+                    self.send_print.emit("m> {}".format(txt), "machine")
+                self.send_confirm.emit("ok" in txt.lower())
