@@ -550,7 +550,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             if not filename:
                 file = self.config_list.currentText() + ".json"
-                file = os.path.join(settings.APP_DIR, "configs", file)
+                file = os.path.join(settings.CONFIG_DIR, file)
             else:
                 file = filename
             config = self.config_as_dict()
