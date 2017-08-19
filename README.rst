@@ -11,7 +11,7 @@ SiviCNCDriver, a software to control my CNC.
 :Info: This is a Python program to control a CNC.
 :Author: Hugo LEVY-FALK
 :Date: 2017-08
-:Version: 0.1.4
+:Version: 0.1.5
 
 .. index: README
 .. contents:: Table of Contents
