@@ -384,7 +384,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../main_window.py" line="783"/>
         <source>List serial ports</source>
-        <translation>Liter les ports série</translation>
+        <translation>Lister les ports série</translation>
     </message>
     <message>
         <location filename="../main_window.py" line="784"/>
