@@ -80,7 +80,6 @@ class SerialManager(QObject):
             return
         elif not self.serial.in_waiting:
             return
-        logger.debug("Reading...");
         txt = ""
         try:
             txt = self.serial.readline().decode('ascii')

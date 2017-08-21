@@ -177,7 +177,7 @@ def config_as_gcode(**kwargs):
     """
 
     r = []
-    r.append("S4 X{x_ratio} Y{y_ratio} Z{z_ratio}".format(**kwargs))
+    r.append("M92 X{x_ratio} Y{y_ratio} Z{z_ratio}".format(**kwargs))
 
     drive = [5, 6, 7]
     r.append("S{} X".format(drive[kwargs["x_drive"]]))
