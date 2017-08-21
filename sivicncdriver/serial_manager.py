@@ -52,16 +52,19 @@ class SerialManager(QObject):
         if not self.fake_mode and not (self.serial and self.serial.isOpen()):
             self.send_print.emit("Error, no serial port to write.", "error")
             logger.error("Serial manager has no serial opened to send data.")
+            return False
         elif self.fake_mode:
             self.send_print.emit(msg, "operator")
             logger.info("Sending {} through fake serial port".format(repr(msg)))
             self.something_sent = True
+            return True
         else:
             logger.info("Sending {} through {}".format(repr(msg),self.serial))
             self.send_print.emit(msg, "operator")
             if msg[-1] != '\n':
                 msg += '\n'
             self.serial.write(bytes(msg, encoding='utf8'))
+            return True
 
 
     @pyqtSlot()

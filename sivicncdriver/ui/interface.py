@@ -73,7 +73,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.last_selected_path = None
         self.last_selected_item = None
 
-        self.read_thread = None
+        self.read_thread = ReadThread()
 
     def connectUi(self):
         """
@@ -411,6 +411,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.send_thread and self.send_thread.user_stop:
             self.print("Stopped by user.", "error")
             logger.error("Upload stopped by user.")
+        elif self.send_thread and self.send_thread.error:
+            self.print("Error while sending.", "error")
+            logger.error("Error while sending.")
         else:
             self.print("Done.", "info")
             logger.info("Upload done.")

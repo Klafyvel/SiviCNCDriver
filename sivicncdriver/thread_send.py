@@ -47,9 +47,9 @@ class SendThread(QThread):
 
         :param st: Everything ok ?
         """
-        self.error = st
+        self.error = not st
         self.confirmed = True
-        logger.debug("Confirmation.")
+        logger.debug("Confirmation : {}.".format(st))
 
     def run(self):
         """
@@ -61,12 +61,15 @@ class SendThread(QThread):
         for n, l in enumerate(self.gcode):
             if self.confirmed:
                 self.read_allowed.emit(False)
-                self.serial_manager.sendMsg(l)
-                self.update_progress.emit(n)
-                self.confirmed = False
-                self.read_allowed.emit(True)
-                while not self.confirmed:
-                    pass
+                if self.serial_manager.sendMsg(l):
+                    self.update_progress.emit(n)
+                    self.confirmed = False
+                    self.read_allowed.emit(True)
+                    while not self.confirmed:
+                        pass
+                else:
+                    self.error = True
+                    self.read_allowed.emit(True)
 
-            if (not self.error) or self.user_stop:
+            if self.error or self.user_stop:
                 break
