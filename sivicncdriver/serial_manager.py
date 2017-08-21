@@ -25,12 +25,12 @@ class SerialManager(QObject):
         self.is_open = self.serial.isOpen()
         self.something_sent = False
 
-    def open(self, baudrate, serial_port):
-        logger.info("Opening {} with baudrate {}".format(repr(serial_port), baudrate))
-        self.send_print.emit("Opening {} with baudrate {}".format(repr(serial_port), baudrate), "info")
+    def open(self, baudrate, serial_port, timeout):
+        logger.info("Opening {} with baudrate {}, timeout {}".format(repr(serial_port), baudrate, timeout))
+        self.send_print.emit("Opening {} with baudrate {}, timeout {}".format(repr(serial_port), baudrate, timeout), "info")
         self.serial.port = serial_port
         self.serial.baudrate = baudrate
-        self.serial.timeout = None
+        self.serial.timeout = timeout
         try :
             self.serial.open()
             self.is_open = True

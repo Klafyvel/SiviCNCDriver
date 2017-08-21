@@ -62,6 +62,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connectUi()
         self.update_config(self.config_list.currentIndex())
 
+        self.baudrate.addItems(map(str,serial.serialutil.SerialBase.BAUDRATES))
+        self.baudrate.setCurrentIndex(12)
+
         self.file_loaded = False
 
         self.send_thread = None
@@ -489,6 +492,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.serial_ports_list.setEnabled(not st)
         self.btn_serial_ports_list.setEnabled(not st)
         self.btn_connect.setEnabled(not st)
+        self.timeout.setEnabled(not st)
         if st:
             self.print("Emulating serial port.", "info")
             self.read_thread = ReadThread()
@@ -585,6 +589,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.read_thread.read.disconnect()
             self.read_thread.stop()
             self.baudrate.setEnabled(True)
+            self.timeout.setEnabled(True)
             self.serial_ports_list.setEnabled(True)
             self.btn_serial_ports_list.setEnabled(True)
             self.btn_connect.setText(_translate("MainWindow", "Connect"))
@@ -592,9 +597,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             port = self.serial_ports_list.currentText()
             baudrate = int(self.baudrate.currentText())
-            if self.serial_manager.open(baudrate, port):
+            timeout = self.timeout.value()
+            if self.serial_manager.open(baudrate, port, timeout):
                 self.read_thread = ReadThread()
                 self.baudrate.setEnabled(False)
+                self.timeout.setEnabled(False)
                 self.serial_ports_list.setEnabled(False)
                 self.btn_serial_ports_list.setEnabled(False)
                 self.btn_connect.setText(_translate("MainWindow", "Disconnect"))
