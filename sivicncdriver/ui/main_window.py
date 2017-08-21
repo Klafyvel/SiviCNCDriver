@@ -186,11 +186,14 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout_5.addWidget(self.groupBox_5)
-        self.fileview = QtWidgets.QGraphicsView(self.widget_2)
-        self.fileview.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.fileview.setDragMode(QtWidgets.QGraphicsView.ScrollHandDrag)
-        self.fileview.setObjectName("fileview")
-        self.horizontalLayout_5.addWidget(self.fileview)
+        self.view_3D = View3D(self.widget_2)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.view_3D.sizePolicy().hasHeightForWidth())
+        self.view_3D.setSizePolicy(sizePolicy)
+        self.view_3D.setObjectName("view_3D")
+        self.horizontalLayout_5.addWidget(self.view_3D)
         self.code_edit = QtWidgets.QTextEdit(self.widget_2)
         self.code_edit.setObjectName("code_edit")
         self.horizontalLayout_5.addWidget(self.code_edit)
@@ -793,4 +796,5 @@ class Ui_MainWindow(object):
         self.btn_license.setText(_translate("MainWindow", "License"))
         self.btn_about_qt.setText(_translate("MainWindow", "About Qt"))
 
+from .view3d import View3D
 from sivicncdriver.ui import ressources_rc

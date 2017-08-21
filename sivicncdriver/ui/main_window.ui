@@ -326,12 +326,12 @@
             </widget>
            </item>
            <item>
-            <widget class="QGraphicsView" name="fileview">
-             <property name="sizeAdjustPolicy">
-              <enum>QAbstractScrollArea::AdjustToContents</enum>
-             </property>
-             <property name="dragMode">
-              <enum>QGraphicsView::ScrollHandDrag</enum>
+            <widget class="View3D" name="view_3D" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
             </widget>
            </item>
@@ -1343,6 +1343,14 @@ p, li { white-space: pre-wrap; }
    </layout>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>View3D</class>
+   <extends>QWidget</extends>
+   <header>.view3d.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="ressources.qrc"/>
  </resources>
