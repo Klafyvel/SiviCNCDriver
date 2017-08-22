@@ -700,7 +700,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             reverse_x=self.reverse_x.isChecked(),
             reverse_y=self.reverse_y.isChecked(),
             reverse_z=self.reverse_z.isChecked(),
+            highlight_line=highlight_line,
         )
+
         return
         # self.sc.clear()
         # current_pos = [0, 0, 0]

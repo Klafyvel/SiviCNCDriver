@@ -56,9 +56,11 @@ class View3D(FigureCanvas):
 
         # self.mpl_connect('key_press_event', self.parent().on_key_press)
 
-        self.points_x = []
-        self.points_y = []
-        self.points_z = []
+        self.segments_x = []
+        self.segments_y = []
+        self.segments_z = []
+
+        self.lines = {}
 
         self.data = []
 
@@ -80,22 +82,14 @@ class View3D(FigureCanvas):
         Draws a gcode file.
 
         :param gcode: The gcode.
-        :param highlight_line: A line which is to be highlighted. (default : None)    
-        :type highlight_line: int
         :type gcode: str
         """
         current_pos = [0, 0, 0]
-        self.min_x, self.max_x = 0, 0
-        self.min_y, self.max_y = 0, 0
-        self.min_z, self.max_z = 0, 0
-
-        highlight_line = kwargs.get('highlight_line', None)
-
         self.axes.clear()
 
-        self.points_x = []
-        self.points_y = []
-        self.points_z = []
+        self.segments_x = []
+        self.segments_y = []
+        self.segments_z = []
 
         logger.debug("Matplotlib drawing.")
 
@@ -105,10 +99,15 @@ class View3D(FigureCanvas):
 
         self.axes.set_navigate(True)
         logger.debug(self.axes.can_zoom())
+        segment_no = 0
 
         for t in parse(gcode):
             if t['name'] == '__error__':
                 self.parse_error.emit(t['line'])
+                break
+            
+            if t['name'] is not 'G':
+                continue
 
             current_line = t['line']
 
@@ -120,22 +119,29 @@ class View3D(FigureCanvas):
             x_o, y_o, z_o = current_pos
 
             if t['value'] in (0, 1):
-                self.points_x.append(x)
-                self.points_y.append(y)
-                self.points_z.append(z)
+                self.segments_x.append([x_o, x])
+                self.segments_y.append([y_o, y])
+                self.segments_z.append([z_o, z])
+                self.lines[segment_no] = t['line']
+                segment_no += 1
             elif t['value'] in (2, 3):
                 i = t['args'].get('I', 0)
                 j = t['args'].get('J', 0)
 
                 clockwise = (t['value'] == 2)
 
-                points_x, points_y = list(
-                    zip(*arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise)))
-                points_z = np.linspace(z_o, z, len(points_x))
+                nb_segments = 0
+                for x_c, y_c in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise):
+                    self.segments_x.append([x_o, x_c])
+                    self.segments_y.append([y_o, y_c])
+                    x_o, y_o = x_c, y_c
+                    nb_segments += 1
 
-                self.points_x.extend(points_x)
-                self.points_y.extend(points_y)
-                self.points_z.extend(points_z)
+                points_z = np.linspace(z_o, z, nb_segments+1)
+                for z_count in range(nb_segments):
+                    self.segments_z.append([points_z[z_count], points_z[z_count+1]])
+                    self.lines[segment_no] = t['line']
+                    segment_no += 1
 
             current_pos = x, y, z
 
@@ -143,8 +149,11 @@ class View3D(FigureCanvas):
         """
         :param reverse_x: Should the x axis be reversed ? (default : False)
         :param reverse_y: Should the y axis be reversed ? (default : False)
-        :param reverse_z: Should the z axis be reversed ? (default : False)    
-
+        :param reverse_z: Should the z axis be reversed ? (default : False)
+        :param highlight_line: A line which is to be highlighted. (default :
+            None)
+        
+        :type highlight_line: int
         :type reverse_x: bool
         :type reverse_y: bool
         :type reverse_z: bool
@@ -152,21 +161,24 @@ class View3D(FigureCanvas):
         reverse_x = kwargs.get('reverse_x', False)
         reverse_y = kwargs.get('reverse_y', False)
         reverse_z = kwargs.get('reverse_z', False)
-        # self.axes.plot(self.points_x, self.points_y, self.points_z)
 
+        highlight_line = kwargs.get('highlight_line', None)
 
-        min_z = min(self.points_z)
-        max_z = max(self.points_z)
+        min_z = min(sum(self.segments_z, []))
+        max_z = max(sum(self.segments_z, []))
         map_z_to_ratio = lambda z : (z - min_z) / (max_z - min_z)
         map_z_to_color = lambda z : (1-map_z_to_ratio(z), 0.5, map_z_to_ratio(z))
 
         segments = []
-        for i in range(len(self.points_z)-1):
-            segments.append([
-                (self.points_x[i], self.points_y[i], self.points_z[i]),
-                (self.points_x[i+1], self.points_y[i+1], self.points_z[i+1]),
-            ])
-        colors = [map_z_to_color((p[0][2]+p[1][2])/2) for p in segments]
+        for x,y,z in zip(self.segments_x, self.segments_y, self.segments_z):
+            segments.append(((x[0], y[0], z[0]), (x[1], y[1], z[1])))
+        colors = []
+        for l, p in enumerate(segments):
+            if self.lines[l] == highlight_line:
+                colors.append((1,0,0))
+            else:
+                colors.append(map_z_to_color((p[0][2]+p[1][2])/2))
+
         lines = LineCollection(segments, 
             linewidths=(0.5, 1, 1.5, 2),
             linestyles='solid',
@@ -182,9 +194,9 @@ class View3D(FigureCanvas):
             self.axes.invert_zaxis()
 
         extents = np.array([
-            [min(self.points_x), max(self.points_x)],
-            [min(self.points_y), max(self.points_y)],
-            [min(self.points_z), max(self.points_z)],
+            [min(sum(self.segments_x, [])), max(sum(self.segments_x, []))],
+            [min(sum(self.segments_y, [])), max(sum(self.segments_y, []))],
+            [min(sum(self.segments_z, [])), max(sum(self.segments_z, []))],
         ])
         sz = extents[:, 1] - extents[:, 0]
         centers = np.mean(extents, axis=1)
