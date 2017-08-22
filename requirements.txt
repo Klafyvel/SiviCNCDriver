@@ -7,5 +7,4 @@ pyserial==3.4
 python-dateutil==2.6.1
 pytz==2017.2
 sip==4.19.3
-SiviCNCDriver==0.1.6
 six==1.10.0
