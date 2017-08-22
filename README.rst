@@ -30,6 +30,18 @@ SiviCNCDriver, as its name lets you guess, is designed to drive a CNC. What does
     - Sending automatic commands so the machine performs some goings and comings and you can measure the play or the steps/mm.
 - Sends as `custom G-Codes`_ and store as JSON configuration files for your machine.
 
+Screenshots
+===========
+
+.. image:: docs/images/gcode_viewer.png
+    :alt: G-Codes viewer
+
+.. image:: docs/images/configuration.png
+    :alt: Machine configuration
+
+.. image:: docs/images/send_command.png
+    :alt: Commands sending
+
 Installation
 ============
 Using pip
@@ -41,6 +53,11 @@ On any operating system with a python and pip installated, use pip (you may need
 Then you should be able to run the program with a simple::
 
     sivicnc
+
+
+You can get the development version using pip, although it is not recommended. ::
+
+    pip install git+git://github.com/Klafyvel/SiviCNCDriver
 
 Binary distribution (Windows)
 -----------------------------
