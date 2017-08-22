@@ -69,12 +69,12 @@ class View3D(FigureCanvas):
         Returns the maximum and the minimum value on each axis.
         """
         return {
-            'min_x': min(self.points_x),
-            'max_x': max(self.points_x),
-            'min_y': min(self.points_y),
-            'max_y': max(self.points_y),
-            'min_z': min(self.points_z),
-            'max_z': max(self.points_z)
+            'min_x': min(sum(self.segments_x, [])),
+            'max_x': max(sum(self.segments_x, [])),
+            'min_y': min(sum(self.segments_y, [])),
+            'max_y': max(sum(self.segments_y, [])),
+            'min_z': min(sum(self.segments_z, [])),
+            'max_z': max(sum(self.segments_z, []))
         }
 
     def compute_data(self, gcode, **kwargs):

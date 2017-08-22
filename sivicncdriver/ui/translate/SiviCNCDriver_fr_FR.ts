@@ -511,6 +511,11 @@ p, li { white-space: pre-wrap; }
         <source>Timeout</source>
         <translation>Timeout</translation>
     </message>
+    <message>
+        <location filename="../interface.py" line="264"/>
+        <source>Cancel sending</source>
+        <translation>Annuler l&apos;envoi</translation>
+    </message>
 </context>
 <context>
     <name>View3D</name>
