@@ -58,7 +58,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         s = """Welcome to SiviCNCDriver, by Klafyvel from sivigik.com"""
         self.print(s, msg_type="info")
 
-        self.sc = QGraphicsScene(self.fileview)
         self.connectUi()
         self.update_config(self.config_list.currentIndex())
 
@@ -71,7 +70,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.waiting_cmd = []
 
         self.last_selected_path = None
-        self.last_selected_item = None
 
         self.read_thread = ReadThread()
 
@@ -128,24 +126,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.btn_preprocessor.clicked.connect(self.run_preprocessor)
 
-        self.display_axis.clicked.connect(self.draw_file)
-        self.display_draw_steps.clicked.connect(self.draw_file)
-        self.display_bounding_box.clicked.connect(self.draw_file)
-        self.reverse_display_x.clicked.connect(self.draw_file)
-        self.reverse_display_y.clicked.connect(self.draw_file)
-        self.reverse_display_z.clicked.connect(self.draw_file)
+        self.reverse_display_x.clicked.connect(self.update_drawing)
+        self.reverse_display_y.clicked.connect(self.update_drawing)
+        self.reverse_display_z.clicked.connect(self.update_drawing)
 
         self.btn_license.clicked.connect(self.about_license)
         self.btn_about_qt.clicked.connect(self.about_qt)
 
-        self.zoomIn_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Plus), self)
-        self.zoomOut_shortcut = QShortcut(QKeySequence(Qt.CTRL + Qt.Key_Minus), self)
-
-        self.zoomIn_shortcut.activated.connect(self.zoomIn)
-        self.zoomOut_shortcut.activated.connect(self.zoomOut)
-
-        self.sc.selectionChanged.connect(self.highlight_selected_line)
         self.code_edit.cursorPositionChanged.connect(self.highlight_selected_path)
+
+        self.view_3D.parse_error.connect(self.parse_error)
 
     def list_serials(self):
         """
@@ -638,8 +628,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             logger.info("Loading {}".format(repr(file)))
             with open(file) as f:
-                self.code_edit.setText(f.read())
-            self.draw_file()
+                gcode = f.read()
+            self.draw_file(gcode)
+            self.code_edit.setText(gcode)
             self.file_loaded = True
         except FileNotFoundError:
             self.choose_file()
@@ -687,168 +678,51 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.draw_file()
 
     @pyqtSlot()
-    def draw_file(self, highlight_line=None):
+    def update_drawing(self, highlight_line=None):
         """
-        Draws a gcode file.
+        Updates the drawing.
 
         :param highlight_line: A line which is to be highlighted.
         :type highlight_line: int
         """
-        gcode = self.code_edit.toPlainText()
-        self.sc.clear()
-        current_pos = [0, 0, 0]
-        min_x, max_x, min_y, max_y, min_z, max_z = 0, 0, 0, 0, 0, 0
+        self.view_3D.draw(
+            reverse_x=self.reverse_display_x.isChecked(),
+            reverse_y=self.reverse_display_y.isChecked(),
+            reverse_z=self.reverse_display_z.isChecked(),
+            highlight_line=highlight_line,
+        )
 
-        reverse_x = self.reverse_display_x.isChecked()
-        reverse_y = self.reverse_display_y.isChecked()
-        reverse_z = self.reverse_display_z.isChecked()
+    @pyqtSlot(int)
+    def parse_error(self, line):
+        """
+        Handles parsing errors.
 
-        current_line = None
+        :param line: The line where the error occurred.
+        """ 
+        self.chk_display_current_line.setChecked(False)
+        self.code_edit.setExtraSelections([])
+        QMessageBox.critical(self, _translate("MainWindow", "Error."), 
+            _translate("MainWindow", "An error occurred during parsing."))
+        logger.error("While parsing line {}".format(line))
+        highlight = QTextEdit.ExtraSelection()
+        highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(line))
+        highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
+        highlight.format.setBackground(Qt.red)
+        self.code_edit.setTextCursor(highlight.cursor)
+        self.code_edit.setExtraSelections([highlight])
 
-        for n, t in enumerate(parse(gcode)):
-            logger.debug("Processing from {t}, highlight={highlight_line}".format(**locals()))
-            if t['name'] == '__error__':
-                self.chk_display_current_line.setChecked(False)
-                self.code_edit.setExtraSelections([])
-                QMessageBox.critical(self, _translate("MainWindow", "Error."), 
-                    _translate("MainWindow", "An error occurred during parsing."))
-                logger.error("While parsing line {}".format(t['line']))
-                highlight = QTextEdit.ExtraSelection()
-                highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(t['line']))
-                highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
-                highlight.format.setBackground(Qt.red)
-                self.code_edit.setTextCursor(highlight.cursor)
-                self.code_edit.setExtraSelections([highlight])
-                break
-            
-            current_line = t['line']
+    @pyqtSlot()
+    def draw_file(self, gcode=None):
+        """
+        Draws a gcode file.
 
+        :param gcode: gcode to use in place of the one form code_edit.
+        """
+        if not gcode:
+            gcode = self.code_edit.toPlainText()
+        self.view_3D.compute_data(gcode)
 
-            if t['name'] is not 'G':
-                continue
-
-            x, y, z = current_pos
-
-            if self.display_draw_steps.isChecked():
-                effective_x = x if not reverse_x else -x
-                effective_y = y if not reverse_y else -y
-                txt = self.sc.addText(str(n))
-                txt.setPos(effective_x, effective_y)
-                txt.setFlags(QGraphicsItem.ItemIsFocusable | QGraphicsItem.ItemIsMovable |
-                             QGraphicsItem.ItemIsSelectable | txt.flags())
-
-            x = t['args'].get('X', x)
-            y = t['args'].get('Y', y)
-            z = t['args'].get('Z', z)
-
-
-            effective_z = z if not reverse_z else -z
-
-
-            if t['line'] == highlight_line:
-                p = QPen(QColor(0, 255,0))
-                p.setWidthF(3/self.zoom)
-            else:
-                p = QPen(QColor((effective_z <= 0) * 255, 0, (effective_z > 0) * 255))
-                p.setWidthF(1/self.zoom)
-
-            effective_x_o = current_pos[0] if not reverse_x else -current_pos[0]
-            effective_y_o = current_pos[1] if not reverse_y else -current_pos[1]
-
-
-            pp = QPainterPath()
-            pp.moveTo(effective_x_o,effective_y_o)
-
-            if t['value'] in (0, 1):
-                logger.debug("Drawing a line.".format(**locals()))
-                effective_x = x if not reverse_x else -x
-                effective_y = y if not reverse_y else -y
-                pp.lineTo(effective_x, effective_y)
-            elif t['value'] in (2, 3):
-                i = t['args'].get('I', 0)
-                j = t['args'].get('J', 0)
-                k = t['args'].get('K', 0)
-
-                x_o = current_pos[0]
-                y_o = current_pos[1]
-
-                clockwise = (t['value'] == 2)
-
-                logger.debug(
-                    "Drawing circle clockwise={clockwise}".format(**locals()))
-                for xc, yc in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise, 1/self.zoom):
-                    effective_x = xc if not reverse_x else -xc
-                    effective_y = yc if not reverse_y else -yc
-                    min_x = min(min_x, effective_x)
-                    max_x = max(max_x, effective_x)
-                    min_y = min(min_y, effective_y)
-                    max_y = max(max_y, effective_y)
-                    pp.lineTo(effective_x,effective_y)
-
-            path_item = self.sc.addPath(pp,pen=p)
-            path_item.setFlags(QGraphicsItem.ItemIsSelectable | path_item.flags())
-            path_item.setData(0, t['line'])
-
-            if current_line == highlight_line:
-                p2 = QPen(QColor((effective_z <= 0) * 255, 0, (effective_z > 0) * 255))
-                p2.setWidthF(1/self.zoom)
-                path_item.setData(1, p2)
-                self.last_selected_item = path_item
-
-            current_pos = x, y, z
-
-            min_x = min(min_x, effective_x_o)
-            max_x = max(max_x, effective_x_o)
-            min_y = min(min_y, effective_y_o)
-            max_y = max(max_y, effective_y_o)
-            min_z = min(min_z, current_pos[2])
-            max_z = max(max_z, current_pos[2])
-
-        self.space_x.display(max_x-min_x)
-        self.space_y.display(max_y-min_y)
-        self.space_z.display(max_z-min_z)
-
-        if self.display_bounding_box.isChecked():
-            p = QPen(QColor(0, 255, 0))
-            self.sc.addRect(min_x, min_y, max_x-min_x, max_y-min_y, p)
-            txt1 = self.sc.addText(str(max_x-min_x))
-            txt1.setPos((min_x+max_x)/2, max_y)
-            txt2 = self.sc.addText(str(max_y-min_y))
-            txt2.setPos(max_x, (min_y+max_y)/2)
-
-        if self.display_axis.isChecked():
-            arrow_length = min(self.space_x.value(), self.space_y.value())
-            if reverse_x:
-                arrow_length_x = - arrow_length
-            else:
-                arrow_length_x = arrow_length
-            if reverse_y:
-                arrow_length_y = - arrow_length
-            else:
-                arrow_length_y = arrow_length
-            
-            sign = lambda x: (1, -1)[x < 0]
-
-            x_axis_arrow = QPainterPath()
-            x_axis_arrow.lineTo(arrow_length_x,0)
-            x_axis_arrow.lineTo(0.95*arrow_length_x,0.05*arrow_length_x)
-            x_axis_arrow.moveTo(arrow_length_x,0)
-            x_axis_arrow.lineTo(0.95*arrow_length_x,-0.05*arrow_length_x)
-            x_axis_arrow.addText(arrow_length_x*1.1, -10 * sign(arrow_length_y), QFont("sans-serif"), "X")
-            self.sc.addPath(x_axis_arrow)
-
-            y_axis_arrow = QPainterPath()
-            y_axis_arrow.lineTo(0, arrow_length_y)
-            y_axis_arrow.lineTo(0.05*arrow_length_y, 0.95*arrow_length_y)
-            y_axis_arrow.moveTo(0, arrow_length_y)
-            y_axis_arrow.lineTo(-0.05*arrow_length_y, 0.95*arrow_length_y)
-            y_axis_arrow.addText(-10 * sign(arrow_length_x), arrow_length_y*1.1, QFont("sans-serif"), "Y")
-            self.sc.addPath(y_axis_arrow)
-        
-        logger.debug("Drawing done, setting scene to view.")
-        self.fileview.setScene(self.sc)
-        logger.debug("Done.")
-        logger.debug("Min x : {min_x}, min y : {min_y}".format(**locals()))
+        self.update_drawing()
 
     @pyqtSlot()
     def run_preprocessor(self):
@@ -884,58 +758,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMessageBox.aboutQt(self)
 
     @pyqtSlot()
-    def zoomIn(self):
-        """
-        Zoom the file view in.
-        """
-        self.fileview.scale(2,2)
-        self.zoom *= 2
-        self.draw_file()
-
-    @pyqtSlot()
-    def zoomOut(self):
-        """
-        Zoom the file view out.
-        """
-        self.fileview.scale(1/2,1/2)
-        self.zoom *= 1/2
-        self.draw_file()
-
-    @pyqtSlot()
-    def highlight_selected_line(self):
-        """
-        Highlight corresponding gcode lines for the selected path.
-        """
-        self.code_edit.cursorPositionChanged.disconnect()
-        self.code_edit.setExtraSelections([])
-        sel = self.sc.selectedItems()
-        l = []
-        i = None
-        if self.last_selected_item:
-            self.last_selected_item.setPen(self.last_selected_item.data(1))
-
-        for s in sel:
-            highlight = QTextEdit.ExtraSelection()
-            highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(s.data(0)))
-            highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
-            highlight.format.setBackground(Qt.green)
-            l.append(highlight)
-            i = s.data(0)
-            s.setData(1, QPen(s.pen()))
-            p = QPen(QColor(0, 255,0))
-            p.setWidthF(3/self.zoom)
-            s.setPen(p)
-            self.last_selected_item = s
-        
-        self.last_selected_path = i
-        self.code_edit.setExtraSelections(l)
-        if len(l) > 0:
-            self.code_edit.setTextCursor(l[0].cursor)
-
-        self.code_edit.cursorPositionChanged.connect(self.highlight_selected_path)
-
-
-    @pyqtSlot()
     def highlight_selected_path(self):
         if not self.chk_display_current_line.isChecked():
             return
@@ -945,11 +767,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         else:
             self.last_selected_path = i
-            self.last_selected_item = None
         self.code_edit.setExtraSelections([])
         highlight = QTextEdit.ExtraSelection()
         highlight.cursor = self.code_edit.textCursor()
         highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
         highlight.format.setBackground(Qt.green)
         self.code_edit.setExtraSelections([highlight])
-        self.draw_file(highlight_line=i)
+        self.update_drawing(highlight_line=i)

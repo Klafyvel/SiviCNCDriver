@@ -3,7 +3,8 @@ SOURCES += \
     main_window.py \
     preprocessor.py \
     preprocessor_window.py \
-    ressources_rc.py
+    ressources_rc.py \
+    view3d.py
 
 TRANSLATIONS += translate/SiviCNCDriver_fr_FR.ts
 
@@ -13,3 +14,5 @@ FORMS += \
 
 RESOURCES += \
     ressources.qrc
+
+DISTFILES +=
