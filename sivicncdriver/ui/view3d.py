@@ -85,20 +85,11 @@ class View3D(FigureCanvas):
         :type gcode: str
         """
         current_pos = [0, 0, 0]
-        self.axes.clear()
 
         self.segments_x = []
         self.segments_y = []
         self.segments_z = []
 
-        logger.debug("Matplotlib drawing.")
-
-        self.axes.set_xlabel(_translate('View3D', 'X Axis'))
-        self.axes.set_ylabel(_translate('View3D', 'Y Axis'))
-        self.axes.set_zlabel(_translate('View3D', 'Z Axis'))
-
-        self.axes.set_navigate(True)
-        logger.debug(self.axes.can_zoom())
         segment_no = 0
 
         for t in parse(gcode):
@@ -158,29 +149,47 @@ class View3D(FigureCanvas):
         :type reverse_y: bool
         :type reverse_z: bool
         """
+        self.axes.clear()
+
+        self.axes.set_xlabel(_translate('View3D', 'X Axis'))
+        self.axes.set_ylabel(_translate('View3D', 'Y Axis'))
+        self.axes.set_zlabel(_translate('View3D', 'Z Axis'))
+
         reverse_x = kwargs.get('reverse_x', False)
         reverse_y = kwargs.get('reverse_y', False)
         reverse_z = kwargs.get('reverse_z', False)
 
+        def reverse_func(x,y,z):
+            if reverse_x :
+                x *= -1
+            if reverse_y :
+                y *= -1
+            if reverse_z :
+                z *= -1
+            return (x,y,z)
+
         highlight_line = kwargs.get('highlight_line', None)
 
-        min_z = min(sum(self.segments_z, []))
-        max_z = max(sum(self.segments_z, []))
+        min_z = min(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
+        max_z = max(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
         map_z_to_ratio = lambda z : (z - min_z) / (max_z - min_z)
         map_z_to_color = lambda z : (1-map_z_to_ratio(z), 0.5, map_z_to_ratio(z))
 
         segments = []
         for x,y,z in zip(self.segments_x, self.segments_y, self.segments_z):
-            segments.append(((x[0], y[0], z[0]), (x[1], y[1], z[1])))
+            segments.append((
+                reverse_func(x[0], y[0], z[0]), 
+                reverse_func(x[1], y[1], z[1])
+            ))
         colors = []
         for l, p in enumerate(segments):
             if self.lines[l] == highlight_line:
-                colors.append((1,0,0))
+                colors.append((0,1,0))
             else:
                 colors.append(map_z_to_color((p[0][2]+p[1][2])/2))
 
         lines = LineCollection(segments, 
-            linewidths=(0.5, 1, 1.5, 2),
+            linewidths=1,
             linestyles='solid',
             colors=colors
         )

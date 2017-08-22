@@ -141,73 +141,40 @@
               <item>
                <layout class="QFormLayout" name="formLayout_4">
                 <item row="0" column="0">
-                 <widget class="QLabel" name="afficherLesAxesLabel">
-                  <property name="text">
-                   <string>Draw axes</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QCheckBox" name="display_axis"/>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="afficherLesTapesLabel">
-                  <property name="text">
-                   <string>Draw steps</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QCheckBox" name="display_draw_steps"/>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="afficherLaBoTeDeDLimitationLabel">
-                  <property name="text">
-                   <string>Draw bounding box</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QCheckBox" name="display_bounding_box"/>
-                </item>
-                <item row="3" column="0">
                  <widget class="QLabel" name="inverserLAxeXLabel">
                   <property name="text">
                    <string>Reverse X axis</string>
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="1">
+                <item row="0" column="1">
                  <widget class="QCheckBox" name="reverse_display_x"/>
                 </item>
-                <item row="4" column="0">
+                <item row="1" column="0">
                  <widget class="QLabel" name="inverserLAxeYLabel">
                   <property name="text">
                    <string>Reverse Y axis</string>
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="1">
+                <item row="1" column="1">
                  <widget class="QCheckBox" name="reverse_display_y">
                   <property name="checked">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="0">
+                <item row="2" column="0">
                  <widget class="QLabel" name="inverserLAxeZLabel">
                   <property name="text">
                    <string>Reverse Z axis</string>
                   </property>
                  </widget>
                 </item>
-                <item row="5" column="1">
+                <item row="2" column="1">
                  <widget class="QCheckBox" name="reverse_display_z"/>
                 </item>
-                <item row="6" column="0">
+                <item row="3" column="0">
                  <widget class="QLabel" name="surlignerLeDessinDeLaLigneCourranteLabel">
                   <property name="text">
                    <string>Highlight current line</string>
@@ -217,7 +184,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
+                <item row="3" column="1">
                  <widget class="QCheckBox" name="chk_display_current_line">
                   <property name="checked">
                    <bool>true</bool>
@@ -312,7 +279,7 @@
 }</string>
                 </property>
                 <property name="text">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can zoom with &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;+&lt;/span&gt; and &lt;span style=&quot; font-weight:600;&quot;&gt;Ctrl&lt;/span&gt; + &lt;span style=&quot; font-weight:600;&quot;&gt;-&lt;/span&gt;. You can also move the view using the mouse and the keyboard arrows.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can control the tilt of the figure with the left button of the mouse and zoom with the right button.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="textFormat">
                  <enum>Qt::RichText</enum>
