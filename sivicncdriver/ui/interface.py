@@ -722,6 +722,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             gcode = self.code_edit.toPlainText()
         self.view_3D.compute_data(gcode)
 
+        bounds = self.view_3D.get_bounds()
+        self.space_x.display(bounds['max_x'] - bounds['min_x'])
+        self.space_y.display(bounds['max_y'] - bounds['min_y'])
+        self.space_z.display(bounds['max_z'] - bounds['min_z'])
+
         self.update_drawing()
 
     @pyqtSlot()
