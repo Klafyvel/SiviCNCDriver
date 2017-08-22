@@ -695,7 +695,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         :type highlight_line: int
         """
         gcode = self.code_edit.toPlainText()
-        self.view_3D.draw_file(gcode)
+        self.view_3D.compute_data(gcode)
+        self.view_3D.draw(
+            reverse_x=self.reverse_x.isChecked(),
+            reverse_y=self.reverse_y.isChecked(),
+            reverse_z=self.reverse_z.isChecked(),
+        )
         return
         # self.sc.clear()
         # current_pos = [0, 0, 0]
