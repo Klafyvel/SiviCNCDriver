@@ -260,7 +260,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.sending_progress.setMaximum(len(gcode))
         self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText("Annuler l'envoi")
+        self.btn_send_current_file.setText(_translate("MainWindow", "Cancel sending"))
         self.btn_send_current_file.clicked.disconnect()
         self.btn_send_current_file.clicked.connect(self.send_thread.stop)
         
@@ -408,7 +408,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.print("Done.", "info")
             logger.info("Upload done.")
         self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText("Envoyer le fichier courrant")
+        self.btn_send_current_file.setText(_translate("MainWindow", "Send current file"))
         self.btn_send_current_file.clicked.disconnect()
         self.btn_send_current_file.clicked.connect(self.send_file)
         self.tabWidget.setEnabled(True)
