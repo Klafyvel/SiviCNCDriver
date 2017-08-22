@@ -6,7 +6,6 @@ from PyQt5.QtWidgets import *
 
 import numpy as np
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Line3DCollection as LineCollection
@@ -52,7 +51,6 @@ class View3D(FigureCanvas):
                                    QSizePolicy.Expanding,
                                    QSizePolicy.Expanding
                                    )
-        self.mpl_toolbar = NavigationToolbar(self, self)
 
         FigureCanvas.updateGeometry(self)
 
