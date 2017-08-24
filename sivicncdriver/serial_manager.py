@@ -31,6 +31,7 @@ class SerialManager(QObject):
         self.serial.port = serial_port
         self.serial.baudrate = baudrate
         self.serial.timeout = timeout
+        self.serial.write_timeout = timeout
         try :
             self.serial.open()
             self.is_open = True

@@ -58,18 +58,16 @@ class SendThread(QThread):
         The commands are sent using the serial manager. If an error occurs or if
         the thread is stopped by the user, then it quits.
         """
-        for n, l in enumerate(self.gcode):
+        n = 0
+        while (n < len(self.gcode)) and not self.error and not self.user_stop :
             if self.confirmed:
+                l = self.gcode[n]
                 self.read_allowed.emit(False)
                 if self.serial_manager.sendMsg(l):
                     self.update_progress.emit(n)
                     self.confirmed = False
                     self.read_allowed.emit(True)
-                    while not self.confirmed:
-                        pass
                 else:
                     self.error = True
                     self.read_allowed.emit(True)
-
-            if self.error or self.user_stop:
-                break
+                n += 1
