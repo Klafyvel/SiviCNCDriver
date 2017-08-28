@@ -69,12 +69,12 @@ class View3D(FigureCanvasQTAgg):
         Returns the maximum and the minimum value on each axis.
         """
         return {
-            'min_x': min(sum(self.segments_x, [])),
-            'max_x': max(sum(self.segments_x, [])),
-            'min_y': min(sum(self.segments_y, [])),
-            'max_y': max(sum(self.segments_y, [])),
-            'min_z': min(sum(self.segments_z, [])),
-            'max_z': max(sum(self.segments_z, []))
+            'min_x': min(sum(self.segments_x, []), default=0),
+            'max_x': max(sum(self.segments_x, []), default=0),
+            'min_y': min(sum(self.segments_y, []), default=0),
+            'max_y': max(sum(self.segments_y, []), default=0),
+            'min_z': min(sum(self.segments_z, []), default=0),
+            'max_z': max(sum(self.segments_z, []), default=0)
         }
 
     def compute_data(self, gcode, **kwargs):
@@ -177,8 +177,9 @@ class View3D(FigureCanvasQTAgg):
 
         highlight_line = kwargs.get('highlight_line', None)
 
-        min_z = min(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
-        max_z = max(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
+        bounds = self.get_bounds()
+        min_z = bounds['min_z'] * (1 if not reverse_z else -1)
+        max_z = bounds['max_z'] * (1 if not reverse_z else -1)
         map_z_to_ratio = lambda z: (z - min_z) / \
             (max_z - min_z) if min_z != max_z else 0
         map_z_to_color = lambda z: (
@@ -212,9 +213,9 @@ class View3D(FigureCanvasQTAgg):
             self.axes.invert_zaxis()
 
         extents = np.array([
-            [min(sum(self.segments_x, [])), max(sum(self.segments_x, []))],
-            [min(sum(self.segments_y, [])), max(sum(self.segments_y, []))],
-            [min(sum(self.segments_z, [])), max(sum(self.segments_z, []))],
+            [bounds['min_x'], bounds['max_x']],
+            [bounds['min_y'], bounds['max_y']],
+            [bounds['min_z'], bounds['max_z']],
         ])
         sz = extents[:, 1] - extents[:, 0]
         centers = np.mean(extents, axis=1)
