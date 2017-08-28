@@ -59,15 +59,19 @@ class SendThread(QThread):
         the thread is stopped by the user, then it quits.
         """
         n = 0
-        while (n < len(self.gcode)) and not self.error and not self.user_stop :
-            if self.confirmed:
-                l = self.gcode[n]
-                self.read_allowed.emit(False)
-                if self.serial_manager.sendMsg(l):
-                    self.update_progress.emit(n)
-                    self.confirmed = False
-                    self.read_allowed.emit(True)
-                else:
-                    self.error = True
-                    self.read_allowed.emit(True)
-                n += 1
+        gen = (i for i in self.gcode)
+        try :
+            while not self.error and not self.user_stop :
+                if self.confirmed:
+                    l = next(gen)
+                    self.read_allowed.emit(False)
+                    if self.serial_manager.sendMsg(l):
+                        self.update_progress.emit(n)
+                        self.confirmed = False
+                        self.read_allowed.emit(True)
+                    else:
+                        self.error = True
+                        self.read_allowed.emit(True)
+                    n += 1
+        except StopIteration:
+            pass

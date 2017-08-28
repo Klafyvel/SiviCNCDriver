@@ -64,7 +64,10 @@ class SerialManager(QObject):
             self.send_print.emit(msg, "operator")
             if msg[-1] != '\n':
                 msg += '\n'
-            self.serial.write(bytes(msg, encoding='utf8'))
+            try :
+                self.serial.write(bytes(msg, encoding='utf8'))
+            except serial.serialutil.SerialException as e:
+                logger.error(e)
             return True
 
 
