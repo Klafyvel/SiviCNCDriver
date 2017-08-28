@@ -60,8 +60,8 @@ class SendThread(QThread):
         """
         n = 0
         gen = (i for i in self.gcode)
-        try :
-            while not self.error and not self.user_stop :
+        try:
+            while not self.error and not self.user_stop:
                 if self.confirmed:
                     l = next(gen)
                     self.read_allowed.emit(False)

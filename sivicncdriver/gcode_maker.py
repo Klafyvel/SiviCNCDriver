@@ -2,6 +2,7 @@
 A bunch of command to easily create G-Codes.
 """
 
+
 def step(axis, n):
     """
     Moves the given axis of n steps.
@@ -11,7 +12,8 @@ def step(axis, n):
     :type axis: str
     :type n: int
     """
-    return "S0 {}{}".format(axis,n)
+    return "S0 {}{}".format(axis, n)
+
 
 def step_x(n):
     """
@@ -21,6 +23,7 @@ def step_x(n):
     """
     return step('X', n)
 
+
 def step_y(n):
     """
     Moves the Y axis oh n steps.
@@ -29,6 +32,7 @@ def step_y(n):
     """
     return step('Y', n)
 
+
 def step_z(n):
     """
     Moves the Z axis oh n steps.
@@ -36,6 +40,7 @@ def step_z(n):
     :type n: int
     """
     return step('Z', n)
+
 
 def start_continuous(axis, direction="forward"):
     """
@@ -50,11 +55,13 @@ def start_continuous(axis, direction="forward"):
     else:
         return "S2 {}".format(axis)
 
+
 def start_continuous_x_forward():
     """
     Start a continuous movement on X axis forward.
     """
     return start_continuous("X")
+
 
 def start_continuous_y_forward():
     """
@@ -62,11 +69,13 @@ def start_continuous_y_forward():
     """
     return start_continuous("Y")
 
+
 def start_continuous_z_forward():
     """
     Start a continuous movement on Z axis forward.
     """
     return start_continuous("Z")
+
 
 def start_continuous_x_backward():
     """
@@ -74,11 +83,13 @@ def start_continuous_x_backward():
     """
     return start_continuous("X", "backward")
 
+
 def start_continuous_y_backward():
     """
     Start a continuous movement on Y axis backward
     """
     return start_continuous("Y", "backward")
+
 
 def start_continuous_z_backward():
     """
@@ -86,11 +97,13 @@ def start_continuous_z_backward():
     """
     return start_continuous("Z", "backward")
 
+
 def stop(axis):
     """
     Stop any movement on the given axis.
     """
     return "S3 {}".format(axis)
+
 
 def stop_x():
     """
@@ -98,11 +111,13 @@ def stop_x():
     """
     return stop("X")
 
+
 def stop_y():
     """
     Stop any movement on the Y axis.
     """
     return stop("Y")
+
 
 def stop_z():
     """
@@ -110,11 +125,13 @@ def stop_z():
     """
     return stop("Z")
 
+
 def emergency_stop():
     """
     Stop every axis.
     """
     return "M112"
+
 
 def set_origin():
     """
@@ -122,11 +139,13 @@ def set_origin():
     """
     return "G92 X000 Y000 Z000"
 
+
 def goto_origin():
     """
     Go to the origin.
     """
     return "G28"
+
 
 def config_as_gcode(**kwargs):
     """
@@ -186,7 +205,7 @@ def config_as_gcode(**kwargs):
 
     r.append("S8 X{x_play} Y{y_play} Z{z_play}".format(**kwargs))
 
-    reverse = {True:9, False:10}
+    reverse = {True: 9, False: 10}
     r.append("S{} X".format(reverse[kwargs["x_reverse"]]))
     r.append("S{} Y".format(reverse[kwargs["y_reverse"]]))
     r.append("S{} Z".format(reverse[kwargs["z_reverse"]]))

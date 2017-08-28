@@ -32,7 +32,7 @@ if DEBUG:
 else:
     FILE_DIR = str(Path.home())
 
-## Logger stuff
+# Logger stuff
 logger = logging.getLogger()
 
 if DEBUG:
@@ -44,7 +44,8 @@ formatter = logging.Formatter('%(asctime)s :: %(levelname)s :: %(message)s')
 
 # File log
 
-file_handler = RotatingFileHandler(os.path.join(DATA_DIR, 'log.txt'), 'a', 1000000, 1)
+file_handler = RotatingFileHandler(
+    os.path.join(DATA_DIR, 'log.txt'), 'a', 1000000, 1)
 
 
 if DEBUG:

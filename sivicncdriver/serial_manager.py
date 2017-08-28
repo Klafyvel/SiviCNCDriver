@@ -14,6 +14,7 @@ from sivicncdriver.settings import logger
 
 __all__ = ["SerialManager"]
 
+
 class SerialManager(QObject):
     send_print = pyqtSignal(str, str)
     send_confirm = pyqtSignal(bool)
@@ -26,13 +27,15 @@ class SerialManager(QObject):
         self.something_sent = False
 
     def open(self, baudrate, serial_port, timeout):
-        logger.info("Opening {} with baudrate {}, timeout {}".format(repr(serial_port), baudrate, timeout))
-        self.send_print.emit("Opening {} with baudrate {}, timeout {}".format(repr(serial_port), baudrate, timeout), "info")
+        logger.info("Opening {} with baudrate {}, timeout {}".format(
+            repr(serial_port), baudrate, timeout))
+        self.send_print.emit("Opening {} with baudrate {}, timeout {}".format(
+            repr(serial_port), baudrate, timeout), "info")
         self.serial.port = serial_port
         self.serial.baudrate = baudrate
         self.serial.timeout = timeout
         self.serial.write_timeout = timeout
-        try :
+        try:
             self.serial.open()
             self.is_open = True
         except serial.serialutil.SerialException:
@@ -56,20 +59,20 @@ class SerialManager(QObject):
             return False
         elif self.fake_mode:
             self.send_print.emit(msg, "operator")
-            logger.info("Sending {} through fake serial port".format(repr(msg)))
+            logger.info(
+                "Sending {} through fake serial port".format(repr(msg)))
             self.something_sent = True
             return True
         else:
-            logger.info("Sending {} through {}".format(repr(msg),self.serial))
+            logger.info("Sending {} through {}".format(repr(msg), self.serial))
             self.send_print.emit(msg, "operator")
             if msg[-1] != '\n':
                 msg += '\n'
-            try :
+            try:
                 self.serial.write(bytes(msg, encoding='utf8'))
             except serial.serialutil.SerialException as e:
                 logger.error(e)
             return True
-
 
     @pyqtSlot()
     def readMsg(self):
@@ -98,8 +101,8 @@ class SerialManager(QObject):
             self.send_print.emit("Serial error while reading.", "error")
 
         if txt:
-                if "error" in txt.lower():
-                    self.send_print.emit(txt, "error")
-                else:
-                    self.send_print.emit("m> {}".format(txt), "machine")
-                self.send_confirm.emit("ok" in txt.lower())
+            if "error" in txt.lower():
+                self.send_print.emit(txt, "error")
+            else:
+                self.send_print.emit("m> {}".format(txt), "machine")
+            self.send_confirm.emit("ok" in txt.lower())

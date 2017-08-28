@@ -5,7 +5,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
 import numpy as np
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Line3DCollection as LineCollection
@@ -33,7 +33,7 @@ def axisEqual3D(ax):
         getattr(ax, 'set_{}lim'.format(dim))(ctr - r, ctr + r)
 
 
-class View3D(FigureCanvas):
+class View3D(FigureCanvasQTAgg):
     """
     Prints G-Codes in 3D.
     """
@@ -43,16 +43,16 @@ class View3D(FigureCanvas):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111, projection='3d')
 
-        FigureCanvas.__init__(self, fig)
+        super(View3D, self).__init__(fig)
         self.setParent(parent)
         self.axes.mouse_init()
 
-        FigureCanvas.setSizePolicy(self,
-                                   QSizePolicy.Expanding,
-                                   QSizePolicy.Expanding
-                                   )
+        super(View3D, self).setSizePolicy(
+            QSizePolicy.Expanding,
+            QSizePolicy.Expanding
+        )
 
-        FigureCanvas.updateGeometry(self)
+        super(View3D, self).updateGeometry()
 
         # self.mpl_connect('key_press_event', self.parent().on_key_press)
 
@@ -96,7 +96,7 @@ class View3D(FigureCanvas):
             if t['name'] == '__error__':
                 self.parse_error.emit(t['line'])
                 break
-            
+
             if t['name'] is not 'G':
                 continue
 
@@ -122,7 +122,13 @@ class View3D(FigureCanvas):
                 clockwise = (t['value'] == 2)
 
                 nb_segments = 0
-                for x_c, y_c in arc_to_segments((x_o, y_o), (i, j), (x, y), clockwise):
+                segments = arc_to_segments(
+                    (x_o, y_o),
+                    (i, j),
+                    (x, y),
+                    clockwise
+                )
+                for x_c, y_c in segments:
                     self.segments_x.append([x_o, x_c])
                     self.segments_y.append([y_o, y_c])
                     x_o, y_o = x_c, y_c
@@ -130,7 +136,8 @@ class View3D(FigureCanvas):
 
                 points_z = np.linspace(z_o, z, nb_segments+1)
                 for z_count in range(nb_segments):
-                    self.segments_z.append([points_z[z_count], points_z[z_count+1]])
+                    self.segments_z.append(
+                        [points_z[z_count], points_z[z_count+1]])
                     self.lines[segment_no] = t['line']
                     segment_no += 1
 
@@ -143,7 +150,7 @@ class View3D(FigureCanvas):
         :param reverse_z: Should the z axis be reversed ? (default : False)
         :param highlight_line: A line which is to be highlighted. (default :
             None)
-        
+
         :type highlight_line: int
         :type reverse_x: bool
         :type reverse_y: bool
@@ -159,42 +166,44 @@ class View3D(FigureCanvas):
         reverse_y = kwargs.get('reverse_y', False)
         reverse_z = kwargs.get('reverse_z', False)
 
-        def reverse_func(x,y,z):
-            if reverse_x :
+        def reverse_func(x, y, z):
+            if reverse_x:
                 x *= -1
-            if reverse_y :
+            if reverse_y:
                 y *= -1
-            if reverse_z :
+            if reverse_z:
                 z *= -1
-            return (x,y,z)
+            return (x, y, z)
 
         highlight_line = kwargs.get('highlight_line', None)
 
         min_z = min(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
         max_z = max(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
-        map_z_to_ratio = lambda z : (z - min_z) / (max_z - min_z) if min_z != max_z else 0
-        map_z_to_color = lambda z : (1-map_z_to_ratio(z), 0.5, map_z_to_ratio(z))
+        map_z_to_ratio = lambda z: (z - min_z) / \
+            (max_z - min_z) if min_z != max_z else 0
+        map_z_to_color = lambda z: (
+            1-map_z_to_ratio(z), 0.5, map_z_to_ratio(z))
 
         segments = []
-        for x,y,z in zip(self.segments_x, self.segments_y, self.segments_z):
+        for x, y, z in zip(self.segments_x, self.segments_y, self.segments_z):
             segments.append((
-                reverse_func(x[0], y[0], z[0]), 
+                reverse_func(x[0], y[0], z[0]),
                 reverse_func(x[1], y[1], z[1])
             ))
         colors = []
         for l, p in enumerate(segments):
             if self.lines[l] == highlight_line:
-                colors.append((0,1,0))
+                colors.append((0, 1, 0))
             else:
                 colors.append(map_z_to_color((p[0][2]+p[1][2])/2))
 
-        lines = LineCollection(segments, 
-            linewidths=1,
-            linestyles='solid',
-            colors=colors
-        )
+        lines = LineCollection(segments,
+                               linewidths=1,
+                               linestyles='solid',
+                               colors=colors
+                               )
         self.axes.add_collection3d(lines)
-        
+
         if reverse_x:
             self.axes.invert_xaxis()
         if reverse_y:

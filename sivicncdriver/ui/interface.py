@@ -33,6 +33,7 @@ __all__ = ['MainWindow']
 
 _translate = QtCore.QCoreApplication.translate
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
     The main window of the application.
@@ -61,7 +62,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.connectUi()
         self.update_config(self.config_list.currentIndex())
 
-        self.baudrate.addItems(map(str,serial.serialutil.SerialBase.BAUDRATES))
+        self.baudrate.addItems(
+            map(str, serial.serialutil.SerialBase.BAUDRATES))
         self.baudrate.setCurrentIndex(12)
 
         self.file_loaded = False
@@ -133,7 +135,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.btn_license.clicked.connect(self.about_license)
         self.btn_about_qt.clicked.connect(self.about_qt)
 
-        self.code_edit.cursorPositionChanged.connect(self.highlight_selected_path)
+        self.code_edit.cursorPositionChanged.connect(
+            self.highlight_selected_path)
 
         self.view_3D.parse_error.connect(self.parse_error)
 
@@ -248,7 +251,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         if self.send_thread and allow_waiting:
             logger.info("Thread already in use, waiting for the end.")
-            self.waiting_cmd.append({"gcode":gcode, "n":n, "disable":disable})
+            self.waiting_cmd.append(
+                {"gcode": gcode, "n": n, "disable": disable})
             return
         elif self.send_thread:
             self.send_thread.stop()
@@ -260,21 +264,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         else:
             self.sending_progress.setMaximum(len(gcode))
         self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText(_translate("MainWindow", "Cancel sending"))
+        self.btn_send_current_file.setText(
+            _translate("MainWindow", "Cancel sending"))
         self.btn_send_current_file.clicked.disconnect()
         self.btn_send_current_file.clicked.connect(self.send_thread.stop)
-        
+
         if disable:
             self.tabWidget.setEnabled(False)
 
-        
-        self.send_thread.read_allowed.connect(self.read_thread.set_read_allowed)
+        self.send_thread.read_allowed.connect(
+            self.read_thread.set_read_allowed)
         self.serial_manager.send_confirm.connect(self.send_thread.confirm)
 
         self.send_thread.finished.connect(self.sending_end)
         self.send_thread.update_progress.connect(self.update_progress)
         self.send_thread.start()
-
 
     # Slots
     @pyqtSlot(str, str)
@@ -291,13 +295,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         msg = "{}"
         if msg_type == "operator":
-            msg = "\n<br /><span style='color:orange;'> <strong>&gt;&gt;&gt;</strong> {}</span>"
+            msg = (
+                "\n<br /><span style='color:orange;'>"
+                "<strong>&gt;&gt;&gt;</strong> {}</span>"
+            )
         elif msg_type == "machine":
             msg = "\n<br /><span style='color:yellow;'>{}</span>"
         elif msg_type == "error":
-            msg = "\n<br /><span style='color:red;'><strong>{}</strong></span>"
+            msg = (
+                "\n<br /><span style='color:red;'>"
+                "<strong>{}</strong></span>"
+            )
         elif msg_type == "info":
-            msg = "\n<br /><span style='color:DarkOrange;'><strong>{}</strong></span>"
+            msg = (
+                "\n<br /><span style='color:DarkOrange;'>"
+                "<strong>{}</strong></span>"
+            )
         self.serial_monitor.moveCursor(QTextCursor.End)
         self.serial_monitor.insertHtml(msg.format(txt))
         self.serial_monitor.moveCursor(QTextCursor.End)
@@ -335,9 +348,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     (
                         gcode_maker.step(axis, step),
                         gcode_maker.step(axis, -step)
-                    )[(i%4)>=2], 
+                    )[(i % 4) >= 2],
                     gcode_maker.step(axis2, step2)
-                )[i%2] for i in range(4*n-1)
+                )[i % 2] for i in range(4*n-1)
             )
 
         self.run_thread(it, n)
@@ -353,7 +366,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         n = self.custom_cmd_number.value()
         l = len(gcode)
 
-        it = (gcode[i%l] for i in range(n*l))
+        it = (gcode[i % l] for i in range(n*l))
 
         self.run_thread(it, n*l)
 
@@ -383,7 +396,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Send a configuration to the machine.
         """
         self.save_config()
-        gcode = gcode_maker.config_as_gcode(**self.config_as_dict()).split('\n')
+        gcode = gcode_maker.config_as_gcode(
+            **self.config_as_dict()).split('\n')
         logger.info("Sending configuration.")
         self.print("Sending configuration.", "info")
         self.run_thread(gcode)
@@ -408,39 +422,46 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.print("Done.", "info")
             logger.info("Upload done.")
         self.sending_progress.setValue(0)
-        self.btn_send_current_file.setText(_translate("MainWindow", "Send current file"))
+        self.btn_send_current_file.setText(
+            _translate("MainWindow", "Send current file"))
         self.btn_send_current_file.clicked.disconnect()
         self.btn_send_current_file.clicked.connect(self.send_file)
         self.tabWidget.setEnabled(True)
 
         self.send_thread = None
 
-        if len(self.waiting_cmd)>0:
+        if len(self.waiting_cmd) > 0:
             self.run_thread(**self.waiting_cmd.pop(0))
 
     @pyqtSlot()
     def start_continuous_y_forward(self):
-        self.run_thread([gcode_maker.start_continuous_y_forward()], disable=False)
+        self.run_thread(
+            [gcode_maker.start_continuous_y_forward()], disable=False)
 
     @pyqtSlot()
     def start_continuous_y_backward(self):
-        self.run_thread([gcode_maker.start_continuous_y_backward()], disable=False)
+        self.run_thread(
+            [gcode_maker.start_continuous_y_backward()], disable=False)
 
     @pyqtSlot()
     def start_continuous_x_forward(self):
-        self.run_thread([gcode_maker.start_continuous_x_forward()], disable=False)
+        self.run_thread(
+            [gcode_maker.start_continuous_x_forward()], disable=False)
 
     @pyqtSlot()
     def start_continuous_x_backward(self):
-        self.run_thread([gcode_maker.start_continuous_x_backward()], disable=False)
+        self.run_thread(
+            [gcode_maker.start_continuous_x_backward()], disable=False)
 
     @pyqtSlot()
     def start_continuous_z_forward(self):
-        self.run_thread([gcode_maker.start_continuous_z_forward()], disable=False)
+        self.run_thread(
+            [gcode_maker.start_continuous_z_forward()], disable=False)
 
     @pyqtSlot()
     def start_continuous_z_backward(self):
-        self.run_thread([gcode_maker.start_continuous_z_backward()], disable=False)
+        self.run_thread(
+            [gcode_maker.start_continuous_z_backward()], disable=False)
 
     @pyqtSlot()
     def stop_y(self):
@@ -465,7 +486,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @pyqtSlot()
     def goto_origin(self):
         self.run_thread([gcode_maker.goto_origin()])
-
 
     @pyqtSlot(int)
     def update_progress(self, s):
@@ -527,9 +547,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.reverse_y.setChecked(config.get("y_reverse", False))
             self.reverse_z.setChecked(config.get("z_reverse", False))
 
-            self.minTime_x.setValue(config.get("x_min_time", 5));
-            self.minTime_y.setValue(config.get("y_min_time", 5));
-            self.minTime_z.setValue(config.get("z_min_time", 5));
+            self.minTime_x.setValue(config.get("x_min_time", 5))
+            self.minTime_y.setValue(config.get("y_min_time", 5))
+            self.minTime_z.setValue(config.get("z_min_time", 5))
 
     @pyqtSlot()
     def save_config(self, filename=None):
@@ -560,7 +580,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Saves a configuration in a new file.
         """
         f = QFileDialog.getSaveFileName(
-            self, _translate("MainWindow","Select file"),
+            self, _translate("MainWindow", "Select file"),
             directory=settings.CONFIG_DIR,
             filter='JSON files (*.json)\nAll files (*)')[0]
         if f is not '':
@@ -597,7 +617,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.timeout.setEnabled(False)
                 self.serial_ports_list.setEnabled(False)
                 self.btn_serial_ports_list.setEnabled(False)
-                self.btn_connect.setText(_translate("MainWindow", "Disconnect"))
+                self.btn_connect.setText(
+                    _translate("MainWindow", "Disconnect"))
                 self.read_thread.read.connect(self.serial_manager.readMsg)
                 self.read_thread.start()
 
@@ -698,14 +719,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Handles parsing errors.
 
         :param line: The line where the error occurred.
-        """ 
+        """
         self.chk_display_current_line.setChecked(False)
         self.code_edit.setExtraSelections([])
-        QMessageBox.critical(self, _translate("MainWindow", "Error."), 
-            _translate("MainWindow", "An error occurred during parsing."))
+        QMessageBox.critical(
+            self,
+            _translate("MainWindow", "Error."),
+            _translate("MainWindow", "An error occurred during parsing.")
+        )
         logger.error("While parsing line {}".format(line))
         highlight = QTextEdit.ExtraSelection()
-        highlight.cursor = QTextCursor(self.code_edit.document().findBlockByLineNumber(line))
+        highlight.cursor = QTextCursor(
+            self.code_edit.document().findBlockByLineNumber(line))
         highlight.format.setProperty(QTextFormat.FullWidthSelection, True)
         highlight.format.setBackground(Qt.red)
         self.code_edit.setTextCursor(highlight.cursor)
@@ -753,7 +778,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Displays informations about the license.
         """
         with open(os.path.join(settings.APP_DIR, 'license_dialog_text')) as f:
-            QMessageBox.about(self, _translate("MainWindow", "License"), f.read())
+            QMessageBox.about(self, _translate(
+                "MainWindow", "License"), f.read())
 
     @pyqtSlot()
     def about_qt(self):

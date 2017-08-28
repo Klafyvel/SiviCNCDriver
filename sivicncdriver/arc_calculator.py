@@ -65,7 +65,7 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1,):
     radius = (v[0]**2 + v[1]**2).sqrt()
     start_angle = Decimal(atan2(-v[1], -v[0])) % Decimal(2*pi)
     center = (s[0]+v[0], s[1]+v[1])
-    end_angle = Decimal(atan2(e[1]-center[1], e[0]-center[0])) 
+    end_angle = Decimal(atan2(e[1]-center[1], e[0]-center[0]))
 
     if clockwise:
         arc_length = -Decimal(2*pi) + (end_angle - start_angle)
@@ -78,7 +78,7 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1,):
     elif arc_length > 0 and clockwise:
         arc_length -= Decimal(2*pi)
     nb_step = int(abs(arc_length*radius/Decimal(length)))
-    
+
     if abs(arc_length * radius) < length:
         yield start
         yield end
@@ -87,8 +87,8 @@ def arc_to_segments(start, vect_to_center, end, clockwise=False, length=1,):
         angle = start_angle
         for _ in range(nb_step):
             yield (
-                    float(center[0] + radius*Decimal(cos(angle))), 
-                    float(center[1] + radius*Decimal(sin(angle)))
-                  )
+                float(center[0] + radius*Decimal(cos(angle))),
+                float(center[1] + radius*Decimal(sin(angle)))
+            )
             angle += d_angle
         yield end

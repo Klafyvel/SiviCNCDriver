@@ -7,6 +7,7 @@ from PyQt5.QtCore import *
 from sivicncdriver import settings
 from sivicncdriver.ui.interface import MainWindow
 
+
 def main():
     """
     The main function of the application.
@@ -17,7 +18,11 @@ def main():
     app = QApplication(sys.argv)
 
     qtTranslator = QTranslator()
-    qtTranslator.load(os.path.join(settings.TRANSLATE_DIR, "SiviCNCDriver_" + QLocale.system().name()))
+    translate_path = os.path.join(
+        settings.TRANSLATE_DIR,
+        "SiviCNCDriver_" + QLocale.system().name()
+    )
+    qtTranslator.load(translate_path)
     app.installTranslator(qtTranslator)
 
     window = MainWindow()

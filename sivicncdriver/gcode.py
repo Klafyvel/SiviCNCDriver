@@ -6,6 +6,7 @@ from sivicncdriver.settings import logger
 
 __all__ = ['parse']
 
+
 class Stack:
     """
     A Simple LIFO.
@@ -112,14 +113,19 @@ def parse(gcode):
     args = {}
     for i in parse_iterator(gcode):
         if i[0] == '__error__':
-            yield {'name' : '__error__', 'line':i[2], 'value':i[1]}
+            yield {'name': '__error__', 'line': i[2], 'value': i[1]}
         elif not i[0] == '__next__':
             if i[0] == '__new_var__':
                 name = ''
                 value = None
                 for a in i[1].keys():
                     OpNode.var[a] = i[1][a]
-                    yield {'name': '__new_var__', 'var': a, 'value': i[1][a], 'line':i[2]}
+                    yield {
+                        'name': '__new_var__',
+                        'var': a,
+                        'value': i[1][a],
+                        'line': i[2]
+                    }
             if i[0] in ('G', 'M'):
                 name = i[0]
                 value = i[1]
@@ -130,11 +136,11 @@ def parse(gcode):
                     name = 'comment'
                 args['comment'] = i[1]
         elif name is not "":
-            yield {'name': name, 'value': value, 'args': args, 'line':i[2]}
+            yield {'name': name, 'value': value, 'args': args, 'line': i[2]}
             name = ""
             value = 0
             args = {}
-    yield {'name': name, 'value': value, 'args': args, 'line':i[2]}
+    yield {'name': name, 'value': value, 'args': args, 'line': i[2]}
 
 
 def parse_value(stack):
@@ -144,6 +150,6 @@ def parse_value(stack):
     :return: The value.
     """
     r = ''
-    while (not stack.is_empty()) and ((stack.peek() not in SEPARATOR) or (not r)):
+    while not (stack.is_empty() or (stack.peek() in SEPARATOR and r)):
         r += stack.pop()
     return float(r)
