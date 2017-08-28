@@ -172,7 +172,7 @@ class View3D(FigureCanvas):
 
         min_z = min(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
         max_z = max(sum(self.segments_z, [])) * (1 if not reverse_z else -1)
-        map_z_to_ratio = lambda z : (z - min_z) / (max_z - min_z)
+        map_z_to_ratio = lambda z : (z - min_z) / (max_z - min_z) if min_z != max_z else 0
         map_z_to_color = lambda z : (1-map_z_to_ratio(z), 0.5, map_z_to_ratio(z))
 
         segments = []
