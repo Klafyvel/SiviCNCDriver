@@ -237,13 +237,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def run_thread(self, gcode, n=None, disable=True, allow_waiting=True):
         """
-        Run a thread to send the diven gcode.
+        Run a thread to send the given gcode.
+
         :param gcode: The gcode as a list of commands.
-        :param n: a length for the sending_process.
-        :param disable: Should the ui elements which trigger sending be
-            disabled ?
-        :param allow_waiting: If True and a thread is already running, wait for
-            it to end before sending the command. Else stop the current thread.
+        :param n: A length for the sending_process progress bar.
+        :param disable: Disable ui elements which trigger sending.
+        :param allow_waiting: Adds the command to the waiting queue.
+
         :type gcode: list
         :type n: int
         :type disable: bool
@@ -555,6 +555,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_config(self, filename=None):
         """
         Saves a configuration.
+        
         :param filename: The name of the file.
         :type filename: str
         """
@@ -790,6 +791,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def highlight_selected_path(self):
+        """
+        Looks for selected line in the code_edit, then updates the drawing to
+        highlight the corresponding path.
+        """
         if not self.chk_display_current_line.isChecked():
             return
 

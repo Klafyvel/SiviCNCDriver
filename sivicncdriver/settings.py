@@ -9,7 +9,7 @@ from logging.handlers import RotatingFileHandler
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = True
+DEBUG = False
 
 TRANSLATE_DIR = os.path.join(APP_DIR, "ui", "translate")
 
