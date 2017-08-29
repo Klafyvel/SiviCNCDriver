@@ -16,3 +16,4 @@ function of the package which doesn't take any parameter.
 """
 
 __version__ = "0.1.9"
+__all__ = ['app']
