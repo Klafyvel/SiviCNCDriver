@@ -13,8 +13,8 @@ from mpl_toolkits.mplot3d.art3d import Line3DCollection as LineCollection
 
 from sivicncdriver import settings
 from sivicncdriver.settings import logger
-from sivicncdriver.gcode import parse
-from sivicncdriver.arc_calculator import arc_to_segments
+from sivicncdriver.gcode.gcode import parse
+from sivicncdriver.gcode.arc_calculator import arc_to_segments
 
 
 import matplotlib.pyplot as pl

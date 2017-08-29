@@ -13,8 +13,8 @@ from PyQt5.QtGui import *
 from sivicncdriver.ui.preprocessor_window import Ui_dialog
 from sivicncdriver import settings
 from sivicncdriver.settings import logger
-from sivicncdriver.gcode import parse
-from sivicncdriver.arc_calculator import arc_to_segments
+from sivicncdriver.gcode.gcode import parse
+from sivicncdriver.gcode.arc_calculator import arc_to_segments
 
 
 class PreprocessorDialog(QDialog, Ui_dialog):

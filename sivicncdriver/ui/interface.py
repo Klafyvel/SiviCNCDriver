@@ -18,14 +18,14 @@ from PyQt5.QtWidgets import *
 
 from sivicncdriver import settings
 from sivicncdriver.settings import logger
-from sivicncdriver.gcode import parse
-from sivicncdriver.serial_list import serial_ports
-from sivicncdriver.serial_manager import SerialManager
+from sivicncdriver.gcode.gcode import parse
+from sivicncdriver.serial.serial_list import serial_ports
+from sivicncdriver.serial.serial_manager import SerialManager
 from sivicncdriver.ui.preprocessor import PreprocessorDialog
-from sivicncdriver.arc_calculator import arc_to_segments
-from sivicncdriver.thread_send import SendThread
-from sivicncdriver.thread_read import ReadThread
-import sivicncdriver.gcode_maker as gcode_maker
+from sivicncdriver.gcode.arc_calculator import arc_to_segments
+from sivicncdriver.serial.thread_send import SendThread
+from sivicncdriver.serial.thread_read import ReadThread
+import sivicncdriver.gcode.gcode_maker as gcode_maker
 
 from sivicncdriver.ui.main_window import Ui_MainWindow
 
