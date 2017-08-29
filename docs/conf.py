@@ -173,4 +173,5 @@ texinfo_documents = [
 ]
 
 
-
+# Sort members by type
+autodoc_member_order = 'groupwise'

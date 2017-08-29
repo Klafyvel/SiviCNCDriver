@@ -6,21 +6,29 @@ Subpackages
 
 .. toctree::
 
+    sivicncdriver.gcode
+    sivicncdriver.serial
     sivicncdriver.ui
 
 Submodules
 ----------
 
-.. toctree::
+sivicncdriver\.app module
+-------------------------
 
-   sivicncdriver.app
-   sivicncdriver.arc_calculator
-   sivicncdriver.gcode
-   sivicncdriver.gcode_maker
-   sivicncdriver.serial_list
-   sivicncdriver.serial_manager
-   sivicncdriver.settings
-   sivicncdriver.thread_send
+.. automodule:: sivicncdriver.app
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sivicncdriver\.settings module
+------------------------------
+
+.. automodule:: sivicncdriver.settings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

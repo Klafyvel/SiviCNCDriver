@@ -4,13 +4,54 @@ sivicncdriver\.ui package
 Submodules
 ----------
 
-.. toctree::
+sivicncdriver\.ui\.interface module
+-----------------------------------
 
-   sivicncdriver.ui.interface
-   sivicncdriver.ui.main_window
-   sivicncdriver.ui.preprocessor
-   sivicncdriver.ui.preprocessor_window
-   sivicncdriver.ui.ressources_rc
+.. automodule:: sivicncdriver.ui.interface
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sivicncdriver\.ui\.main\_window module
+--------------------------------------
+
+.. automodule:: sivicncdriver.ui.main_window
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sivicncdriver\.ui\.preprocessor module
+--------------------------------------
+
+.. automodule:: sivicncdriver.ui.preprocessor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sivicncdriver\.ui\.preprocessor\_window module
+----------------------------------------------
+
+.. automodule:: sivicncdriver.ui.preprocessor_window
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sivicncdriver\.ui\.ressources\_rc module
+----------------------------------------
+
+.. automodule:: sivicncdriver.ui.ressources_rc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+sivicncdriver\.ui\.view3d module
+--------------------------------
+
+.. automodule:: sivicncdriver.ui.view3d
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
