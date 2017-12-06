@@ -2,7 +2,7 @@
 The interface module
 ====================
 
-Provides the MainWindow class. 
+Provides the MainWindow class.
 """
 
 import serial
@@ -140,6 +140,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.view_3D.parse_error.connect(self.parse_error)
 
+        self.serial_manager.serial_fatal_error.connect(self.manage_connection)
+
     def list_serials(self):
         """
         Lists available serials ports.
@@ -256,7 +258,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
         elif self.send_thread:
             self.send_thread.stop()
-            self.serial_manager.serial.flush()
+            try:
+                self.serial_manager.serial.flush()
+            except :
+                pass
 
         self.send_thread = SendThread(self.serial_manager, gcode)
         if n:
@@ -555,7 +560,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def save_config(self, filename=None):
         """
         Saves a configuration.
-        
+
         :param filename: The name of the file.
         :type filename: str
         """

@@ -24,6 +24,7 @@ class SerialManager(QObject):
     """
     send_print = pyqtSignal(str, str)
     send_confirm = pyqtSignal(bool)
+    serial_fatal_error = pyqtSignal()
 
     def __init__(self, serial, fake_mode=False):
         """
@@ -100,7 +101,12 @@ class SerialManager(QObject):
             try:
                 self.serial.write(bytes(msg, encoding='utf8'))
             except serial.serialutil.SerialException as e:
-                logger.error(e)
+                logger.error("Serial error : {}".format(e))
+                self.send_print.emit("Serial error while writing.", "error")
+            except OSError as e:
+                logger.error("Serial error : {}".format(e))
+                self.send_print.emit("Serial error while writing.", "error")
+                self.serial_fatal_error.emit()
             return True
 
     @pyqtSlot()
@@ -121,7 +127,14 @@ class SerialManager(QObject):
             logger.error("Serial manager has no serial opened to read data.")
             self.send_confirm.emit(False)
             return
-        elif not self.serial.in_waiting:
+        try:
+            waiting  = self.serial.in_waiting
+        except OSError as e:
+            logger.error("Serial error : {}".format(e))
+            self.send_print.emit("Serial error while reading.", "error")
+            self.serial_fatal_error.emit()
+            return
+        if not waiting:
             return
         txt = ""
         try:
@@ -132,6 +145,10 @@ class SerialManager(QObject):
         except UnicodeDecodeError as e:
             logger.error("Serial error : {}".format(e))
             self.send_print.emit("Serial error while reading.", "error")
+        except OSError as e:
+            logger.error("Serial error : {}".format(e))
+            self.send_print.emit("Serial error while reading.", "error")
+            self.serial_fatal_error.emit()
 
         if txt:
             if "error" in txt.lower():
